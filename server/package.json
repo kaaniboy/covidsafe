@@ -5,7 +5,8 @@
   "main": "server.js",
   "license": "MIT",
   "scripts": {
-    "start": "node src/server.js"
+    "start-server": "cd src/ && node server.js",
+    "deploy-server": "cd .. && git subtree push --prefix server/ heroku master"
   },
   "dependencies": {
     "axios": "^0.19.2",

@@ -3,6 +3,7 @@ import * as Location from 'expo-location';
 import { StyleSheet } from 'react-native';
 import { Layout, Input } from '@ui-kitten/components';
 import MapView, { UrlTile } from 'react-native-maps';
+import PlaceService, { Place } from '../services/PlaceService';
 
 const TILESET_URL = 'http://c.tile.openstreetmap.org/{z}/{x}/{y}.png';
 const MAP_DELTA = 0.02;
@@ -13,7 +14,8 @@ type State = {
     longitude: number,
     latitudeDelta: number,
     longitudeDelta: number
-  }
+  },
+  places: Place[]
 }
 
 export default class MapScreen extends React.Component<{}, State> {
@@ -22,15 +24,31 @@ export default class MapScreen extends React.Component<{}, State> {
 
     this.state = {
       region: {
-        latitude: 37.78825,
-        longitude: -122.4324,
+        latitude: 33.4231622,
+        longitude: -111.9280878,
         latitudeDelta: MAP_DELTA,
         longitudeDelta: MAP_DELTA,
-      }
+      },
+      places: []
     };
   }
 
-  async componentDidMount() {
+  retrievePlaces = async () => {
+    const { latitude, longitude } = this.state.region;
+
+    try {
+      const places = await PlaceService.retrievePlaces(
+        latitude,
+        longitude
+      );
+      this.setState({ places });
+    } catch (error) {
+      console.log(error);
+      this.setState({ places: [] });
+    }
+  }
+
+  retrieveCurrentLocation = async () => {
     const { status } = await Location.requestPermissionsAsync();
     if (status !== 'granted') {
       return;
@@ -45,6 +63,11 @@ export default class MapScreen extends React.Component<{}, State> {
         longitudeDelta: MAP_DELTA
       }
     });
+  }
+
+  async componentDidMount() {
+    await this.retrieveCurrentLocation();
+    await this.retrievePlaces();
   }
 
   render() {
