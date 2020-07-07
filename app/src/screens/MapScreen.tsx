@@ -1,9 +1,10 @@
 import React from 'react';
 import * as Location from 'expo-location';
 import { StyleSheet } from 'react-native';
-import { Layout, Input } from '@ui-kitten/components';
-import MapView, { UrlTile, Marker } from 'react-native-maps';
+import { Layout, Input, Text } from '@ui-kitten/components';
+import MapView, { UrlTile, Marker, MapEvent } from 'react-native-maps';
 import PlaceService, { Place } from '../services/PlaceService';
+import SwipeablePanel from 'rn-swipeable-panel';
 
 const TILESET_URL = 'http://c.tile.openstreetmap.org/{z}/{x}/{y}.png';
 const MAP_DELTA = 0.02;
@@ -15,7 +16,9 @@ type State = {
     latitudeDelta: number,
     longitudeDelta: number
   },
-  places: Place[]
+  places: Place[],
+  selectedPlace: null,
+  isPlacePanelActive: boolean
 }
 
 export default class MapScreen extends React.Component<{}, State> {
@@ -29,7 +32,9 @@ export default class MapScreen extends React.Component<{}, State> {
         latitudeDelta: MAP_DELTA,
         longitudeDelta: MAP_DELTA,
       },
-      places: []
+      places: [],
+      selectedPlace: null,
+      isPlacePanelActive: false
     };
   }
 
@@ -65,13 +70,17 @@ export default class MapScreen extends React.Component<{}, State> {
     });
   }
 
+  showPlacePanel = (place: Place) => {
+    this.setState({ isPlacePanelActive: true });
+  }
+
   async componentDidMount() {
     await this.retrieveCurrentLocation();
     await this.retrievePlaces();
   }
 
   render() {
-    const { region, places } = this.state;
+    const { region, places, isPlacePanelActive } = this.state;
 
     return (
       <Layout style={styles.fill}>
@@ -87,12 +96,20 @@ export default class MapScreen extends React.Component<{}, State> {
                 longitude: p.location.lng
               }}
               title={p.name}
+              onPress={() => this.showPlacePanel(p)}
             />
           ))}
         </MapView>
         <Input style={[styles.search, styles.shadow]}
           placeholder="Search places..."
         />
+        <SwipeablePanel
+          isActive={isPlacePanelActive}
+          onClose={() => this.setState({ isPlacePanelActive: false })}
+          showCloseButton
+        >
+          <Text>Swipeable Panel</Text>
+        </SwipeablePanel>
       </Layout>
     );
   }
