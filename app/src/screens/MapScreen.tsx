@@ -2,7 +2,7 @@ import React from 'react';
 import * as Location from 'expo-location';
 import { StyleSheet } from 'react-native';
 import { Layout, Input } from '@ui-kitten/components';
-import MapView, { UrlTile } from 'react-native-maps';
+import MapView, { UrlTile, Marker } from 'react-native-maps';
 import PlaceService, { Place } from '../services/PlaceService';
 
 const TILESET_URL = 'http://c.tile.openstreetmap.org/{z}/{x}/{y}.png';
@@ -71,7 +71,7 @@ export default class MapScreen extends React.Component<{}, State> {
   }
 
   render() {
-    const { region } = this.state;
+    const { region, places } = this.state;
 
     return (
       <Layout style={styles.fill}>
@@ -79,6 +79,16 @@ export default class MapScreen extends React.Component<{}, State> {
           region={region}
           style={styles.fill}>
           <UrlTile urlTemplate={TILESET_URL} />
+          {places.map(p => (
+            <Marker
+              key={p.id}
+              coordinate={{
+                latitude: p.location.lat,
+                longitude: p.location.lng
+              }}
+              title={p.name}
+            />
+          ))}
         </MapView>
         <Input style={[styles.search, styles.shadow]}
           placeholder="Search places..."
