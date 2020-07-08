@@ -4,7 +4,7 @@ import { StyleSheet } from 'react-native';
 import { Layout, Input, Text } from '@ui-kitten/components';
 import MapView, { UrlTile, Marker } from 'react-native-maps';
 import PlaceService, { Place } from '../services/PlaceService';
-import ReviewService from '../services/ReviewService';
+import PlacePanel from '../components/PlacePanel';
 import SwipeablePanel from 'rn-swipeable-panel';
 
 const TILESET_URL = 'http://c.tile.openstreetmap.org/{z}/{x}/{y}.png';
@@ -19,7 +19,7 @@ const INITIAL_REGION = {
 
 type State = {
   places: Place[],
-  selectedPlace: null,
+  selectedPlace: Place | null,
   isPlacePanelActive: boolean
 }
 
@@ -57,8 +57,11 @@ export default class MapScreen extends React.Component<{}, State> {
     return await Location.getCurrentPositionAsync();
   }
 
-  showPlacePanel = (place: Place) => {
-    this.setState({ isPlacePanelActive: true });
+  showPlacePanel = (selectedPlace: Place) => {
+    this.setState({
+      selectedPlace,
+      isPlacePanelActive: true
+    });
   }
 
   async componentDidMount() {
@@ -75,7 +78,7 @@ export default class MapScreen extends React.Component<{}, State> {
   }
 
   render() {
-    const { places, isPlacePanelActive } = this.state;
+    const { places, selectedPlace, isPlacePanelActive } = this.state;
 
     return (
       <Layout style={styles.fill}>
@@ -107,7 +110,7 @@ export default class MapScreen extends React.Component<{}, State> {
           showCloseButton
           closeOnTouchOutside
         >
-          <Text>Swipeable Panel</Text>
+          {selectedPlace && <PlacePanel place={selectedPlace}/>}
         </SwipeablePanel>
       </Layout>
     );
