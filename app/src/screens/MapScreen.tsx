@@ -2,7 +2,7 @@ import React from 'react';
 import * as Location from 'expo-location';
 import { StyleSheet } from 'react-native';
 import { Layout, Input, Text } from '@ui-kitten/components';
-import MapView, { UrlTile, Marker, MapEvent } from 'react-native-maps';
+import MapView, { UrlTile, Marker } from 'react-native-maps';
 import PlaceService, { Place } from '../services/PlaceService';
 import SwipeablePanel from 'rn-swipeable-panel';
 
@@ -85,8 +85,11 @@ export default class MapScreen extends React.Component<{}, State> {
     return (
       <Layout style={styles.fill}>
         <MapView
+          style={styles.fill}
           region={region}
-          style={styles.fill}>
+          showsCompass={false}
+          onRegionChangeComplete={r => this.setState({ region: r })}
+        >
           <UrlTile urlTemplate={TILESET_URL} />
           {places.map(p => (
             <Marker
@@ -107,6 +110,7 @@ export default class MapScreen extends React.Component<{}, State> {
           isActive={isPlacePanelActive}
           onClose={() => this.setState({ isPlacePanelActive: false })}
           showCloseButton
+          closeOnTouchOutside
         >
           <Text>Swipeable Panel</Text>
         </SwipeablePanel>
