@@ -7,44 +7,39 @@ import PlaceService, { Place } from '../services/PlaceService';
 import SwipeablePanel from 'rn-swipeable-panel';
 
 const TILESET_URL = 'http://c.tile.openstreetmap.org/{z}/{x}/{y}.png';
+
 const MAP_DELTA = 0.02;
+const INITIAL_REGION = {
+  latitude: 33.4231622,
+  longitude: -111.9280878,
+  latitudeDelta: MAP_DELTA,
+  longitudeDelta: MAP_DELTA,
+};
 
 type State = {
-  region: {
-    latitude: number,
-    longitude: number,
-    latitudeDelta: number,
-    longitudeDelta: number
-  },
   places: Place[],
   selectedPlace: null,
   isPlacePanelActive: boolean
 }
 
 export default class MapScreen extends React.Component<{}, State> {
+  map: MapView | null = null;
+
   constructor(props: any) {
     super(props);
 
     this.state = {
-      region: {
-        latitude: 33.4231622,
-        longitude: -111.9280878,
-        latitudeDelta: MAP_DELTA,
-        longitudeDelta: MAP_DELTA,
-      },
       places: [],
       selectedPlace: null,
       isPlacePanelActive: false
     };
   }
 
-  retrievePlaces = async () => {
-    const { latitude, longitude } = this.state.region;
-
+  retrievePlaces = async (location: Location.LocationData) => {
     try {
       const places = await PlaceService.retrievePlaces(
-        latitude,
-        longitude
+        location.coords.latitude,
+        location.coords.longitude
       );
       this.setState({ places });
     } catch (error) {
@@ -56,18 +51,9 @@ export default class MapScreen extends React.Component<{}, State> {
   retrieveCurrentLocation = async () => {
     const { status } = await Location.requestPermissionsAsync();
     if (status !== 'granted') {
-      return;
+      return null;
     }
-
-    const location = await Location.getCurrentPositionAsync();
-    this.setState({
-      region: {
-        latitude: location.coords.latitude,
-        longitude: location.coords.longitude,
-        latitudeDelta: MAP_DELTA,
-        longitudeDelta: MAP_DELTA
-      }
-    });
+    return await Location.getCurrentPositionAsync();
   }
 
   showPlacePanel = (place: Place) => {
@@ -75,20 +61,28 @@ export default class MapScreen extends React.Component<{}, State> {
   }
 
   async componentDidMount() {
-    await this.retrieveCurrentLocation();
-    await this.retrievePlaces();
+    const location = await this.retrieveCurrentLocation();
+    if (location) {
+      await this.retrievePlaces(location);
+      this.map!.animateToRegion({
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+        latitudeDelta: MAP_DELTA,
+        longitudeDelta: MAP_DELTA
+      });
+    }
   }
 
   render() {
-    const { region, places, isPlacePanelActive } = this.state;
+    const { places, isPlacePanelActive } = this.state;
 
     return (
       <Layout style={styles.fill}>
         <MapView
           style={styles.fill}
-          region={region}
+          initialRegion={INITIAL_REGION}
           showsCompass={false}
-          onRegionChangeComplete={r => this.setState({ region: r })}
+          ref={map => { this.map = map }}
         >
           <UrlTile urlTemplate={TILESET_URL} />
           {places.map(p => (
