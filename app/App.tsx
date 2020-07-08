@@ -3,6 +3,8 @@ import { ApplicationProvider } from '@ui-kitten/components';
 import * as eva from '@eva-design/eva';
 import MapScreen from './src/screens/MapScreen';
 
+// Comment
+
 export default function App() {
   return (
     <ApplicationProvider {...eva} theme={eva.light}>
