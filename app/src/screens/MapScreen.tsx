@@ -4,6 +4,7 @@ import { StyleSheet } from 'react-native';
 import { Layout, Input, Text } from '@ui-kitten/components';
 import MapView, { UrlTile, Marker } from 'react-native-maps';
 import PlaceService, { Place } from '../services/PlaceService';
+import ReviewService from '../services/ReviewService';
 import SwipeablePanel from 'rn-swipeable-panel';
 
 const TILESET_URL = 'http://c.tile.openstreetmap.org/{z}/{x}/{y}.png';
