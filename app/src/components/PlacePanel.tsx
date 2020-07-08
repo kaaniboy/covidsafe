@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import { Layout, Text } from '@ui-kitten/components';
+import { Layout, Text, List, ListItem, Divider } from '@ui-kitten/components';
 import { Place } from '../services/PlaceService';
 import ReviewService, { Review } from '../services/ReviewService';
 
@@ -41,17 +41,37 @@ export default class PlacePanel extends React.Component<Props, State> {
     }
   }
 
+  renderReview({ item, index }: { item: Review, index: number }) {
+    return (
+      <ListItem>
+        <Text>{item.content || ''}</Text>
+      </ListItem>
+    );
+  }
+
   render() {
     const { place } = this.props;
     const { isLoading, reviews } = this.state;
 
     return (
-      <Layout>
-        <Text>{place.name}</Text>
-        <Text>Reviews: {reviews.length}</Text>
+      <Layout style={styles.layout}>
+        <Text category='h5'>{place.name}</Text>
+        <List
+          style={styles.reviews}
+          data={reviews}
+          ItemSeparatorComponent={Divider}
+          renderItem={this.renderReview}
+        />
       </Layout>
     )
   }
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  layout: {
+    margin: 10
+  },
+  reviews: {
+    marginTop: 10
+  }
+});

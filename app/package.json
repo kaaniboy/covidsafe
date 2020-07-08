@@ -12,6 +12,7 @@
     "@types/rn-swipeable-panel": "^1.1.0",
     "@ui-kitten/components": "^5.0.0",
     "apollo-boost": "^0.4.9",
+    "eva-icons": "^1.1.3",
     "expo": "~38.0.8",
     "expo-location": "~8.2.1",
     "expo-status-bar": "^1.0.2",
