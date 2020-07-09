@@ -3,10 +3,12 @@ const axios = require('axios');
 
 const FS_CLIENT_ID = process.env.FOURSQUARE_CLIENT_ID;
 const FS_CLIENT_SECRET = process.env.FOURSQUARE_CLIENT_SECRET;
+const FS_PLACE_CATEGORIES = process.env.FOURSQUARE_PLACE_CATEGORIES;
 
 const FS_PLACES_ENDPOINT = 
   'https://api.foursquare.com/v2/venues/search?'
-  + `client_id=${FS_CLIENT_ID}&client_secret=${FS_CLIENT_SECRET}&v=20200701`;
+  + `client_id=${FS_CLIENT_ID}&client_secret=${FS_CLIENT_SECRET}`
+  + `&categoryId=${FS_PLACE_CATEGORIES}&v=20200701`;
 
 function setupFoursquare(app) {
   app.get('/places', async (req, res) => {
