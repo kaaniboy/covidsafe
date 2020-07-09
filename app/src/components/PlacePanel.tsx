@@ -4,12 +4,14 @@ import { Layout, Text, List, ListItem, Divider, Spinner } from '@ui-kitten/compo
 import { Icon } from 'react-native-eva-icons';
 import { Place } from '../services/PlaceService';
 import ReviewService, { Review } from '../services/ReviewService';
+import { NavigationProp } from '@react-navigation/core';
 
 YellowBox.ignoreWarnings([
   'VirtualizedLists should never be nested'
 ]);
 
 type Props = {
+  navigation: NavigationProp<any>,
   place: Place
 };
 
@@ -44,10 +46,10 @@ export default class PlacePanel extends React.Component<Props, State> {
   }
 
   openReviewScreen = () => {
-    console.log('press!');
+    this.props.navigation.navigate('review');
   }
 
-  renderReview({ item, index }: { item: Review, index: number }) {
+  renderReview({ item }: { item: Review }) {
     return (
       <ListItem>
         <Text>{item.content || ''}</Text>

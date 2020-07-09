@@ -6,6 +6,7 @@ import MapView, { UrlTile, Marker, Callout } from 'react-native-maps';
 import PlaceService, { Place } from '../services/PlaceService';
 import PlacePanel from '../components/PlacePanel';
 import SwipeablePanel from 'rn-swipeable-panel';
+import { NavigationProp } from '@react-navigation/core';
 
 const TILESET_URL = 'http://c.tile.openstreetmap.org/{z}/{x}/{y}.png';
 
@@ -17,13 +18,17 @@ const INITIAL_REGION = {
   longitudeDelta: MAP_DELTA,
 };
 
+type Props = {
+  navigation: NavigationProp<any>
+};
+
 type State = {
   places: Place[],
   selectedPlace: Place | null,
   isPlacePanelActive: boolean
 }
 
-export default class MapScreen extends React.Component<{}, State> {
+export default class MapScreen extends React.Component<Props, State> {
   map: MapView | null = null;
 
   constructor(props: any) {
@@ -88,12 +93,13 @@ export default class MapScreen extends React.Component<{}, State> {
         title={p.name}
         onPress={() => this.showPlacePanel(p)}
       >
-        <Callout tooltip={true}/>
+        <Callout tooltip={true} />
       </Marker>
     ));
   }
 
   render() {
+    const { navigation } = this.props;
     const { places, selectedPlace, isPlacePanelActive } = this.state;
 
     return (
@@ -115,7 +121,9 @@ export default class MapScreen extends React.Component<{}, State> {
           onClose={() => this.setState({ isPlacePanelActive: false })}
           closeOnTouchOutside
         >
-          {selectedPlace && <PlacePanel place={selectedPlace} />}
+          {selectedPlace && (
+            <PlacePanel place={selectedPlace} navigation={navigation}/>
+          )}
         </SwipeablePanel>
       </Layout>
     );

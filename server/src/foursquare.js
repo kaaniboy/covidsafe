@@ -6,6 +6,7 @@ const FS_CLIENT_SECRET = process.env.FOURSQUARE_CLIENT_SECRET;
 const FS_PLACE_CATEGORIES = process.env.FOURSQUARE_PLACE_CATEGORIES;
 const FS_PLACE_RADIUS = process.env.FOURSQUARE_PLACE_RADIUS;
 
+// Foursquare Endpoints: https://developer.foursquare.com/docs/places-api/endpoints/
 const FS_PLACES_ENDPOINT = 
   'https://api.foursquare.com/v2/venues/search?'
   + `client_id=${FS_CLIENT_ID}&client_secret=${FS_CLIENT_SECRET}`
