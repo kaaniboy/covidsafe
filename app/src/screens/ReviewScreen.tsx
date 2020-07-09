@@ -1,15 +1,40 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import { Layout, Input, Button, Select, SelectItem } from '@ui-kitten/components';
+import { Layout, Input, Button, Select, SelectItem, Modal, Card, Text } from '@ui-kitten/components';
+import { NavigationProp } from '@react-navigation/core';
+import ConfirmationModal from '../components/ConfirmationModal';
 
-export default class ReviewScreen extends React.Component<{}, {}> {
-  static navigationOptions = {
-    title: 'Write a Review'
+type Props = {
+  navigation: NavigationProp<any>
+};
+
+type State = {
+  isConfirmationVisible: boolean
+};
+
+export default class ReviewScreen extends React.Component<Props, State> {
+  state = {
+    isConfirmationVisible: false
   };
 
+  submitReview = () => {
+    this.setState({ isConfirmationVisible: true });
+  }
+
+  confirm = () => {
+    this.setState({ isConfirmationVisible: false });
+    this.props.navigation.goBack();
+  }
+
   render() {
+    const { isConfirmationVisible } = this.state;
+
     return (
       <Layout style={styles.layout}>
+        <ConfirmationModal
+          isVisible={isConfirmationVisible}
+          onConfirm={this.confirm}
+        />
         <Select
           style={styles.formControl}
           placeholder='Do employees wear masks?'
@@ -24,7 +49,7 @@ export default class ReviewScreen extends React.Component<{}, {}> {
           placeholder='Include any other details here!'
           multiline
         />
-        <Button>
+        <Button onPress={this.submitReview}>
           Submit Review
         </Button>
       </Layout>
