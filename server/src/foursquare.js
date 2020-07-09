@@ -8,7 +8,7 @@ const FS_PLACE_CATEGORIES = process.env.FOURSQUARE_PLACE_CATEGORIES;
 const FS_PLACES_ENDPOINT = 
   'https://api.foursquare.com/v2/venues/search?'
   + `client_id=${FS_CLIENT_ID}&client_secret=${FS_CLIENT_SECRET}`
-  + `&categoryId=${FS_PLACE_CATEGORIES}&v=20200701`;
+  + `&categoryId=${FS_PLACE_CATEGORIES}&radius=20000v=20200701`;
 
 function setupFoursquare(app) {
   app.get('/places', async (req, res) => {
