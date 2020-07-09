@@ -2,7 +2,7 @@ import React from 'react';
 import * as Location from 'expo-location';
 import { StyleSheet } from 'react-native';
 import { Layout, Input, Text } from '@ui-kitten/components';
-import MapView, { UrlTile, Marker } from 'react-native-maps';
+import MapView, { UrlTile, Marker, Callout } from 'react-native-maps';
 import PlaceService, { Place } from '../services/PlaceService';
 import PlacePanel from '../components/PlacePanel';
 import SwipeablePanel from 'rn-swipeable-panel';
@@ -77,6 +77,22 @@ export default class MapScreen extends React.Component<{}, State> {
     }
   }
 
+  renderMarkers(places: Place[]) {
+    return places.map(p => (
+      <Marker
+        key={p.id}
+        coordinate={{
+          latitude: p.location.lat,
+          longitude: p.location.lng
+        }}
+        title={p.name}
+        onPress={() => this.showPlacePanel(p)}
+      >
+        <Callout tooltip={true}/>
+      </Marker>
+    ));
+  }
+
   render() {
     const { places, selectedPlace, isPlacePanelActive } = this.state;
 
@@ -89,17 +105,7 @@ export default class MapScreen extends React.Component<{}, State> {
           ref={map => { this.map = map }}
         >
           <UrlTile urlTemplate={TILESET_URL} />
-          {places.map(p => (
-            <Marker
-              key={p.id}
-              coordinate={{
-                latitude: p.location.lat,
-                longitude: p.location.lng
-              }}
-              title={p.name}
-              onPress={() => this.showPlacePanel(p)}
-            />
-          ))}
+          {this.renderMarkers(places)}
         </MapView>
         <Input style={[styles.search, styles.shadow]}
           placeholder="Search places..."
@@ -109,7 +115,7 @@ export default class MapScreen extends React.Component<{}, State> {
           onClose={() => this.setState({ isPlacePanelActive: false })}
           closeOnTouchOutside
         >
-          {selectedPlace && <PlacePanel place={selectedPlace}/>}
+          {selectedPlace && <PlacePanel place={selectedPlace} />}
         </SwipeablePanel>
       </Layout>
     );
@@ -119,10 +125,11 @@ export default class MapScreen extends React.Component<{}, State> {
 const styles = StyleSheet.create({
   fill: { flex: 1 },
   search: {
+    borderRadius: 25,
     position: 'absolute',
     alignSelf: 'center',
-    width: '90%',
-    top: 70
+    width: '95%',
+    top: 60
   },
   shadow: {
     shadowColor: '#000',
