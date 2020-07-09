@@ -107,7 +107,6 @@ export default class MapScreen extends React.Component<{}, State> {
         <SwipeablePanel
           isActive={isPlacePanelActive}
           onClose={() => this.setState({ isPlacePanelActive: false })}
-          showCloseButton
           closeOnTouchOutside
         >
           {selectedPlace && <PlacePanel place={selectedPlace}/>}

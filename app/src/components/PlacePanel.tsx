@@ -1,6 +1,7 @@
 import React from 'react';
-import { StyleSheet, View, YellowBox} from 'react-native';
+import { StyleSheet, View, YellowBox } from 'react-native';
 import { Layout, Text, List, ListItem, Divider, Spinner } from '@ui-kitten/components';
+import { Icon } from 'react-native-eva-icons';
 import { Place } from '../services/PlaceService';
 import ReviewService, { Review } from '../services/ReviewService';
 
@@ -42,11 +43,28 @@ export default class PlacePanel extends React.Component<Props, State> {
     this.setState({ isLoading: false });
   }
 
+  openReviewScreen = () => {
+    console.log('press!');
+  }
+
   renderReview({ item, index }: { item: Review, index: number }) {
     return (
       <ListItem>
         <Text>{item.content || ''}</Text>
       </ListItem>
+    );
+  }
+
+  renderReviewIcon() {
+    return (
+      <Icon
+        style={styles.icon}
+        name='message-circle-outline'
+        width={32}
+        height={32}
+        fill='black'
+        onPress={this.openReviewScreen}
+      />
     );
   }
 
@@ -56,10 +74,13 @@ export default class PlacePanel extends React.Component<Props, State> {
 
     return (
       <Layout style={styles.layout}>
-        <Text style={styles.header} category='h5'>{place.name}</Text>
+        <View style={styles.header}>
+          <Text category='h5'>{place.name}</Text>
+          {this.renderReviewIcon()}
+        </View>
 
         {isLoading && (
-          <View style={styles.spinner}>
+          <View style={styles.center}>
             <Spinner size='giant'/>
           </View>
         )}
@@ -78,7 +99,9 @@ export default class PlacePanel extends React.Component<Props, State> {
         )}
 
         {!isLoading && reviews.length === 0 && (
-          <Text>This location does not have any reviews yet.</Text>
+          <Text style={styles.center}>
+            This location does not have any reviews yet.
+          </Text>
         )}
       </Layout>
     )
@@ -89,14 +112,20 @@ const styles = StyleSheet.create({
   layout: {
     margin: 10
   },
+  header: {
+    alignSelf: 'center',
+    flexDirection: 'row',
+    marginBottom: 15
+  },
+  icon: {
+    marginLeft: 5,
+    marginTop: -2
+  },
+  center: {
+    alignItems: 'center',
+    textAlign: 'center'
+  },
   reviews: {
     marginTop: 10
   },
-  header: {
-    alignSelf: 'center',
-    marginBottom: 20
-  },
-  spinner: {
-    alignItems: 'center'
-  }
 });
