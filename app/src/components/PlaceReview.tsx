@@ -9,7 +9,7 @@ type Props = {
 };
 
 export default function PlaceReviewsList({ review }: Props) {
-  const elapsed = moment(review.createdAt as Date)
+  const elapsed = moment.utc(review.createdAt as Date)
     .fromNow().toUpperCase();
 
   return (

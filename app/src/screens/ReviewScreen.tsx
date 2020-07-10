@@ -4,10 +4,9 @@ import { Layout, Input, Button, Text } from '@ui-kitten/components';
 import { RouteProp, NavigationProp, Route } from '@react-navigation/core';
 import ConfirmationModal from '../components/ConfirmationModal';
 import RatingSelect from '../components/RatingSelect';
-import { Review } from '../services/ReviewService';
+import ReviewService, { Review } from '../services/ReviewService';
 import Constants from 'expo-constants';
 import { StackParamList } from '../../App';
-
 
 type Props = {
   navigation: NavigationProp<StackParamList>,
@@ -34,8 +33,14 @@ export default class ReviewScreen extends React.Component<Props, State> {
     };
   }
 
-  submitReview = () => {
-    this.setState({ isConfirmationVisible: true });
+  submitReview = async () => {
+    const { review } = this.state;
+    try {
+      await ReviewService.createReview(review);
+      this.setState({ isConfirmationVisible: true });
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   confirm = () => {
@@ -81,6 +86,8 @@ export default class ReviewScreen extends React.Component<Props, State> {
             style={styles.formControl}
             textStyle={styles.reviewContent}
             placeholder='Include any other details related to your visit here'
+            value={review.content}
+            onChange={event => this.updateReview('content', event.nativeEvent.text)}
             multiline
           />
           <Button onPress={this.submitReview}>

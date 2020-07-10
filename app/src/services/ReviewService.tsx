@@ -14,6 +14,22 @@ const GET_REVIEWS_QUERY = gql`
   }
 `;
 
+const CREATE_REVIEW_MUTATION = gql`
+  mutation (
+    $placeId: String!
+    $userId: String!
+    $content: String
+  ) {
+    createReview(input: {
+      review: {
+        placeId: $placeId
+        userId: $userId
+        content: $content
+      }
+    }) { clientMutationId }
+  }
+`;
+
 const httpLink = new HttpLink({
   uri: 'https://covidsafe.herokuapp.com/graphql'
 });
@@ -50,7 +66,12 @@ async function getPlaceReviews(placeId: string): Promise<Review[]> {
   return res.data.allReviews.edges.map((r: any) => r.node);
 }
 
-async function createReview(review: Review) { }
+async function createReview(review: Review) {
+  await client.mutate({
+    mutation: CREATE_REVIEW_MUTATION,
+    variables: review
+  })
+}
 
 export default {
   createReview,

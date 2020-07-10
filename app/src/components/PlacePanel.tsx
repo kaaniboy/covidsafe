@@ -74,7 +74,13 @@ export default class PlacePanel extends React.Component<Props, State> {
         <View style={styles.container}>
           <PlaceOverview place={place} />
           <PlaceReviewsList reviews={reviews} />
-          <Button onPress={this.openReviewScreen}>Write a review</Button>
+          <Button
+            size='small'
+            style={styles.reviewButton}
+            onPress={this.openReviewScreen}
+          >
+            Write a review
+          </Button>
         </View>
       </Layout>
     )
@@ -84,6 +90,11 @@ export default class PlacePanel extends React.Component<Props, State> {
 const styles = StyleSheet.create({
   container: {
     margin: 10
+  },
+  reviewButton: {
+    marginTop: 20,
+    width: '60%',
+    alignSelf: 'center'
   },
   icon: {
     marginLeft: 5,
