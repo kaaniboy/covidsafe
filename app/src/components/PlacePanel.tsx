@@ -5,13 +5,14 @@ import { Icon } from 'react-native-eva-icons';
 import { Place } from '../services/PlaceService';
 import ReviewService, { Review } from '../services/ReviewService';
 import { NavigationProp } from '@react-navigation/core';
+import { StackParamList } from '../../App';
 
 YellowBox.ignoreWarnings([
   'VirtualizedLists should never be nested'
 ]);
 
 type Props = {
-  navigation: NavigationProp<any>,
+  navigation: NavigationProp<StackParamList>,
   place: Place
 };
 
@@ -46,7 +47,8 @@ export default class PlacePanel extends React.Component<Props, State> {
   }
 
   openReviewScreen = () => {
-    this.props.navigation.navigate('review');
+    const { place } = this.props;
+    this.props.navigation.navigate('Review', { place });
   }
 
   renderReview({ item }: { item: Review }) {

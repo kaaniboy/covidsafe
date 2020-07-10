@@ -16,6 +16,7 @@
     "@ui-kitten/components": "^5.0.0",
     "apollo-boost": "^0.4.9",
     "expo": "~38.0.8",
+    "expo-constants": "^9.1.1",
     "expo-location": "~8.2.1",
     "expo-status-bar": "^1.0.2",
     "graphql": "^15.3.0",

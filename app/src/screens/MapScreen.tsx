@@ -7,6 +7,7 @@ import PlaceService, { Place } from '../services/PlaceService';
 import PlacePanel from '../components/PlacePanel';
 import SwipeablePanel from 'rn-swipeable-panel';
 import { NavigationProp } from '@react-navigation/core';
+import { StackParamList } from '../../App';
 
 const TILESET_URL = 'http://c.tile.openstreetmap.org/{z}/{x}/{y}.png';
 
@@ -19,7 +20,7 @@ const INITIAL_REGION = {
 };
 
 type Props = {
-  navigation: NavigationProp<any>
+  navigation: NavigationProp<StackParamList>
 };
 
 type State = {

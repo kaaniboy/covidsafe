@@ -33,8 +33,8 @@ export type Review = {
   placeId: string,
   userId: string,
   content: string | null,
-  createdAt: Date,
-  updatedAt: Date
+  createdAt?: Date,
+  updatedAt?: Date
 };
 
 async function getPlaceReviews(placeId: string): Promise<Review[]> {

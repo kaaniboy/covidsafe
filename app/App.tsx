@@ -5,10 +5,17 @@ import { createStackNavigator } from '@react-navigation/stack';
 import * as eva from '@eva-design/eva';
 import MapScreen from './src/screens/MapScreen';
 import ReviewScreen from './src/screens/ReviewScreen';
+import { Place } from './src/services/PlaceService';
 
-const Stack = createStackNavigator();
+export type StackParamList = {
+  Map: undefined,
+  Review: { place: Place }
+};
+
+const Stack = createStackNavigator<StackParamList>();
+
 const ScreenOptions = ({ route }: { route: Route<string> }) => ({
-  headerShown: route.name === 'review',
+  headerShown: route.name === 'Review',
 });
 
 export default function App() {
@@ -17,12 +24,12 @@ export default function App() {
       <NavigationContainer>
         <Stack.Navigator screenOptions={ScreenOptions}>
           <Stack.Screen
-            name="map"
+            name="Map"
             component={MapScreen}
             options={{ title: 'Map' }}
           />
           <Stack.Screen
-            name="review"
+            name="Review"
             component={ReviewScreen}
             options={{ title: 'Write a Review' }}
           />

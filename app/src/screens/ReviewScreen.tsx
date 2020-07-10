@@ -1,21 +1,46 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import { Layout, Input, Button, Select, SelectItem, Modal, Card, Text } from '@ui-kitten/components';
-import { NavigationProp } from '@react-navigation/core';
+import { Layout, Input, Button, Select, SelectItem, IndexPath } from '@ui-kitten/components';
+import { RouteProp, NavigationProp, Route } from '@react-navigation/core';
 import ConfirmationModal from '../components/ConfirmationModal';
+import { Review } from '../services/ReviewService';
+import Constants from 'expo-constants';
+import { StackParamList } from '../../App';
+
 
 type Props = {
-  navigation: NavigationProp<any>
+  navigation: NavigationProp<StackParamList>,
+  route: RouteProp<StackParamList, 'Review'>
 };
 
 type State = {
-  isConfirmationVisible: boolean
+  isConfirmationVisible: boolean,
+  review: Review
 };
 
+const SelectOptions = (
+  <>
+    <SelectItem title='Yes' />
+    <SelectItem title='No' />
+    <SelectItem title='Not sure' />
+  </>
+);
+
+const SELECT_VALUES = [10, 20, 30];
+
 export default class ReviewScreen extends React.Component<Props, State> {
-  state = {
-    isConfirmationVisible: false
-  };
+
+  constructor(props: Props) {
+    super(props);
+
+    const placeId = this.props.route.params.place.id as string;
+    const userId = Constants.deviceId || 'DEVICE_ID_MISSING';
+
+    this.state = {
+      isConfirmationVisible: false,
+      review: { placeId, userId } as Review
+    };
+  }
 
   submitReview = () => {
     this.setState({ isConfirmationVisible: true });
@@ -24,6 +49,10 @@ export default class ReviewScreen extends React.Component<Props, State> {
   confirm = () => {
     this.setState({ isConfirmationVisible: false });
     this.props.navigation.goBack();
+  }
+
+  onSelectChange = (field: string, index: IndexPath | IndexPath[]) => {
+    const value = SELECT_VALUES[(index as IndexPath).row];
   }
 
   render() {
@@ -38,10 +67,15 @@ export default class ReviewScreen extends React.Component<Props, State> {
         <Select
           style={styles.formControl}
           placeholder='Do employees wear masks?'
+          onSelect={index => this.onSelectChange('masks', index)}
         >
-          <SelectItem title='Yes' />
-          <SelectItem title='No' />
-          <SelectItem title='Not sure' />
+          {SelectOptions}
+        </Select>
+        <Select
+          style={styles.formControl}
+          placeholder='Are social distancing measures in place?'
+        >
+          {SelectOptions}
         </Select>
         <Input
           style={styles.formControl}
