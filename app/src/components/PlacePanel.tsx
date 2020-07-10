@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, YellowBox } from 'react-native';
-import { Layout, Text, List, ListItem, Divider, Spinner } from '@ui-kitten/components';
+import { Layout, Text, Button, Spinner } from '@ui-kitten/components';
 import { Place } from '../services/PlaceService';
 import ReviewService, { Review } from '../services/ReviewService';
 import RiskIndicator from '../components/RiskIndicator';
@@ -54,14 +54,6 @@ export default class PlacePanel extends React.Component<Props, State> {
     this.props.navigation.navigate('Review', { place });
   }
 
-  renderReview({ item }: { item: Review }) {
-    return (
-      <ListItem>
-        <Text>{item.content || ''}</Text>
-      </ListItem>
-    );
-  }
-
   render() {
     const { place } = this.props;
     const { isLoading, reviews } = this.state;
@@ -82,6 +74,7 @@ export default class PlacePanel extends React.Component<Props, State> {
         <View style={styles.container}>
           <PlaceOverview place={place} />
           <PlaceReviewsList reviews={reviews} />
+          <Button onPress={this.openReviewScreen}>Write a review</Button>
         </View>
       </Layout>
     )

@@ -1,8 +1,9 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
-import { Layout, Input, Button, Select, SelectItem, IndexPath } from '@ui-kitten/components';
+import { StyleSheet, ScrollView } from 'react-native';
+import { Layout, Input, Button, Text } from '@ui-kitten/components';
 import { RouteProp, NavigationProp, Route } from '@react-navigation/core';
 import ConfirmationModal from '../components/ConfirmationModal';
+import RatingSelect from '../components/RatingSelect';
 import { Review } from '../services/ReviewService';
 import Constants from 'expo-constants';
 import { StackParamList } from '../../App';
@@ -15,21 +16,11 @@ type Props = {
 
 type State = {
   isConfirmationVisible: boolean,
-  review: Review
+  review: Review,
+  value: number
 };
 
-const SelectOptions = (
-  <>
-    <SelectItem title='Yes' />
-    <SelectItem title='No' />
-    <SelectItem title='Not sure' />
-  </>
-);
-
-const SELECT_VALUES = [10, 20, 30];
-
 export default class ReviewScreen extends React.Component<Props, State> {
-
   constructor(props: Props) {
     super(props);
 
@@ -38,7 +29,8 @@ export default class ReviewScreen extends React.Component<Props, State> {
 
     this.state = {
       isConfirmationVisible: false,
-      review: { placeId, userId } as Review
+      review: { placeId, userId } as Review,
+      value: 1
     };
   }
 
@@ -51,41 +43,50 @@ export default class ReviewScreen extends React.Component<Props, State> {
     this.props.navigation.goBack();
   }
 
-  onSelectChange = (field: string, index: IndexPath | IndexPath[]) => {
-    const value = SELECT_VALUES[(index as IndexPath).row];
+  updateReview = (field: string, value: any) => {
+    const { review } = this.state;
+    (review as any)[field] = value;
+    this.setState({ review });
   }
 
   render() {
-    const { isConfirmationVisible } = this.state;
+    const { review, isConfirmationVisible } = this.state;
 
     return (
       <Layout style={styles.layout}>
-        <ConfirmationModal
-          isVisible={isConfirmationVisible}
-          onConfirm={this.confirm}
-        />
-        <Select
-          style={styles.formControl}
-          placeholder='Do employees wear masks?'
-          onSelect={index => this.onSelectChange('masks', index)}
-        >
-          {SelectOptions}
-        </Select>
-        <Select
-          style={styles.formControl}
-          placeholder='Are social distancing measures in place?'
-        >
-          {SelectOptions}
-        </Select>
-        <Input
-          style={styles.formControl}
-          textStyle={styles.reviewContent}
-          placeholder='Include any other details here!'
-          multiline
-        />
-        <Button onPress={this.submitReview}>
-          Submit Review
+        <ScrollView>
+          <ConfirmationModal
+            isVisible={isConfirmationVisible}
+            onConfirm={this.confirm}
+          />
+          <RatingSelect
+            label='On a scale of 1 - 5, how consistent are employees in wearing masks?'
+            value={review.masks}
+            onChange={value => this.updateReview('masks', value)}
+          />
+          <RatingSelect
+            label='On a scale of 1 - 5, how effectively does the business handle contactless pick-up and drive-thru?'
+            value={review.pickup}
+            onChange={value => this.updateReview('pickup', value)}
+          />
+          <RatingSelect
+            label='On a scale of 1 - 5, how effectively is social distancing (6ft) enforced?'
+            value={review.distancing}
+            onChange={value => this.updateReview('distancing', value)}
+          />
+          <Text style={styles.center}>
+            Any additional information?
+        </Text>
+          <Input
+            style={styles.formControl}
+            textStyle={styles.reviewContent}
+            placeholder='Include any other details related to your visit here'
+            multiline
+          />
+          <Button onPress={this.submitReview}>
+            Submit Review
         </Button>
+        </ScrollView>
       </Layout>
     );
   }
@@ -101,5 +102,8 @@ const styles = StyleSheet.create({
   },
   reviewContent: {
     minHeight: 100
+  },
+  center: {
+    textAlign: 'center'
   }
 });
