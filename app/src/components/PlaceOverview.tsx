@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Button } from '@ui-kitten/components';
+import { Text, Button } from '@ui-kitten/components';
 import { Place } from '../services/PlaceService';
 
 type Props = {
@@ -29,6 +29,10 @@ export default function PlaceOverview({ place }: Props) {
         {buttons}
       </View>
       <View style={[styles.childContainer, styles.right]}>
+        <Text category='h1'>10/10</Text>
+        <Text style={styles.description}>
+          This is a test description beneath the score.
+        </Text>
       </View>
     </View>
   );
@@ -44,13 +48,18 @@ const styles = StyleSheet.create({
     padding: 5
   },
   left: {},
+  categoryButton: {
+    marginVertical: 5
+  },
   right: {
     marginVertical: 10,
     borderColor: '#E8E8E8',
     borderWidth: 2,
-    borderRadius: 10
+    borderRadius: 10,
+    alignItems: 'center'
   },
-  categoryButton: {
-    marginVertical: 5
+  description: {
+    marginTop: 5,
+    textAlign: 'center'
   }
 });
