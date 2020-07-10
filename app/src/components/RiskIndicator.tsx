@@ -15,18 +15,20 @@ const COLORS = {
 export default function RiskIndicator({ risk }: Props) {
   const theme = useTheme();
   const backgroundColor = theme[`color-${COLORS[risk]}-default`];
-  
+
   const riskText = risk.toUpperCase() + ' RISK';
-  
+
   return (
-    <View style={[styles.view, { backgroundColor }]}>
-      <Text style={styles.text} category='s1' appearance='alternative'>{riskText}</Text>
+    <View style={[styles.container, { backgroundColor }]}>
+      <Text style={styles.text} category='s1' appearance='alternative'>
+        {riskText}
+      </Text>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  view: {
+  container: {
     paddingVertical: 5
   },
   text: {

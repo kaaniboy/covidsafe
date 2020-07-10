@@ -1,10 +1,10 @@
 import React from 'react';
 import { StyleSheet, View, YellowBox } from 'react-native';
 import { Layout, Text, List, ListItem, Divider, Spinner } from '@ui-kitten/components';
-import { Icon } from 'react-native-eva-icons';
 import { Place } from '../services/PlaceService';
 import ReviewService, { Review } from '../services/ReviewService';
 import RiskIndicator from '../components/RiskIndicator';
+import PlaceHeader from '../components/PlaceHeader';
 import { NavigationProp } from '@react-navigation/core';
 import { StackParamList } from '../../App';
 
@@ -60,33 +60,16 @@ export default class PlacePanel extends React.Component<Props, State> {
     );
   }
 
-  renderReviewIcon() {
-    return (
-      <Icon
-        style={styles.icon}
-        name='message-circle-outline'
-        width={32}
-        height={32}
-        fill='black'
-        onPress={this.openReviewScreen}
-      />
-    );
-  }
-
   render() {
     const { place } = this.props;
     const { isLoading, reviews } = this.state;
 
     return (
       <Layout>
+        <PlaceHeader place={place} />
         <RiskIndicator risk='low' />
 
         <View style={styles.container}>
-          <View style={styles.header}>
-            <Text category='h5'>{place.name}</Text>
-            {this.renderReviewIcon()}
-          </View>
-
           {isLoading && (
             <View style={styles.center}>
               <Spinner size='giant' />
@@ -118,11 +101,6 @@ export default class PlacePanel extends React.Component<Props, State> {
 }
 
 const styles = StyleSheet.create({
-  header: {
-    alignSelf: 'center',
-    flexDirection: 'row',
-    marginBottom: 15
-  },
   container: {
     margin: 10
   },
@@ -136,5 +114,5 @@ const styles = StyleSheet.create({
   },
   reviews: {
     marginTop: 10
-  },
+  }
 });

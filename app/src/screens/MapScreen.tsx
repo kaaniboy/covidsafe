@@ -118,6 +118,7 @@ export default class MapScreen extends React.Component<Props, State> {
           placeholder="Search places..."
         />
         <SwipeablePanel
+          style={styles.placePanelStyle}
           isActive={isPlacePanelActive}
           onClose={() => this.setState({ isPlacePanelActive: false })}
           closeOnTouchOutside
@@ -139,6 +140,9 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     width: '95%',
     top: 60
+  },
+  placePanelStyle: {
+    backgroundColor: 'gray'
   },
   shadow: {
     shadowColor: '#000',
