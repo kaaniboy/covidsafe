@@ -5,6 +5,7 @@ import { Place } from '../services/PlaceService';
 import ReviewService, { Review } from '../services/ReviewService';
 import RiskIndicator from '../components/RiskIndicator';
 import PlaceHeader from '../components/PlaceHeader';
+import PlaceOverview from '../components/PlaceOverview';
 import { NavigationProp } from '@react-navigation/core';
 import { StackParamList } from '../../App';
 
@@ -68,6 +69,7 @@ export default class PlacePanel extends React.Component<Props, State> {
       <Layout>
         <PlaceHeader place={place} />
         <RiskIndicator risk='low' />
+        <PlaceOverview place={place} />
 
         <View style={styles.container}>
           {isLoading && (
