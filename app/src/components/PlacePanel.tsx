@@ -6,6 +6,7 @@ import ReviewService, { Review } from '../services/ReviewService';
 import RiskIndicator from '../components/RiskIndicator';
 import PlaceHeader from '../components/PlaceHeader';
 import PlaceOverview from '../components/PlaceOverview';
+import PlaceReviewsList from './PlaceReviewsList';
 import { NavigationProp } from '@react-navigation/core';
 import { StackParamList } from '../../App';
 
@@ -65,37 +66,22 @@ export default class PlacePanel extends React.Component<Props, State> {
     const { place } = this.props;
     const { isLoading, reviews } = this.state;
 
+    if (isLoading) {
+      return (
+        <View style={styles.center}>
+          <Spinner size='giant' />
+        </View>
+      );
+    }
+
     return (
       <Layout>
         <PlaceHeader place={place} />
         <RiskIndicator risk='low' />
-        <PlaceOverview place={place} />
 
         <View style={styles.container}>
-          {isLoading && (
-            <View style={styles.center}>
-              <Spinner size='giant' />
-            </View>
-          )}
-
-          {!isLoading && reviews.length > 0 && (
-            <>
-              <Text category='h6'>Reviews</Text>
-              <List
-                style={styles.reviews}
-                data={reviews}
-                ItemSeparatorComponent={Divider}
-                renderItem={this.renderReview}
-                scrollEnabled={false}
-              />
-            </>
-          )}
-
-          {!isLoading && reviews.length === 0 && (
-            <Text style={styles.center}>
-              This location does not have any reviews yet.
-          </Text>
-          )}
+          <PlaceOverview place={place} />
+          <PlaceReviewsList reviews={reviews} />
         </View>
       </Layout>
     )
@@ -113,8 +99,5 @@ const styles = StyleSheet.create({
   center: {
     alignItems: 'center',
     textAlign: 'center'
-  },
-  reviews: {
-    marginTop: 10
   }
 });

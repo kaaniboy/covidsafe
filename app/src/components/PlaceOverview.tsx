@@ -40,8 +40,7 @@ export default function PlaceOverview({ place }: Props) {
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row',
-    margin: 5
+    flexDirection: 'row'
   },
   childContainer: {
     flex: 1,
