@@ -12,13 +12,13 @@ export default function PlaceHeader({ place }: Props) {
   return (
     <View style={styles.container}>
       <View style={styles.details}>
-        <Text appearance='alternative' category='h5'>
+        <Text category='h5'>
           {place.name}
         </Text>
-        <Text appearance='alternative'>{place.location.address}</Text>
+        <Text>{place.location.address}</Text>
       </View>
       <View style={styles.icon}>
-        <MaterialCommunityIcons name='food' size={48} color='white' />
+        <MaterialCommunityIcons name='food' size={48} />
       </View>
     </View>
   );
@@ -27,7 +27,6 @@ export default function PlaceHeader({ place }: Props) {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    backgroundColor: 'gray',
     paddingHorizontal: 15,
     paddingBottom: 10
   },

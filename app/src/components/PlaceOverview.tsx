@@ -17,6 +17,7 @@ export default function PlaceOverview({ place }: Props) {
       style={styles.categoryButton}
       appearance={selectedCategory === i ? 'filled' : 'outline'}
       size='small'
+      key={i}
       onPress={() => setSelectedCategory(i)}
     >
       {category}
