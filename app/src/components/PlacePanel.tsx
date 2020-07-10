@@ -4,6 +4,7 @@ import { Layout, Text, List, ListItem, Divider, Spinner } from '@ui-kitten/compo
 import { Icon } from 'react-native-eva-icons';
 import { Place } from '../services/PlaceService';
 import ReviewService, { Review } from '../services/ReviewService';
+import RiskIndicator from '../components/RiskIndicator';
 import { NavigationProp } from '@react-navigation/core';
 import { StackParamList } from '../../App';
 
@@ -77,49 +78,53 @@ export default class PlacePanel extends React.Component<Props, State> {
     const { isLoading, reviews } = this.state;
 
     return (
-      <Layout style={styles.layout}>
-        <View style={styles.header}>
-          <Text category='h5'>{place.name}</Text>
-          {this.renderReviewIcon()}
-        </View>
+      <Layout>
+        <RiskIndicator risk='low' />
 
-        {isLoading && (
-          <View style={styles.center}>
-            <Spinner size='giant'/>
+        <View style={styles.container}>
+          <View style={styles.header}>
+            <Text category='h5'>{place.name}</Text>
+            {this.renderReviewIcon()}
           </View>
-        )}
 
-        {!isLoading && reviews.length > 0 && (
-          <>
-            <Text category='h6'>Reviews</Text>
-            <List
-              style={styles.reviews}
-              data={reviews}
-              ItemSeparatorComponent={Divider}
-              renderItem={this.renderReview}
-              scrollEnabled={false}
-            />
-          </>
-        )}
+          {isLoading && (
+            <View style={styles.center}>
+              <Spinner size='giant' />
+            </View>
+          )}
 
-        {!isLoading && reviews.length === 0 && (
-          <Text style={styles.center}>
-            This location does not have any reviews yet.
+          {!isLoading && reviews.length > 0 && (
+            <>
+              <Text category='h6'>Reviews</Text>
+              <List
+                style={styles.reviews}
+                data={reviews}
+                ItemSeparatorComponent={Divider}
+                renderItem={this.renderReview}
+                scrollEnabled={false}
+              />
+            </>
+          )}
+
+          {!isLoading && reviews.length === 0 && (
+            <Text style={styles.center}>
+              This location does not have any reviews yet.
           </Text>
-        )}
+          )}
+        </View>
       </Layout>
     )
   }
 }
 
 const styles = StyleSheet.create({
-  layout: {
-    margin: 10
-  },
   header: {
     alignSelf: 'center',
     flexDirection: 'row',
     marginBottom: 15
+  },
+  container: {
+    margin: 10
   },
   icon: {
     marginLeft: 5,
