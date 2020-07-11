@@ -4,7 +4,12 @@ create table db_public.review(
   id serial primary key,
   place_id text not null,
   user_id text not null,
+
   content text,
+  employee_masks smallint,
+  customer_masks smallint,
+  distancing smallint,
+  dining_type text,
 
   created_at timestamp not null default current_timestamp,
   updated_at timestamp

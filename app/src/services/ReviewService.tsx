@@ -8,6 +8,8 @@ const GET_REVIEWS_QUERY = gql`
         node {
           id content userId
           placeId updatedAt createdAt
+          employeeMasks customerMasks
+          distancing diningType
         }
       }
     }
@@ -19,12 +21,20 @@ const CREATE_REVIEW_MUTATION = gql`
     $placeId: String!
     $userId: String!
     $content: String
+    $employeeMasks: Int
+    $customerMasks: Int
+    $distancing: Int
+    $diningType: String
   ) {
     createReview(input: {
       review: {
         placeId: $placeId
         userId: $userId
         content: $content
+        employeeMasks: $employeeMasks
+        customerMasks: $customerMasks
+        distancing: $distancing
+        diningType: $diningType
       }
     }) { clientMutationId }
   }
@@ -56,7 +66,7 @@ export type Review = {
   diningType?: string,
 
   createdAt?: Date,
-  updatedAt?: Date,
+  updatedAt?: Date
 };
 
 async function getPlaceReviews(placeId: string): Promise<Review[]> {
