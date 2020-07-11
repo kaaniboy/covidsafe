@@ -18,6 +18,8 @@ const ScreenOptions = ({ route }: { route: Route<string> }) => ({
   headerShown: route.name === 'Review',
 });
 
+// Comment
+
 export default function App() {
   return (
     <ApplicationProvider {...eva} theme={eva.light}>
