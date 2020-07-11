@@ -3,9 +3,11 @@ import { StyleSheet, View } from 'react-native';
 import { Text, Button } from '@ui-kitten/components';
 
 type Props = {
-  label: string,
+  question: string,
+  leftLabel: string,
+  rightLabel: string,
   value?: number,
-  onChange: (value: number) => void
+  onChange: (value?: number) => void
 };
 
 const OPTIONS = [
@@ -16,26 +18,34 @@ const OPTIONS = [
   { label: '5', value: 5, color: 'success' },
 ];
 
-export default function RatingSelect({ label, value, onChange }: Props) {
+export default function RatingQuestion({ question, leftLabel, rightLabel, value, onChange }: Props) {
+
+  const onPress = (newValue?: number) => {
+    onChange(newValue === value ? undefined : newValue);
+  };
+
   return (
     <View style={styles.container}>
-      <Text
-        style={styles.label}
-      >
-        {label}
+      <Text style={styles.center} category='s1'>
+        {question}
       </Text>
       <View style={styles.optionsContainer}>
+        <Text style={styles.sideLabel}>{leftLabel}</Text>
+
         {OPTIONS.map(option => (
           <Button
+            size='small'
             style={styles.option}
             status={option.color}
             appearance={value === option.value ? 'filled' : 'outline'}
             key={option.value}
-            onPress={() => onChange(option.value)}
+            onPress={() => onPress(option.value)}
           >
             {option.label}
           </Button>
         ))}
+
+        <Text style={styles.sideLabel}>{rightLabel}</Text>
       </View>
     </View>
   );
@@ -43,7 +53,7 @@ export default function RatingSelect({ label, value, onChange }: Props) {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 10,
+    marginTop: 20,
     marginBottom: 20
   },
   optionsContainer: {
@@ -54,7 +64,12 @@ const styles = StyleSheet.create({
     marginHorizontal: 2,
     flex: 1
   },
-  label: {
+  sideLabel: {
+    textAlign: 'center',
+    alignSelf: 'center',
+    flex: 5
+  },
+  center: {
     textAlign: 'center'
   }
 });

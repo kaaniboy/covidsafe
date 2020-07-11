@@ -50,9 +50,10 @@ export type Review = {
   userId: string,
 
   content?: string,
-  masks?: number,
+  employeeMasks?: number,
+  customerMasks?: number,
   distancing?: number,
-  pickup?: number,
+  diningType?: string,
 
   createdAt?: Date,
   updatedAt?: Date,

@@ -1,9 +1,10 @@
 import React from 'react';
-import { StyleSheet, ScrollView } from 'react-native';
+import { StyleSheet, View, ScrollView } from 'react-native';
 import { Layout, Input, Button, Text } from '@ui-kitten/components';
-import { RouteProp, NavigationProp, Route } from '@react-navigation/core';
+import { RouteProp, NavigationProp } from '@react-navigation/core';
 import ConfirmationModal from '../components/ConfirmationModal';
-import RatingSelect from '../components/RatingSelect';
+import RadioQuestion from '../components/RadioQuestion';
+import RatingQuestion from '../components/RatingQuestion';
 import ReviewService, { Review } from '../services/ReviewService';
 import Constants from 'expo-constants';
 import { StackParamList } from '../../App';
@@ -15,9 +16,15 @@ type Props = {
 
 type State = {
   isConfirmationVisible: boolean,
-  review: Review,
-  value: number
+  review: Review
 };
+
+const DINING_OPTIONS = [
+  { label: 'Dine-In', value: 'dine_in' },
+  { label: 'Pick-Up', value: 'pick_up' },
+  { label: 'Drive-Thru', value: 'drive_thru' },
+  { label: 'None of the above', value: undefined }
+];
 
 export default class ReviewScreen extends React.Component<Props, State> {
   constructor(props: Props) {
@@ -28,8 +35,7 @@ export default class ReviewScreen extends React.Component<Props, State> {
 
     this.state = {
       isConfirmationVisible: false,
-      review: { placeId, userId } as Review,
-      value: 1
+      review: { placeId, userId } as Review
     };
   }
 
@@ -64,35 +70,56 @@ export default class ReviewScreen extends React.Component<Props, State> {
             isVisible={isConfirmationVisible}
             onConfirm={this.confirm}
           />
-          <RatingSelect
-            label='On a scale of 1 - 5, how consistent are employees in wearing masks?'
-            value={review.masks}
-            onChange={value => this.updateReview('masks', value)}
+
+          <RadioQuestion
+            question='What dining style did you use?'
+            options={DINING_OPTIONS}
+            value={review.diningType}
+            onChange={value => this.updateReview('diningType', value)}
           />
-          <RatingSelect
-            label='On a scale of 1 - 5, how effectively does the business handle contactless pick-up and drive-thru?'
-            value={review.pickup}
-            onChange={value => this.updateReview('pickup', value)}
+
+          <RatingQuestion
+            question='How many employees wear masks?'
+            leftLabel='None'
+            rightLabel='All'
+            value={review.employeeMasks}
+            onChange={value => this.updateReview('employeeMasks', value)}
           />
-          <RatingSelect
-            label='On a scale of 1 - 5, how effectively is social distancing (6ft) enforced?'
+
+          <RatingQuestion
+            question='How many customers wear masks?'
+            leftLabel='None'
+            rightLabel='All'
+            value={review.customerMasks}
+            onChange={value => this.updateReview('customerMasks', value)}
+          />
+
+          <RatingQuestion
+            question='How carefully is social distancing enforced?'
+            leftLabel='Not at all'
+            rightLabel='Very carefully'
             value={review.distancing}
             onChange={value => this.updateReview('distancing', value)}
           />
-          <Text style={styles.center}>
-            Any additional information?
-        </Text>
-          <Input
-            style={styles.formControl}
-            textStyle={styles.reviewContent}
-            placeholder='Include any other details related to your visit here'
-            value={review.content}
-            onChange={event => this.updateReview('content', event.nativeEvent.text)}
-            multiline
-          />
+
+          <View style={styles.additionalInfo}>
+            <Text style={styles.center} category='s1'>
+              Any additional comments?
+          </Text>
+            <Input
+              style={styles.formControl}
+              textStyle={styles.reviewContent}
+              placeholder='Include any other details related to your visit here.'
+              value={review.content}
+              onChange={event => this.updateReview('content', event.nativeEvent.text)}
+              enablesReturnKeyAutomatically={false}
+              multiline
+            />
+          </View>
+
           <Button onPress={this.submitReview}>
             Submit Review
-        </Button>
+          </Button>
         </ScrollView>
       </Layout>
     );
@@ -105,10 +132,13 @@ const styles = StyleSheet.create({
     padding: 10
   },
   formControl: {
-    marginVertical: 10
+    marginVertical: 20
   },
   reviewContent: {
     minHeight: 100
+  },
+  additionalInfo: {
+    marginTop: 10
   },
   center: {
     textAlign: 'center'
