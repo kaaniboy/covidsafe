@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Text, Button } from '@ui-kitten/components';
-import { Place } from '../services/PlaceService';
+import { Place } from '../../services/PlaceService';
 
 type Props = {
   place: Place

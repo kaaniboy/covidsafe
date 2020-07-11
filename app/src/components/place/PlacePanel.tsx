@@ -1,14 +1,14 @@
 import React from 'react';
 import { StyleSheet, View, YellowBox } from 'react-native';
-import { Layout, Text, Button, Spinner } from '@ui-kitten/components';
-import { Place } from '../services/PlaceService';
-import ReviewService, { Review } from '../services/ReviewService';
-import RiskIndicator from '../components/RiskIndicator';
-import PlaceHeader from '../components/PlaceHeader';
-import PlaceOverview from '../components/PlaceOverview';
+import { Layout, Button, Spinner } from '@ui-kitten/components';
+import { Place } from '../../services/PlaceService';
+import ReviewService, { Review } from '../../services/ReviewService';
+import RiskIndicator from './RiskIndicator';
+import PlaceHeader from './PlaceHeader';
+import PlaceOverview from './PlaceOverview';
 import PlaceReviewsList from './PlaceReviewsList';
 import { NavigationProp } from '@react-navigation/core';
-import { StackParamList } from '../../App';
+import { StackParamList } from '../../../App';
 
 YellowBox.ignoreWarnings([
   'VirtualizedLists should never be nested'

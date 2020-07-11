@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Text } from '@ui-kitten/components';
 import PlaceReview from './PlaceReview';
-import { Review } from '../services/ReviewService';
+import { Review } from '../../services/ReviewService';
 
 type Props = {
   reviews: Review[]

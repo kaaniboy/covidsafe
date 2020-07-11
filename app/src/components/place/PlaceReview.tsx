@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Text } from '@ui-kitten/components';
-import { Review } from '../services/ReviewService';
+import { Review } from '../../services/ReviewService';
 import moment from 'moment';
 
 type Props = {

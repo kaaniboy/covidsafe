@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Text } from '@ui-kitten/components';
-import { Place } from '../services/PlaceService';
+import { Place } from '../../services/PlaceService';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 type Props = {

@@ -4,7 +4,7 @@ import { StyleSheet } from 'react-native';
 import { Layout, Input, Text } from '@ui-kitten/components';
 import MapView, { UrlTile, Marker, Callout } from 'react-native-maps';
 import PlaceService, { Place } from '../services/PlaceService';
-import PlacePanel from '../components/PlacePanel';
+import PlacePanel from '../components/place/PlacePanel';
 import SwipeablePanel from 'rn-swipeable-panel';
 import { NavigationProp } from '@react-navigation/core';
 import { StackParamList } from '../../App';
