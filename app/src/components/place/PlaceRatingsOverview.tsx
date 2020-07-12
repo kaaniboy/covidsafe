@@ -20,12 +20,12 @@ const CATEGORY_MISSING_TEXT = 'There are no reviews for this category yet.';
 export default function PlaceRatingsOverview({ place, rating }: Props) {
   const [selectedCategory, setSelectedCategory] = useState<RatingCategory>('employeeMasks');
 
-  const buttons = RATING_CATEGORIES.map((category, i) => (
+  const buttons = RATING_CATEGORIES.map(category => (
     <Button
       size='small'
       style={styles.categoryButton}
       appearance={category.name === selectedCategory ? 'filled' : 'outline'}
-      key={i}
+      key={category.name}
       onPress={() => setSelectedCategory(category.name)}
     >
       {category.label}

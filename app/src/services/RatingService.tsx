@@ -1,4 +1,3 @@
-
 import { Review } from './ReviewService';
 
 export type RatingCategory = 'employeeMasks' | 'customerMasks' | 'distancing';
