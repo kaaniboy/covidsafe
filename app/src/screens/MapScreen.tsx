@@ -12,6 +12,8 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const TILESET_URL = 'http://c.tile.openstreetmap.org/{z}/{x}/{y}.png';
 const MARKER_HIGH = require('../../assets/markerHigh.png');
+const MARKER_MEDIUM = require('../../assets/markerMedium.png');
+const MARKER_LOW = require('../../assets/markerLow.png');
 const MARKER_OFFSET = { x: 0, y: -30 };
 const ANCHOR = {x: 0.5, y: 0.8 }
 
@@ -100,7 +102,7 @@ export default class MapScreen extends React.Component<Props, State> {
         }}
         zIndex={i}
         title={p.name}
-        image={MARKER_HIGH}
+        image={MARKER_HIGH || MARKER_LOW }
         centerOffset={MARKER_OFFSET}
         anchor={ANCHOR}
         onPress={() => this.showPlacePanel(p)}
