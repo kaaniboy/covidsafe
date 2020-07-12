@@ -36,7 +36,8 @@ type State = {
 }
 
 export default class MapScreen extends React.Component<Props, State> {
-  map: MapView | null = null;
+  mapRef: MapView | null = null;
+  searchRef: Input | null = null;
 
   constructor(props: any) {
     super(props);
@@ -83,7 +84,7 @@ export default class MapScreen extends React.Component<Props, State> {
     const location = await this.retrieveCurrentLocation();
     if (location) {
       await this.retrievePlaces(location);
-      this.map!.animateToRegion({
+      this.mapRef!.animateToRegion({
         latitude: location.coords.latitude,
         longitude: location.coords.longitude,
         latitudeDelta: MAP_DELTA,
@@ -125,13 +126,14 @@ export default class MapScreen extends React.Component<Props, State> {
     return (
       <Layout style={styles.fill}>
         <MapView
-          showsPointsOfInterest={false}
-          showsUserLocation={true}
           style={styles.fill}
           initialRegion={INITIAL_REGION}
+          ref={ref => { this.mapRef = ref }}
+          onPress={() => this.searchRef!.blur()}
           showsCompass={false}
           rotateEnabled={false}
-          ref={map => { this.map = map }}
+          showsPointsOfInterest={false}
+          showsUserLocation
         >
           <UrlTile urlTemplate={TILESET_URL} />
           {this.renderMarkers(places)}
@@ -151,6 +153,7 @@ export default class MapScreen extends React.Component<Props, State> {
         </SwipeablePanel>
         <Input style={[styles.search, styles.shadow]}
           placeholder="Search places..."
+          ref={ref => this.searchRef = ref }
         />
       </Layout>
     );
