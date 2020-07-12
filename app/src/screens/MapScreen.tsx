@@ -125,6 +125,8 @@ export default class MapScreen extends React.Component<Props, State> {
     return (
       <Layout style={styles.fill}>
         <MapView
+          showsPointsOfInterest={false}
+          showsUserLocation={true}
           style={styles.fill}
           initialRegion={INITIAL_REGION}
           showsCompass={false}
