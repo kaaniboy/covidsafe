@@ -52,7 +52,10 @@ export default class MapScreen extends React.Component<Props, State> {
         location.coords.latitude,
         location.coords.longitude
       );
-      this.setState({ places });
+      const sortedPlaces = places.sort(
+        (a, b) => b.location.lat - a.location.lat
+      );
+      this.setState({ places: sortedPlaces });
     } catch (error) {
       console.log(error);
       this.setState({ places: [] });
@@ -88,13 +91,14 @@ export default class MapScreen extends React.Component<Props, State> {
   }
 
   renderMarkers(places: Place[]) {
-    return places.map(p => (
+    return places.map((p, i) => (
       <Marker
         key={p.id}
         coordinate={{
           latitude: p.location.lat,
           longitude: p.location.lng
         }}
+        zIndex={i}
         title={p.name}
         image={MARKER_HIGH}
         centerOffset={MARKER_OFFSET}
@@ -107,7 +111,7 @@ export default class MapScreen extends React.Component<Props, State> {
           size={32}
           color='white'
         />
-        <Callout tooltip={true} />
+        <Callout tooltip />
       </Marker>
     ));
   }
@@ -173,17 +177,14 @@ const styles = StyleSheet.create({
     flex: 1,
     ...Platform.select({
       ios: {
-        position: 'relative',
         top: 8,
         left: 8
       },
       android: {
-        position: 'relative',
         top: 0,
         left: 0
       },
       default: {
-        position: 'relative',
         top: 8,
         left: 8
       }
