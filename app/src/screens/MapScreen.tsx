@@ -169,7 +169,9 @@ const styles = StyleSheet.create({
   },
   icon: {
     flex: 1,
-    width: '120%',
+    top: 5,
+    left: 7,
+    position: 'absolute',
     alignItems: 'center'
   },
   marker: {
