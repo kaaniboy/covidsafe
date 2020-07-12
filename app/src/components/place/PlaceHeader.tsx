@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Text } from '@ui-kitten/components';
-import { Place } from '../../services/PlaceService';
+import PlaceService, { Place } from '../../services/PlaceService';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 type Props = {
@@ -18,7 +18,7 @@ export default function PlaceHeader({ place }: Props) {
         <Text>{place.location.address}</Text>
       </View>
       <View style={styles.icon}>
-        <MaterialCommunityIcons name='food' size={48} />
+        <MaterialCommunityIcons name={PlaceService.getCategoryIcon(place)} size={48} />
       </View>
     </View>
   );
