@@ -1,6 +1,6 @@
 import React from 'react';
 import * as Location from 'expo-location';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Layout, Input, Text } from '@ui-kitten/components';
 import MapView, { UrlTile, Marker, Callout } from 'react-native-maps';
 import PlaceService, { Place } from '../services/PlaceService';
@@ -8,6 +8,7 @@ import PlacePanel from '../components/place/PlacePanel';
 import SwipeablePanel from 'rn-swipeable-panel';
 import { NavigationProp } from '@react-navigation/core';
 import { StackParamList } from '../../App';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const TILESET_URL = 'http://c.tile.openstreetmap.org/{z}/{x}/{y}.png';
 
@@ -84,16 +85,24 @@ export default class MapScreen extends React.Component<Props, State> {
   }
 
   renderMarkers(places: Place[]) {
+    
     return places.map(p => (
       <Marker
+      
         key={p.id}
         coordinate={{
           latitude: p.location.lat,
           longitude: p.location.lng
+          
         }}
         title={p.name}
+        image={require('../../assets/markerHigh.png')}
+        centerOffset={{ x: 0, y: -30 }}
         onPress={() => this.showPlacePanel(p)}
       >
+        <View style={styles.icon}>
+          <MaterialCommunityIcons name='food' size={48} color = 'white'/>
+        </View>
         <Callout tooltip={true} />
       </Marker>
     ));
@@ -152,5 +161,9 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.8,
     elevation: 5
+  },
+  icon: {
+    flex: 1,
+    alignItems: 'center'
   }
 });
