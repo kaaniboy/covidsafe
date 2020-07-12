@@ -42,7 +42,7 @@ export default function PlaceRatingsOverview({ place, rating }: Props) {
       </View>
       <View style={[styles.childContainer, styles.right]}>
         <Text category='h1'>
-          {(rating.categories[selectedCategory] || '?') + ' / 5'}
+          {(rating.categories[selectedCategory]?.toFixed(1) || '?') + ' / 5'}
         </Text>
         <Text style={styles.description}>
           {selectedCategoryMissing
