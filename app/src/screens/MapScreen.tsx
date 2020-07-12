@@ -120,6 +120,7 @@ export default class MapScreen extends React.Component<Props, State> {
           style={styles.fill}
           initialRegion={INITIAL_REGION}
           showsCompass={false}
+          rotateEnabled={false}
           ref={map => { this.map = map }}
         >
           <UrlTile urlTemplate={TILESET_URL} />
