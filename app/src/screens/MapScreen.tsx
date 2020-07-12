@@ -123,9 +123,7 @@ export default class MapScreen extends React.Component<Props, State> {
           <UrlTile urlTemplate={TILESET_URL} />
           {this.renderMarkers(places)}
         </MapView>
-        <Input style={[styles.search, styles.shadow]}
-          placeholder="Search places..."
-        />
+        
         <SwipeablePanel
           isActive={isPlacePanelActive}
           onClose={() => this.setState({ isPlacePanelActive: false })}
@@ -138,6 +136,9 @@ export default class MapScreen extends React.Component<Props, State> {
             />
           )}
         </SwipeablePanel>
+        <Input style={[styles.search, styles.shadow]}
+          placeholder="Search places..."
+        />
       </Layout>
     );
   }
@@ -150,7 +151,8 @@ const styles = StyleSheet.create({
     position: 'absolute',
     alignSelf: 'center',
     width: '95%',
-    top: 60
+    top: 60,
+    zIndex: 0
   },
   shadow: {
     shadowColor: '#000',
