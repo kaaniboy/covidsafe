@@ -1,7 +1,7 @@
 import React from 'react';
 import * as Location from 'expo-location';
 import { StyleSheet, View } from 'react-native';
-import { Layout, Input, Text } from '@ui-kitten/components';
+import { Layout, Input } from '@ui-kitten/components';
 import MapView, { UrlTile, Marker, Callout } from 'react-native-maps';
 import PlaceService, { Place } from '../services/PlaceService';
 import PlacePanel from '../components/place/PlacePanel';
@@ -11,6 +11,8 @@ import { StackParamList } from '../../App';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const TILESET_URL = 'http://c.tile.openstreetmap.org/{z}/{x}/{y}.png';
+const MARKER_HIGH = require('../../assets/markerHigh.png');
+const MARKER_OFFSET = { x: 0, y: -30 };
 
 const MAP_DELTA = 0.02;
 const INITIAL_REGION = {
@@ -85,24 +87,24 @@ export default class MapScreen extends React.Component<Props, State> {
   }
 
   renderMarkers(places: Place[]) {
-    
     return places.map(p => (
       <Marker
-      
         key={p.id}
         coordinate={{
           latitude: p.location.lat,
           longitude: p.location.lng
-          
         }}
         title={p.name}
-        image={require('../../assets/markerHigh.png')}
-        centerOffset={{ x: 0, y: -30 }}
+        image={MARKER_HIGH}
+        centerOffset={MARKER_OFFSET}
         onPress={() => this.showPlacePanel(p)}
       >
-        <View style={styles.icon}>
-          <MaterialCommunityIcons name='food' size={48} color = 'white'/>
-        </View>
+        <MaterialCommunityIcons
+          style={styles.markerIcon}
+          name='food'
+          size={32}
+          color='white'
+        />
         <Callout tooltip={true} />
       </Marker>
     ));
@@ -123,7 +125,7 @@ export default class MapScreen extends React.Component<Props, State> {
           <UrlTile urlTemplate={TILESET_URL} />
           {this.renderMarkers(places)}
         </MapView>
-        
+
         <SwipeablePanel
           isActive={isPlacePanelActive}
           onClose={() => this.setState({ isPlacePanelActive: false })}
@@ -164,8 +166,9 @@ const styles = StyleSheet.create({
     shadowRadius: 3.8,
     elevation: 5
   },
-  icon: {
-    flex: 1,
-    alignItems: 'center'
+  markerIcon: {
+    position: 'relative',
+    top: 8,
+    left: 8
   }
 });

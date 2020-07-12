@@ -35,6 +35,9 @@ export default function PlaceRatingsOverview({ place, rating }: Props) {
   const selectedCategoryMissing =
     !rating.categories[selectedCategory];
 
+  const categoryRating = selectedCategoryMissing
+    ? '?' : rating.categories[selectedCategory]!.toFixed(1);
+
   return (
     <View style={styles.container}>
       <View style={[styles.childContainer, styles.left]}>
@@ -42,7 +45,7 @@ export default function PlaceRatingsOverview({ place, rating }: Props) {
       </View>
       <View style={[styles.childContainer, styles.right]}>
         <Text category='h1'>
-          {(rating.categories[selectedCategory]?.toFixed(1) || '?') + ' / 5'}
+          {categoryRating + ' / 5.0'}
         </Text>
         <Text style={styles.description}>
           {selectedCategoryMissing
