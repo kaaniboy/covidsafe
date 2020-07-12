@@ -1,6 +1,6 @@
 import React from 'react';
 import * as Location from 'expo-location';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { Layout, Input } from '@ui-kitten/components';
 import MapView, { UrlTile, Marker, Callout } from 'react-native-maps';
 import PlaceService, { Place } from '../services/PlaceService';
@@ -101,7 +101,7 @@ export default class MapScreen extends React.Component<Props, State> {
       >
         <MaterialCommunityIcons
           style={styles.markerIcon}
-          name='food'
+          name={PlaceService.getCategoryIcon(p)}
           size={32}
           color='white'
         />
