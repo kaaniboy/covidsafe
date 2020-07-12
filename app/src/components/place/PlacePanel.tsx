@@ -5,10 +5,11 @@ import { Place } from '../../services/PlaceService';
 import ReviewService, { Review } from '../../services/ReviewService';
 import RiskIndicator from './RiskIndicator';
 import PlaceHeader from './PlaceHeader';
-import PlaceOverview from './PlaceOverview';
+import PlaceRatingsOverview from './PlaceRatingsOverview';
 import PlaceReviewsList from './PlaceReviewsList';
 import { NavigationProp } from '@react-navigation/core';
 import { StackParamList } from '../../../App';
+import RatingService, { PlaceRating } from '../../services/RatingService';
 
 YellowBox.ignoreWarnings([
   'VirtualizedLists should never be nested'
@@ -21,13 +22,15 @@ type Props = {
 
 type State = {
   isLoading: boolean,
-  reviews: Review[]
+  reviews: Review[],
+  rating: PlaceRating
 };
 
 export default class PlacePanel extends React.Component<Props, State> {
   state = {
     isLoading: false,
-    reviews: []
+    reviews: [],
+    rating: { categories: {} }
   };
 
   async componentDidMount() {
@@ -40,10 +43,14 @@ export default class PlacePanel extends React.Component<Props, State> {
 
     try {
       const reviews = await ReviewService.getPlaceReviews(place.id);
-      this.setState({ reviews });
+      const rating = RatingService.ratePlace(reviews);
+      this.setState({ reviews, rating });
     } catch (error) {
       console.log(error);
-      this.setState({ reviews: [] });
+      this.setState({
+        reviews: [],
+        rating: { categories: {} }
+      });
     }
 
     this.setState({ isLoading: false });
@@ -56,7 +63,7 @@ export default class PlacePanel extends React.Component<Props, State> {
 
   render() {
     const { place } = this.props;
-    const { isLoading, reviews } = this.state;
+    const { isLoading, reviews, rating } = this.state;
 
     if (isLoading) {
       return (
@@ -72,7 +79,7 @@ export default class PlacePanel extends React.Component<Props, State> {
         <RiskIndicator risk='low' />
 
         <View style={styles.container}>
-          <PlaceOverview place={place} />
+          <PlaceRatingsOverview place={place} rating={rating}/>
           <PlaceReviewsList reviews={reviews} />
           <Button
             size='small'

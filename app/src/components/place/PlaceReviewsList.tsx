@@ -23,7 +23,7 @@ export default function PlaceReviewsList({ reviews }: Props) {
         </Text>
       ) : (
           <View style={styles.list}>
-            {reviews.map(r => <PlaceReview review={r} key={r.id} />)}
+            {contentReviews.map(r => <PlaceReview review={r} key={r.id} />)}
           </View>
         )
       }
