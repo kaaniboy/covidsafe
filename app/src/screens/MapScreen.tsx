@@ -1,6 +1,6 @@
 import React from 'react';
 import * as Location from 'expo-location';
-import { StyleSheet } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
 import { Layout, Input } from '@ui-kitten/components';
 import MapView, { UrlTile, Marker, Callout } from 'react-native-maps';
 import PlaceService, { Place } from '../services/PlaceService';
@@ -13,6 +13,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 const TILESET_URL = 'http://c.tile.openstreetmap.org/{z}/{x}/{y}.png';
 const MARKER_HIGH = require('../../assets/markerHigh.png');
 const MARKER_OFFSET = { x: 0, y: -30 };
+const ANCHOR = {x: 0.5, y: 0.8 }
 
 const MAP_DELTA = 0.02;
 const INITIAL_REGION = {
@@ -97,6 +98,7 @@ export default class MapScreen extends React.Component<Props, State> {
         title={p.name}
         image={MARKER_HIGH}
         centerOffset={MARKER_OFFSET}
+        anchor={ANCHOR}
         onPress={() => this.showPlacePanel(p)}
       >
         <MaterialCommunityIcons
@@ -168,8 +170,23 @@ const styles = StyleSheet.create({
     elevation: 5
   },
   markerIcon: {
-    position: 'relative',
-    top: 8,
-    left: 8
+    flex: 1,
+    ...Platform.select({
+      ios: {
+        position: 'relative',
+        top: 8,
+        left: 8
+      },
+      android: {
+        position: 'relative',
+        top: 0,
+        left: 0
+      },
+      default: {
+        position: 'relative',
+        top: 8,
+        left: 8
+      }
+    })
   }
 });
