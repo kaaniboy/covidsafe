@@ -6,6 +6,7 @@ const FS_CLIENT_ID = process.env.FOURSQUARE_CLIENT_ID;
 const FS_CLIENT_SECRET = process.env.FOURSQUARE_CLIENT_SECRET;
 const FS_PLACE_CATEGORIES = process.env.FOURSQUARE_PLACE_CATEGORIES;
 const FS_PLACE_RADIUS = process.env.FOURSQUARE_PLACE_RADIUS;
+const FS_CATEGORIES_FILE = process.env.FOURSQUARE_CATEGORIES_FILE;
 
 // Foursquare Endpoints: https://developer.foursquare.com/docs/places-api/endpoints/
 const FS_PLACES_ENDPOINT = 
@@ -18,7 +19,7 @@ let CATEGORIES = [];
 function loadCategories() {
   try {
     CATEGORIES = JSON.parse(
-      fs.readFileSync('../db/categories.json')
+      fs.readFileSync(FS_CATEGORIES_FILE)
     ).categories;
   } catch (error) {
     console.log(error);
