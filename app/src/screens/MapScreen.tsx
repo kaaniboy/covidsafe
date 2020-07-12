@@ -87,7 +87,7 @@ export default class MapScreen extends React.Component<Props, State> {
   renderMarkers(places: Place[]) {
     
     return places.map(p => (
-      <Marker
+      <Marker style={styles.marker}
       
         key={p.id}
         coordinate={{
@@ -98,15 +98,18 @@ export default class MapScreen extends React.Component<Props, State> {
         title={p.name}
         image={require('../../assets/markerHigh.png')}
         centerOffset={{ x: 0, y: -30 }}
+        anchor={{ x: 0.5, y: 0.8 }}
         onPress={() => this.showPlacePanel(p)}
       >
         <View style={styles.icon}>
-          <MaterialCommunityIcons name='food' size={48} color = 'white'/>
+          <MaterialCommunityIcons name='food' size={20} color = 'white'/>
         </View>
         <Callout tooltip={true} />
       </Marker>
     ));
   }
+
+  
 
   render() {
     const { navigation } = this.props;
@@ -165,6 +168,11 @@ const styles = StyleSheet.create({
     elevation: 5
   },
   icon: {
+    flex: 1,
+    width: '120%',
+    alignItems: 'center'
+  },
+  marker: {
     flex: 1,
     alignItems: 'center'
   }
