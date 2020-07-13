@@ -5,11 +5,10 @@ import RadioQuestion from './RadioQuestion';
 import RatingQuestion from './RatingQuestion';
 import { Review } from '../../services/ReviewService';
 
-const DINING_OPTIONS = [
-  { label: 'Dine-In', value: 'dine_in' },
-  { label: 'Pick-Up', value: 'pick_up' },
-  { label: 'Drive-Thru', value: 'drive_thru' },
-  { label: 'None of the above', value: undefined }
+const DIVIDER_OPTIONS = [
+  { label: 'Yes', value:  1 },
+  { label: 'No', value: 0 },
+  { label: 'Not sure', value: undefined },
 ];
 
 type Props = {
@@ -17,14 +16,14 @@ type Props = {
   onFieldChange: (field: string, value: any) => void
 };
 
-export default function FoodReviewForm({ review, onFieldChange }: Props) {
+export default function RetailReviewForm({ review, onFieldChange }: Props) {
   return (
     <View style={styles.container}>
       <RadioQuestion
-        question='What dining style did you use?'
-        options={DINING_OPTIONS}
-        value={review.diningType}
-        onChange={value => onFieldChange('diningType', value)}
+        question='Does this location have dividers (eg, plexiglass) installed?'
+        options={DIVIDER_OPTIONS}
+        value={review.dividers}
+        onChange={value => onFieldChange('dividers', value)}
       />
 
       <RatingQuestion

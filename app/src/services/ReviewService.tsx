@@ -24,6 +24,7 @@ const CREATE_REVIEW_MUTATION = gql`
     $employeeMasks: Int
     $customerMasks: Int
     $distancing: Int
+    $dividers: Int
     $diningType: String
   ) {
     createReview(input: {
@@ -34,6 +35,7 @@ const CREATE_REVIEW_MUTATION = gql`
         employeeMasks: $employeeMasks
         customerMasks: $customerMasks
         distancing: $distancing
+        dividers: $dividers
         diningType: $diningType
       }
     }) { clientMutationId }
@@ -63,6 +65,7 @@ export type Review = {
   employeeMasks?: number,
   customerMasks?: number,
   distancing?: number,
+  dividers?: number,
   diningType?: string,
 
   createdAt?: Date,

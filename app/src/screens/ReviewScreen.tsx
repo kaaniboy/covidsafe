@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, ScrollView } from 'react-native';
-import { Layout, Button } from '@ui-kitten/components';
+import { Layout, Button, Text } from '@ui-kitten/components';
 import { RouteProp, NavigationProp } from '@react-navigation/core';
 import ConfirmationModal from '../components/review/ConfirmationModal';
 import ReviewService, { Review } from '../services/ReviewService';
@@ -8,6 +8,7 @@ import { Place } from '../services/PlaceService';
 import Constants from 'expo-constants';
 import { StackParamList } from '../../App';
 import FoodReviewForm from '../components/review/FoodReviewForm';
+import RetailReviewForm from '../components/review/RetailReviewForm';
 
 type Props = {
   navigation: NavigationProp<StackParamList>,
@@ -26,8 +27,6 @@ export default class ReviewScreen extends React.Component<Props, State> {
 
     const place = this.props.route.params.place as Place;
     const userId = Constants.deviceId || 'DEVICE_ID_MISSING';
-
-    console.log(place);
 
     this.state = {
       place,
@@ -58,7 +57,7 @@ export default class ReviewScreen extends React.Component<Props, State> {
   }
 
   render() {
-    const { review, isConfirmationVisible } = this.state;
+    const { place, review, isConfirmationVisible } = this.state;
 
     return (
       <Layout style={styles.layout}>
@@ -67,10 +66,21 @@ export default class ReviewScreen extends React.Component<Props, State> {
             isVisible={isConfirmationVisible}
             onConfirm={this.confirm}
           />
-          <FoodReviewForm
-            review={review}
-            onFieldChange={this.updateReview}
-          />
+
+          {place.category === 'Food' ?
+            (
+              <FoodReviewForm
+                review={review}
+                onFieldChange={this.updateReview}
+              />
+            ) : (
+              <RetailReviewForm
+                review={review}
+                onFieldChange={this.updateReview}
+              />
+            )
+          }
+
           <Button onPress={this.submitReview}>
             Submit Review
           </Button>

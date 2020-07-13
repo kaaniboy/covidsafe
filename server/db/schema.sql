@@ -9,6 +9,7 @@ create table db_public.review(
   employee_masks smallint,
   customer_masks smallint,
   distancing smallint,
+  dividers smallint,
   dining_type text,
 
   created_at timestamp not null default current_timestamp,

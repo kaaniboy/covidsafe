@@ -4,9 +4,9 @@ import { Text, Radio, RadioGroup } from '@ui-kitten/components';
 
 type Props = {
   question: string,
-  options: { label: string, value?: string }[],
-  value?: string,
-  onChange: (value?: string) => void
+  options: { label: string, value?: string | number }[],
+  value?: string | number,
+  onChange: (value?: string | number) => void
 };
 
 export default function RatingQuestion({ question, options, value, onChange }: Props) {
@@ -36,6 +36,7 @@ const styles = StyleSheet.create({
     marginTop: 20
   },
   header: {
-    marginBottom: 10
+    marginBottom: 10,
+    textAlign: 'center'
   }
 });
