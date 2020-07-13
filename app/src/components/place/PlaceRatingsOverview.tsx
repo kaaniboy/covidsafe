@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { Text, Button } from '@ui-kitten/components';
 import { Place } from '../../services/PlaceService';
 import { PlaceRating, RatingCategory } from '../../services/RatingService';
-import { PlaceCategory } from '../../services/PlaceService';
+import PlaceCategoryRatingPanel from './PlaceCategoryRatingPanel';
 
 type Props = {
   place: Place,
@@ -19,21 +19,20 @@ const FOOD_CATEGORIES = [
 const RETAIL_CATEGORIES = [
   { name: 'employeeMasks', label: 'Employee Masks' },
   { name: 'customerMasks', label: 'Customer Masks' },
+  { name: 'distancing', label: 'Social Distancing' },
   { name: 'dividers', label: 'Plexiglass Dividers' }
 ] as { name: RatingCategory, label: string }[];
 
-const CATEGORY_MISSING_TEXT = 'There are no reviews for this category yet.';
-
 export default function PlaceRatingsOverview({ place, rating }: Props) {
   const [selectedCategory, setSelectedCategory] = useState<RatingCategory>('employeeMasks');
-  console.log(rating);
+
   const categories = place.category === 'Food'
     ? FOOD_CATEGORIES
     : RETAIL_CATEGORIES;
 
   const buttons = categories.map(category => (
     <Button
-      size='small'
+      size='tiny'
       style={styles.categoryButton}
       appearance={category.name === selectedCategory ? 'filled' : 'outline'}
       key={category.name}
@@ -43,27 +42,16 @@ export default function PlaceRatingsOverview({ place, rating }: Props) {
     </Button>
   ));
 
-  const selectedCategoryMissing =
-    !rating.categories[selectedCategory];
-
-  const categoryRating = selectedCategoryMissing
-    ? '?' : rating.categories[selectedCategory]!.toFixed(1);
-
   return (
     <View style={styles.container}>
-      <View style={[styles.childContainer, styles.left]}>
+      <View style={styles.childContainer}>
         {buttons}
       </View>
-      <View style={[styles.childContainer, styles.right]}>
-        <Text category='h1'>
-          {categoryRating + ' / 5.0'}
-        </Text>
-        <Text style={styles.description}>
-          {selectedCategoryMissing
-            ? CATEGORY_MISSING_TEXT
-            : 'This is a test description beneath the score.'
-          }
-        </Text>
+      <View style={styles.childContainer}>
+        <PlaceCategoryRatingPanel
+          rating={rating}
+          category={selectedCategory}
+        />
       </View>
     </View>
   );
@@ -80,16 +68,5 @@ const styles = StyleSheet.create({
   left: {},
   categoryButton: {
     marginVertical: 5
-  },
-  right: {
-    marginVertical: 10,
-    borderColor: '#E8E8E8',
-    borderWidth: 2,
-    borderRadius: 10,
-    alignItems: 'center'
-  },
-  description: {
-    marginTop: 5,
-    textAlign: 'center'
   }
 });

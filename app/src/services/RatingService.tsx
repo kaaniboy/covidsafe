@@ -3,6 +3,7 @@ import { Review } from './ReviewService';
 export type RatingCategory =
   'employeeMasks' | 'customerMasks' | 'distancing' | 'dividers';
 
+
 export type PlaceRating = {
   categories: {
     [key in RatingCategory]?: number
@@ -13,6 +14,13 @@ export type PlaceRating = {
     driveThru: number
   }
 };
+
+const RATING_CATEGORY_MESSAGES = {
+  'employeeMasks': 'Employees %s wear masks.',
+  'customerMasks': 'Customers %s wear masks.',
+  'distancing': 'Social distancing is %s enforced.',
+  'dividers': ''
+} as { [key in RatingCategory]: string };
 
 function calculateRating(
   category: RatingCategory,
@@ -40,6 +48,27 @@ function ratePlace(reviews: Review[]): PlaceRating {
   };
 }
 
+function getCategoryMessage(
+  rating: PlaceRating,
+  category: RatingCategory
+): string {
+  if (!rating.categories[category]) {
+    return 'No reviews yet.';
+  }
+
+  const score = rating.categories[category]!;
+
+  let modifier = 'almost always';
+  if (score <= 2.5) {
+    modifier = 'rarely';
+  } else if (score <= 4) {
+    modifier = 'often';
+  }
+
+  return RATING_CATEGORY_MESSAGES[category].replace('%s', modifier);
+}
+
 export default {
-  ratePlace
+  ratePlace,
+  getCategoryMessage
 };
