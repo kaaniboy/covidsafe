@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, ScrollView } from 'react-native';
-import { Layout, Button, Text } from '@ui-kitten/components';
+import { Layout, Button, Text, Divider } from '@ui-kitten/components';
 import { RouteProp, NavigationProp } from '@react-navigation/core';
 import ConfirmationModal from '../components/review/ConfirmationModal';
 import ReviewService, { Review } from '../services/ReviewService';
@@ -61,11 +61,17 @@ export default class ReviewScreen extends React.Component<Props, State> {
 
     return (
       <Layout style={styles.layout}>
-        <ScrollView>
+        <ScrollView showsVerticalScrollIndicator={false}>
           <ConfirmationModal
             isVisible={isConfirmationVisible}
             onConfirm={this.confirm}
           />
+
+          <Text style={styles.description}>
+            Answer the following questions about <Text category="s1">{place.name}</Text>.
+            {' '}Feel free to leave any question blank.
+          </Text>
+          <Divider />
 
           {place.category === 'Food' ?
             (
@@ -81,7 +87,7 @@ export default class ReviewScreen extends React.Component<Props, State> {
             )
           }
 
-          <Button onPress={this.submitReview}>
+          <Button style={styles.submitButton} onPress={this.submitReview}>
             Submit Review
           </Button>
         </ScrollView>
@@ -94,5 +100,12 @@ const styles = StyleSheet.create({
   layout: {
     flex: 1,
     padding: 10
+  },
+  description: {
+    textAlign: 'center',
+    marginVertical: 10
+  },
+  submitButton: {
+    marginBottom: 80
   }
 });
