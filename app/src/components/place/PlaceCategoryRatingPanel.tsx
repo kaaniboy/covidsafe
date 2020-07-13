@@ -9,20 +9,20 @@ type Props = {
 };
 
 export default function PlaceCategoryRatingPanel({ rating, category }: Props) {
-  const categoryRating = !rating.categories[category]
-    ? '?' : rating.categories[category]!.toFixed(1);
+  const formattedRating = RatingService.formatCategoryRating(rating, category);
 
   return (
     <View style={styles.container}>
       <View>
-        <Text style={styles.center} category='h2'>
-          {categoryRating + ' / 5'}
-        </Text>
+        {formattedRating && (
+          <Text style={styles.center} category='h2'>
+            {formattedRating}
+          </Text>
+        )}
         <Text style={[styles.description, styles.center]}>
           {RatingService.getCategoryMessage(rating, category)}
         </Text>
       </View>
-
     </View>
   );
 }

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Text, Button } from '@ui-kitten/components';
+import { Button } from '@ui-kitten/components';
 import { Place } from '../../services/PlaceService';
 import { PlaceRating, RatingCategory } from '../../services/RatingService';
 import PlaceCategoryRatingPanel from './PlaceCategoryRatingPanel';

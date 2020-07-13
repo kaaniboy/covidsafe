@@ -3,7 +3,6 @@ import { Review } from './ReviewService';
 export type RatingCategory =
   'employeeMasks' | 'customerMasks' | 'distancing' | 'dividers';
 
-
 export type PlaceRating = {
   categories: {
     [key in RatingCategory]?: number
@@ -15,11 +14,12 @@ export type PlaceRating = {
   }
 };
 
+const NO_RATINGS_MESSAGE = 'This category does not have any ratings yet.';
 const RATING_CATEGORY_MESSAGES = {
   'employeeMasks': 'Employees %s wear masks.',
   'customerMasks': 'Customers %s wear masks.',
   'distancing': 'Social distancing is %s enforced.',
-  'dividers': ''
+  'dividers': 'of reviewers say dividers are present.'
 } as { [key in RatingCategory]: string };
 
 function calculateRating(
@@ -53,7 +53,7 @@ function getCategoryMessage(
   category: RatingCategory
 ): string {
   if (!rating.categories[category]) {
-    return 'No reviews yet.';
+    return NO_RATINGS_MESSAGE;
   }
 
   const score = rating.categories[category]!;
@@ -68,7 +68,21 @@ function getCategoryMessage(
   return RATING_CATEGORY_MESSAGES[category].replace('%s', modifier);
 }
 
+function formatCategoryRating(
+  rating: PlaceRating,
+  category: RatingCategory
+): string | null {
+  if (!rating.categories[category]) {
+    return null;
+  }
+
+  return category === 'dividers'
+    ? `${(rating.categories[category]! * 100).toFixed(0)} %`
+    : `${rating.categories[category]!.toFixed(1)} / 5`;
+}
+
 export default {
   ratePlace,
-  getCategoryMessage
+  getCategoryMessage,
+  formatCategoryRating
 };
