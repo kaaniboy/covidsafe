@@ -26,7 +26,7 @@ function calculateRating(
 ): number | undefined {
   const ratings = reviews
     .map(r => (r as any)[category])
-    .filter(v => v) as number[];
+    .filter(v => v !== null) as number[];
 
   if (ratings.length === 0) {
     return undefined;
@@ -104,7 +104,7 @@ function formatCategoryRating(
   }
 
   return category === 'dividers'
-    ? `${(rating.categories[category]! * 100).toFixed(0)} %`
+    ? `${(rating.categories[category]! * 100).toFixed(0)}%`
     : `${rating.categories[category]!.toFixed(1)} / 5`;
 }
 

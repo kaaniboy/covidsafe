@@ -44,6 +44,7 @@ export default class PlacePanel extends React.Component<Props, State> {
     try {
       const reviews = await ReviewService.getPlaceReviews(place.id);
       const rating = RatingService.ratePlace(reviews);
+      console.log(rating);
       this.setState({ reviews, rating });
     } catch (error) {
       console.log(error);
