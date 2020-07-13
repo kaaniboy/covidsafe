@@ -9,7 +9,7 @@ const GET_REVIEWS_QUERY = gql`
           id content userId
           placeId updatedAt createdAt
           employeeMasks customerMasks
-          distancing diningType
+          distancing dividers diningType
         }
       }
     }

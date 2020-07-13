@@ -1,6 +1,7 @@
 import { Review } from './ReviewService';
 
-export type RatingCategory = 'employeeMasks' | 'customerMasks' | 'distancing';
+export type RatingCategory =
+  'employeeMasks' | 'customerMasks' | 'distancing' | 'dividers';
 
 export type PlaceRating = {
   categories: {
@@ -33,7 +34,8 @@ function ratePlace(reviews: Review[]): PlaceRating {
     categories: {
       'employeeMasks': calculateRating('employeeMasks', reviews),
       'customerMasks': calculateRating('customerMasks', reviews),
-      'distancing': calculateRating('distancing', reviews)
+      'distancing': calculateRating('distancing', reviews),
+      'dividers': calculateRating('dividers', reviews)
     }
   };
 }

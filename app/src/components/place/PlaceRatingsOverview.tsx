@@ -3,24 +3,35 @@ import { StyleSheet, View } from 'react-native';
 import { Text, Button } from '@ui-kitten/components';
 import { Place } from '../../services/PlaceService';
 import { PlaceRating, RatingCategory } from '../../services/RatingService';
+import { PlaceCategory } from '../../services/PlaceService';
 
 type Props = {
   place: Place,
   rating: PlaceRating
 };
 
-const RATING_CATEGORIES = [
+const FOOD_CATEGORIES = [
   { name: 'employeeMasks', label: 'Employee Masks' },
   { name: 'customerMasks', label: 'Customer Masks' },
   { name: 'distancing', label: 'Social Distancing' }
+] as { name: RatingCategory, label: string }[];
+
+const RETAIL_CATEGORIES = [
+  { name: 'employeeMasks', label: 'Employee Masks' },
+  { name: 'customerMasks', label: 'Customer Masks' },
+  { name: 'dividers', label: 'Plexiglass Dividers' }
 ] as { name: RatingCategory, label: string }[];
 
 const CATEGORY_MISSING_TEXT = 'There are no reviews for this category yet.';
 
 export default function PlaceRatingsOverview({ place, rating }: Props) {
   const [selectedCategory, setSelectedCategory] = useState<RatingCategory>('employeeMasks');
+  console.log(rating);
+  const categories = place.category === 'Food'
+    ? FOOD_CATEGORIES
+    : RETAIL_CATEGORIES;
 
-  const buttons = RATING_CATEGORIES.map(category => (
+  const buttons = categories.map(category => (
     <Button
       size='small'
       style={styles.categoryButton}
