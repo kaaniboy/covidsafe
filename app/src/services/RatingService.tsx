@@ -1,16 +1,14 @@
-import { Review } from './ReviewService';
+import { Review, DiningType } from './ReviewService';
 
 export type RatingCategory =
-  'employeeMasks' | 'customerMasks' | 'distancing' | 'dividers';
+  'employeeMasks' | 'customerMasks' | 'distancing' | 'dividers' | 'diningTypes';
 
 export type PlaceRating = {
   categories: {
     [key in RatingCategory]?: number
   },
   diningTypes?: {
-    dineIn: number,
-    pickUp: number,
-    driveThru: number
+    [key in DiningType]: number
   }
 };
 
@@ -37,21 +35,50 @@ function calculateRating(
   return ratings.reduce((a, b) => a + b) / ratings.length;
 }
 
+type DiningTypeFrequencies = { [key in DiningType]: number };
+
+function extractDiningTypeFrequencies(
+  reviews: Review[]
+): DiningTypeFrequencies | undefined {
+  let total = 0;
+  const frequencies = reviews.reduce(
+    (freqs, r) => {
+      if (!r.diningType) {
+        return freqs;
+      }
+      total++;
+      return {
+        ...freqs,
+        [r.diningType]: (freqs[r.diningType] || 0) + 1
+      };
+    }, {} as DiningTypeFrequencies);
+
+  if (total === 0) {
+    return undefined;
+  }
+  return frequencies;
+}
+
 function ratePlace(reviews: Review[]): PlaceRating {
   return {
     categories: {
       'employeeMasks': calculateRating('employeeMasks', reviews),
       'customerMasks': calculateRating('customerMasks', reviews),
       'distancing': calculateRating('distancing', reviews),
-      'dividers': calculateRating('dividers', reviews)
-    }
+      'dividers': calculateRating('dividers', reviews),
+    },
+    diningTypes: extractDiningTypeFrequencies(reviews)
   };
 }
 
 function getCategoryMessage(
   rating: PlaceRating,
   category: RatingCategory
-): string {
+): string | undefined {
+  if (category === 'diningTypes') {
+    return rating.diningTypes ? undefined : NO_RATINGS_MESSAGE;
+  }
+
   if (!rating.categories[category]) {
     return NO_RATINGS_MESSAGE;
   }

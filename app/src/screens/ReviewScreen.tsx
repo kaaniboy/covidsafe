@@ -69,7 +69,7 @@ export default class ReviewScreen extends React.Component<Props, State> {
 
           <Text style={styles.description}>
             Answer the following questions about <Text category="s1">{place.name}</Text>.
-            {' '}Feel free to leave any question blank.
+            {' '}Feel free to leave questions unanswered.
           </Text>
           <Divider />
 

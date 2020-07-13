@@ -56,6 +56,8 @@ const client = new ApolloClient({
   }
 });
 
+export type DiningType = 'dine_in' | 'pick_up' | 'drive_thru';
+
 export type Review = {
   id: number,
   placeId: string,
@@ -66,7 +68,7 @@ export type Review = {
   customerMasks?: number,
   distancing?: number,
   dividers?: number,
-  diningType?: string,
+  diningType?: DiningType,
 
   createdAt?: Date,
   updatedAt?: Date

@@ -13,7 +13,8 @@ type Props = {
 const FOOD_CATEGORIES = [
   { name: 'employeeMasks', label: 'Employee Masks' },
   { name: 'customerMasks', label: 'Customer Masks' },
-  { name: 'distancing', label: 'Social Distancing' }
+  { name: 'distancing', label: 'Social Distancing' },
+  { name: 'diningTypes', label: 'Dining Styles'}
 ] as { name: RatingCategory, label: string }[];
 
 const RETAIL_CATEGORIES = [
