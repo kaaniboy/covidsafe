@@ -1,14 +1,14 @@
 import React from 'react';
 import * as Location from 'expo-location';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, TouchableWithoutFeedback } from 'react-native';
 import { Layout, Input, Spinner } from '@ui-kitten/components';
-import MapView from 'react-native-maps';
 import PlaceService, { Place } from '../services/PlaceService';
 import PlacePanel from '../components/place/PlacePanel';
 import SwipeablePanel from 'rn-swipeable-panel';
 import { NavigationProp } from '@react-navigation/core';
 import { StackParamList } from '../../App';
 import PlaceMap from '../components/place/PlaceMap';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 type Props = {
   navigation: NavigationProp<StackParamList>
@@ -74,9 +74,28 @@ export default class MapScreen extends React.Component<Props, State> {
     });
   }
 
+  renderSearchAccessory = () => {
+    const { isLoading } = this.state;
+    if (isLoading) {
+      return <Spinner />;
+    }
+
+    return (
+      <TouchableWithoutFeedback
+        onPress={() => this.searchRef!.clear()}
+      >
+        <MaterialCommunityIcons
+          name='close'
+          size={24}
+          color='black'
+        />
+      </TouchableWithoutFeedback>
+    );
+  }
+
   render() {
     const { navigation } = this.props;
-    const { places, selectedPlace, isLoading, isPlacePanelActive } = this.state;
+    const { places, selectedPlace, isPlacePanelActive } = this.state;
 
     return (
       <Layout style={styles.fill}>
@@ -103,7 +122,7 @@ export default class MapScreen extends React.Component<Props, State> {
         <Input style={[styles.search, styles.shadow]}
           placeholder='Search nearby places...'
           returnKeyType='search'
-          accessoryRight={() => isLoading ? <Spinner /> : <></>}
+          accessoryRight={this.renderSearchAccessory}
           onSubmitEditing={event => this.search(event.nativeEvent.text)}
           ref={ref => this.searchRef = ref}
         />
