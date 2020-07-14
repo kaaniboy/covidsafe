@@ -12,7 +12,7 @@ const FS_CATEGORIES_FILE = process.env.FOURSQUARE_CATEGORIES_FILE;
 const FS_PLACES_ENDPOINT = 
   'https://api.foursquare.com/v2/venues/search?'
   + `client_id=${FS_CLIENT_ID}&client_secret=${FS_CLIENT_SECRET}`
-  + `&categoryId=${FS_PLACE_CATEGORIES}&radius=${FS_PLACE_RADIUS}&v=20200701`;
+  + `&categoryId=${FS_PLACE_CATEGORIES}&v=20200701`;
 
 let CATEGORIES = [];
 
@@ -43,9 +43,10 @@ function findCategoryHelper(placeCategoryId, category) {
 async function handlePlacesRequest(req, res) {
   const { ll, query } = req.query;
 
+  // Exclude radius if a query is provided
   const params = query
-    ? `&query=${query}&ll=${ll}`
-    : `&ll=${ll}`;
+    ? `&ll=${ll}&query=${query}`
+    : `&ll=${ll}&radius=${FS_PLACE_RADIUS}`;
 
   try {
     const json = await axios.get(FS_PLACES_ENDPOINT + params);
