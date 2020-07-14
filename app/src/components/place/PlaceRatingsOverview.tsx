@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button } from '@ui-kitten/components';
 import { Place } from '../../services/PlaceService';
-import { PlaceRating, RatingCategory } from '../../services/RatingService';
+import RatingService, { PlaceRating, RatingCategory, RISK_COLORS } from '../../services/RatingService';
 import PlaceCategoryRatingPanel from './PlaceCategoryRatingPanel';
 
 type Props = {
@@ -35,6 +35,7 @@ export default function PlaceRatingsOverview({ place, rating }: Props) {
     <Button
       size='tiny'
       style={styles.categoryButton}
+      status={RISK_COLORS[RatingService.getCategoryRisk(rating, category.name)]}
       appearance={category.name === selectedCategory ? 'filled' : 'outline'}
       key={category.name}
       onPress={() => setSelectedCategory(category.name)}

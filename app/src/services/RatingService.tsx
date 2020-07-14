@@ -1,6 +1,6 @@
 import { Review, DiningType } from './ReviewService';
 
-export type RiskLevel =
+export type Risk =
   'unknown' | 'low' | 'medium' | 'high';
 
 export type RatingCategory =
@@ -15,6 +15,13 @@ export type PlaceRating = {
   }
 };
 
+export const RISK_COLORS: { [key in Risk]: string } = {
+  'unknown': 'primary',
+  'low': 'success',
+  'medium': 'warning',
+  'high': 'danger'
+}
+
 const NO_RATINGS_MESSAGE = 'This category does not have any ratings yet.';
 const RATING_CATEGORY_MESSAGES: { [key in RatingCategory]: string } = {
   'employeeMasks': 'Employees %s wear masks.',
@@ -24,7 +31,7 @@ const RATING_CATEGORY_MESSAGES: { [key in RatingCategory]: string } = {
   'diningTypes': ''
 };
 
-function calculateRating(
+function calculateCategoryRating(
   category: RatingCategory,
   reviews: Review[]
 ): number | undefined {
@@ -66,10 +73,10 @@ function extractDiningTypeFrequencies(
 function ratePlace(reviews: Review[]): PlaceRating {
   return {
     categories: {
-      'employeeMasks': calculateRating('employeeMasks', reviews),
-      'customerMasks': calculateRating('customerMasks', reviews),
-      'distancing': calculateRating('distancing', reviews),
-      'dividers': calculateRating('dividers', reviews),
+      'employeeMasks': calculateCategoryRating('employeeMasks', reviews),
+      'customerMasks': calculateCategoryRating('customerMasks', reviews),
+      'distancing': calculateCategoryRating('distancing', reviews),
+      'dividers': calculateCategoryRating('dividers', reviews),
     },
     diningTypes: extractDiningTypeFrequencies(reviews)
   };
@@ -99,6 +106,29 @@ function getCategoryMessage(
   return RATING_CATEGORY_MESSAGES[category].replace('%s', modifier);
 }
 
+function getCategoryRisk(
+  rating: PlaceRating,
+  category: RatingCategory
+): Risk {
+  if (category === 'diningTypes' || !rating.categories[category]) {
+    return 'unknown';
+  }
+
+  const score = rating.categories[category]!;
+
+  const adjustThreshold = (value:  number) =>
+    category === 'dividers' ? 0.25 * (value - 1) : value;
+
+  let risk: Risk = 'low';
+  if (score <= adjustThreshold(2.5)) {
+    risk = 'high';
+  } else if (score <= adjustThreshold(4)) {
+    risk = 'medium';
+  }
+
+  return risk;
+}
+
 function formatCategoryRating(
   rating: PlaceRating,
   category: RatingCategory
@@ -115,5 +145,6 @@ function formatCategoryRating(
 export default {
   ratePlace,
   getCategoryMessage,
+  getCategoryRisk,
   formatCategoryRating
 };
