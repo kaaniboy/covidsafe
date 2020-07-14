@@ -40,6 +40,10 @@ export default class PlaceMap extends React.Component<Props, {}> {
   }
 
   animateToPlaces = (places: Place[]) => {
+    if (places.length === 0) {
+      return;
+    }
+
     const placeLats = places.map(p => p.location.lat);
     const placeLngs = places.map(p => p.location.lng);
 
