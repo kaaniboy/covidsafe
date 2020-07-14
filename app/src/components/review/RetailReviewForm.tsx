@@ -57,7 +57,7 @@ export default function RetailReviewForm({ review, onFieldChange }: Props) {
         <Input
           style={styles.formControl}
           textStyle={styles.reviewContent}
-          placeholder='Include any other details related to your visit here.'
+          placeholder='Include any other details related to your visit.'
           value={review.content}
           onChange={event => onFieldChange('content', event.nativeEvent.text)}
           enablesReturnKeyAutomatically={false}

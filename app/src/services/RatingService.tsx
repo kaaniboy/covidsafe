@@ -1,5 +1,8 @@
 import { Review, DiningType } from './ReviewService';
 
+export type RiskLevel =
+  'unknown' | 'low' | 'medium' | 'high';
+
 export type RatingCategory =
   'employeeMasks' | 'customerMasks' | 'distancing' | 'dividers' | 'diningTypes';
 
@@ -13,12 +16,13 @@ export type PlaceRating = {
 };
 
 const NO_RATINGS_MESSAGE = 'This category does not have any ratings yet.';
-const RATING_CATEGORY_MESSAGES = {
+const RATING_CATEGORY_MESSAGES: { [key in RatingCategory]: string } = {
   'employeeMasks': 'Employees %s wear masks.',
   'customerMasks': 'Customers %s wear masks.',
   'distancing': 'Social distancing is %s enforced.',
-  'dividers': 'of reviewers say dividers are present.'
-} as { [key in RatingCategory]: string };
+  'dividers': 'of reviewers say dividers are present.',
+  'diningTypes': ''
+};
 
 function calculateRating(
   category: RatingCategory,

@@ -88,13 +88,14 @@ export default class PlacePanel extends React.Component<Props, State> {
     return (
       <Layout>
         <PlaceHeader place={place} />
-        <RiskIndicator risk='low' />
+        <RiskIndicator risk='unknown' />
 
         <View style={styles.container}>
           <PlaceRatingsOverview place={place} rating={rating} />
           <PlaceReviewsList reviews={reviews} />
           <Button
             size='small'
+            appearance='outline'
             style={styles.reviewButton}
             onPress={this.openReviewScreen}
           >

@@ -1,16 +1,19 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
+import { RiskLevel } from '../../services/RatingService';
+
 import { Text, useTheme } from '@ui-kitten/components';
 
 type Props = {
-  risk: 'low' | 'medium' | 'high'
+  risk: RiskLevel
 };
 
-const COLORS = {
+const COLORS: { [key in RiskLevel]: string } = {
+  'unknown': 'primary',
   'low': 'success',
   'medium': 'warning',
   'high': 'danger'
-};
+}
 
 export default function RiskIndicator({ risk }: Props) {
   const theme = useTheme();
