@@ -68,11 +68,11 @@ export default function PlaceCategoryRatingPanel({ rating, category }: Props) {
 
   return (
     <View style={styles.container}>
-    {category === 'diningTypes'
-      ? renderDiningTypes(rating)
-      : formattedRatingText
-    }
-    {categoryMessageText}
+      {category === 'diningTypes'
+        ? renderDiningTypes(rating)
+        : formattedRatingText
+      }
+      {categoryMessageText}
     </View >
   );
 }

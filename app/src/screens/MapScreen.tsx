@@ -1,7 +1,7 @@
 import React from 'react';
 import * as Location from 'expo-location';
 import { Platform, StyleSheet } from 'react-native';
-import { Layout, Input } from '@ui-kitten/components';
+import { Layout, Input, Spinner } from '@ui-kitten/components';
 import MapView, { UrlTile, Marker, Callout } from 'react-native-maps';
 import PlaceService, { Place } from '../services/PlaceService';
 import PlacePanel from '../components/place/PlacePanel';
@@ -33,30 +33,32 @@ type Props = {
 type State = {
   places: Place[],
   selectedPlace: Place | null,
+  isLoading: boolean,
   isPlacePanelActive: boolean
 }
 
 export default class MapScreen extends React.Component<Props, State> {
   mapRef: MapView | null = null;
   searchRef: Input | null = null;
+  location: Location.LocationData | null = null;
 
   state = {
     places: [],
     selectedPlace: null,
+    isLoading: false,
     isPlacePanelActive: false
   };
 
-  retrievePlaces = async (location: Location.LocationData) => {
+  retrievePlaces = async (lat: number, lng: number, query?: string) => {
+    this.setState({ isLoading: true });
     try {
-      const places = await PlaceService.retrievePlaces(
-        location.coords.latitude,
-        location.coords.longitude
-      );
+      const places = await PlaceService.retrievePlaces(lat, lng, query);
       this.setState({ places });
     } catch (error) {
       console.log(error);
       this.setState({ places: [] });
     }
+    this.setState({ isLoading: false });
   }
 
   retrieveCurrentLocation = async () => {
@@ -67,6 +69,14 @@ export default class MapScreen extends React.Component<Props, State> {
     return await Location.getCurrentPositionAsync();
   }
 
+  search = async (query: string) => {
+    const mapBounds = await this.mapRef!.getMapBoundaries();
+    const centerLat = (mapBounds.northEast.latitude + mapBounds.southWest.latitude) / 2;
+    const centerLng = (mapBounds.northEast.longitude + mapBounds.southWest.longitude) / 2;
+
+    await this.retrievePlaces(centerLat, centerLng, query);
+  }
+
   showPlacePanel = (selectedPlace: Place) => {
     this.setState({
       selectedPlace,
@@ -75,12 +85,14 @@ export default class MapScreen extends React.Component<Props, State> {
   }
 
   async componentDidMount() {
-    const location = await this.retrieveCurrentLocation();
-    if (location) {
-      await this.retrievePlaces(location);
+    this.location = await this.retrieveCurrentLocation();
+    if (this.location) {
+      const { coords } = this.location;
+      await this.retrievePlaces(coords.latitude, coords.longitude);
+
       this.mapRef!.animateToRegion({
-        latitude: location.coords.latitude,
-        longitude: location.coords.longitude,
+        latitude: coords.latitude,
+        longitude: coords.longitude,
         latitudeDelta: MAP_DELTA,
         longitudeDelta: MAP_DELTA
       });
@@ -115,7 +127,7 @@ export default class MapScreen extends React.Component<Props, State> {
 
   render() {
     const { navigation } = this.props;
-    const { places, selectedPlace, isPlacePanelActive } = this.state;
+    const { places, selectedPlace, isLoading, isPlacePanelActive } = this.state;
 
     return (
       <Layout style={styles.fill}>
@@ -146,7 +158,10 @@ export default class MapScreen extends React.Component<Props, State> {
           )}
         </SwipeablePanel>
         <Input style={[styles.search, styles.shadow]}
-          placeholder="Search places..."
+          placeholder='Search nearby places...'
+          returnKeyType='search'
+          accessoryRight={() => isLoading ? <Spinner/> : <></>}
+          onSubmitEditing={event => this.search(event.nativeEvent.text)}
           ref={ref => this.searchRef = ref }
         />
       </Layout>

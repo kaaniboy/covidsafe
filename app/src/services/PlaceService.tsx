@@ -20,8 +20,15 @@ const CATEGORY_ICONS = {
   'Shop & Service': 'store'
 } as { [key in PlaceCategory]: string };
 
-async function retrievePlaces(lat: number, lng: number): Promise<Place[]> {
-  const ll = `?ll=${lat},${lng}`;
+async function retrievePlaces(
+  lat: number,
+  lng: number,
+  query?: string
+): Promise<Place[]> {
+  const ll = query
+    ? `?query=${query}&ll=${lat},${lng}`
+    : `?ll=${lat},${lng}`;
+
   const res = await fetch(PLACES_ENDPOINT + ll);
 
   const places: Place[] = await res.json();
