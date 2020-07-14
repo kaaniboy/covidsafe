@@ -8,7 +8,7 @@ import PlacePanel from '../components/place/PlacePanel';
 import SwipeablePanel from 'rn-swipeable-panel';
 import { NavigationProp } from '@react-navigation/core';
 import { StackParamList } from '../../App';
-import PlaceMap, { MAP_DELTA } from '../components/place/PlaceMap';
+import PlaceMap from '../components/place/PlaceMap';
 
 type Props = {
   navigation: NavigationProp<StackParamList>
@@ -22,7 +22,7 @@ type State = {
 }
 
 export default class MapScreen extends React.Component<Props, State> {
-  mapRef: MapView | null = null;
+  mapRef: PlaceMap | null = null;
   searchRef: Input | null = null;
   location: Location.LocationData | null = null;
 
@@ -33,10 +33,19 @@ export default class MapScreen extends React.Component<Props, State> {
     isPlacePanelActive: false
   };
 
+  async componentDidMount() {
+    this.location = await this.retrieveCurrentLocation();
+    if (this.location) {
+      const { coords } = this.location;
+      await this.retrievePlaces(coords.latitude, coords.longitude);
+    }
+  }
+
   retrievePlaces = async (lat: number, lng: number, query?: string) => {
     this.setState({ isLoading: true });
     try {
       const places = await PlaceService.retrievePlaces(lat, lng, query);
+      this.mapRef!.animateToPlaces(places);
       this.setState({ places });
     } catch (error) {
       console.log(error);
@@ -54,11 +63,8 @@ export default class MapScreen extends React.Component<Props, State> {
   }
 
   search = async (query: string) => {
-    const mapBounds = await this.mapRef!.getMapBoundaries();
-    const centerLat = (mapBounds.northEast.latitude + mapBounds.southWest.latitude) / 2;
-    const centerLng = (mapBounds.northEast.longitude + mapBounds.southWest.longitude) / 2;
-
-    await this.retrievePlaces(centerLat, centerLng, query);
+    const mapCenter = await this.mapRef!.getMapCenter();
+    await this.retrievePlaces(mapCenter.lat, mapCenter.lng, query);
   }
 
   showPlacePanel = (selectedPlace: Place) => {
@@ -66,21 +72,6 @@ export default class MapScreen extends React.Component<Props, State> {
       selectedPlace,
       isPlacePanelActive: true
     });
-  }
-
-  async componentDidMount() {
-    this.location = await this.retrieveCurrentLocation();
-    if (this.location) {
-      const { coords } = this.location;
-      await this.retrievePlaces(coords.latitude, coords.longitude);
-
-      this.mapRef!.animateToRegion({
-        latitude: coords.latitude,
-        longitude: coords.longitude,
-        latitudeDelta: MAP_DELTA,
-        longitudeDelta: MAP_DELTA
-      });
-    }
   }
 
   render() {
@@ -93,7 +84,7 @@ export default class MapScreen extends React.Component<Props, State> {
           places={places}
           onMarkerPress={this.showPlacePanel}
           onMapPress={() => this.searchRef!.blur()}
-          mapRef={r => this.mapRef = r}
+          ref={ref => this.mapRef = ref}
         />
 
         <SwipeablePanel

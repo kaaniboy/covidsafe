@@ -13,7 +13,8 @@ const MARKER_LOW = require('../../../assets/markerLow.png');
 const MARKER_OFFSET = { x: 0, y: -30 };
 const ANCHOR = { x: 0.5, y: 0.8 }
 
-export const MAP_DELTA = 0.02;
+const MAP_DELTA = 0.05;
+
 const INITIAL_REGION = {
   latitude: 33.4231622,
   longitude: -111.9280878,
@@ -23,14 +24,41 @@ const INITIAL_REGION = {
 
 type Props = {
   places: Place[],
-  mapRef: (ref: MapView | null) => void,
   onMarkerPress: (place: Place) => void,
   onMapPress: () => void
 }
 
 export default class PlaceMap extends React.Component<Props, {}> {
+  mapRef: MapView | null = null;
+
+  getMapCenter = async () => {
+    const mapBounds = await this.mapRef!.getMapBoundaries();
+    const lat = (mapBounds.northEast.latitude + mapBounds.southWest.latitude) / 2;
+    const lng = (mapBounds.northEast.longitude + mapBounds.southWest.longitude) / 2;
+
+    return { lat, lng };
+  }
+
+  animateToPlaces = (places: Place[]) => {
+    const placeLats = places.map(p => p.location.lat);
+    const placeLngs = places.map(p => p.location.lng);
+
+    const centerLat = (Math.max(...placeLats) + Math.min(...placeLats)) / 2;
+    const centerLng = (Math.max(...placeLngs) + Math.min(...placeLngs)) / 2;
+
+    const latRange = Math.max(...placeLats) - Math.min(...placeLats);
+    const lngRange = Math.max(...placeLngs) - Math.min(...placeLngs);
+
+    this.mapRef!.animateToRegion({
+      latitude: centerLat,
+      longitude: centerLng,
+      latitudeDelta: latRange + MAP_DELTA,
+      longitudeDelta: lngRange + MAP_DELTA
+    });
+  }
+
   render() {
-    const { places, mapRef, onMarkerPress, onMapPress } = this.props;
+    const { places, onMarkerPress, onMapPress } = this.props;
 
     const markers = places.map((p, i) => (
       <Marker
@@ -60,7 +88,7 @@ export default class PlaceMap extends React.Component<Props, {}> {
       <MapView
         style={styles.fill}
         initialRegion={INITIAL_REGION}
-        ref={mapRef}
+        ref={ref => this.mapRef = ref}
         showsCompass={false}
         rotateEnabled={false}
         showsPointsOfInterest={false}
