@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, YellowBox } from 'react-native';
-import { Layout, Button, Spinner } from '@ui-kitten/components';
+import { Layout, Button, Spinner, Text } from '@ui-kitten/components';
 import { Place } from '../../services/PlaceService';
 import ReviewService, { Review } from '../../services/ReviewService';
 import RiskIndicator from './RiskIndicator';
@@ -21,18 +21,20 @@ type Props = {
 };
 
 type State = {
-  isLoading: boolean,
   reviews: Review[],
-  rating: PlaceRating
+  rating: PlaceRating,
+  isLoading: boolean,
+  loadingFailed: boolean,
 };
 
 export default class PlacePanel extends React.Component<Props, State> {
   unsubscribeFocus: (() => void) | null = null;
 
   state = {
-    isLoading: false,
     reviews: [],
-    rating: { categories: {} }
+    rating: { categories: {} },
+    isLoading: false,
+    loadingFailed: false
   };
 
   async componentDidMount() {
@@ -41,22 +43,26 @@ export default class PlacePanel extends React.Component<Props, State> {
 
   async retrieveReviews() {
     const { place } = this.props;
-    this.setState({ isLoading: true });
+    this.setState({ isLoading: true, loadingFailed: false });
 
     try {
       const reviews = await ReviewService.getPlaceReviews(place.id);
       const rating = RatingService.ratePlace(reviews);
 
-      this.setState({ reviews, rating });
+      this.setState({
+        reviews,
+        rating,
+        isLoading: false
+      });
     } catch (error) {
       console.log(error);
       this.setState({
         reviews: [],
-        rating: { categories: {} }
+        rating: { categories: {} },
+        isLoading: false,
+        loadingFailed: true
       });
     }
-
-    this.setState({ isLoading: false });
   }
 
   openReviewScreen = () => {
@@ -64,6 +70,7 @@ export default class PlacePanel extends React.Component<Props, State> {
       this.unsubscribeFocus();
     }
 
+    // Re-retrieve reviews after the user submits a review
     this.unsubscribeFocus =
       this.props.navigation.addListener('focus', async () => {
         await this.retrieveReviews();
@@ -75,7 +82,20 @@ export default class PlacePanel extends React.Component<Props, State> {
 
   render() {
     const { place } = this.props;
-    const { isLoading, reviews, rating } = this.state;
+    const { reviews, rating, isLoading, loadingFailed } = this.state;
+
+    if (loadingFailed) {
+      return (
+        <View style={styles.center}>
+          <Text category='h6' style={styles.failedText}>
+            Something went wrong
+          </Text>
+          <Text category='s1' style={styles.failedText}>
+            Check your connection and try again.
+          </Text>
+        </View>
+      );
+    }
 
     if (isLoading) {
       return (
@@ -119,6 +139,9 @@ const styles = StyleSheet.create({
   icon: {
     marginLeft: 5,
     marginTop: -2
+  },
+  failedText: {
+    marginTop: 5
   },
   center: {
     alignItems: 'center',
