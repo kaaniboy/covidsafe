@@ -4,6 +4,8 @@ import { Platform, StyleSheet } from 'react-native';
 import { Layout, Input } from '@ui-kitten/components';
 import MapView, { UrlTile, Marker, Callout } from 'react-native-maps';
 import PlaceService, { Place } from '../services/PlaceService';
+import { Review } from '../services/ReviewService';
+import { PlaceRating } from '../services/RatingService';
 import PlacePanel from '../components/place/PlacePanel';
 import SwipeablePanel from 'rn-swipeable-panel';
 import { NavigationProp } from '@react-navigation/core';
@@ -11,6 +13,7 @@ import { StackParamList } from '../../App';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const TILESET_URL = 'http://c.tile.openstreetmap.org/{z}/{x}/{y}.png';
+
 const MARKER_HIGH = require('../../assets/markerHigh.png');
 const MARKER_MEDIUM = require('../../assets/markerMedium.png');
 const MARKER_LOW = require('../../assets/markerLow.png');
@@ -39,15 +42,11 @@ export default class MapScreen extends React.Component<Props, State> {
   mapRef: MapView | null = null;
   searchRef: Input | null = null;
 
-  constructor(props: any) {
-    super(props);
-
-    this.state = {
-      places: [],
-      selectedPlace: null,
-      isPlacePanelActive: false
-    };
-  }
+  state = {
+    places: [],
+    selectedPlace: null,
+    isPlacePanelActive: false
+  };
 
   retrievePlaces = async (location: Location.LocationData) => {
     try {

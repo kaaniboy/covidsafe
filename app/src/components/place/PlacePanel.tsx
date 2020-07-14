@@ -27,6 +27,8 @@ type State = {
 };
 
 export default class PlacePanel extends React.Component<Props, State> {
+  unsubscribeFocus: (() => void) | null = null;
+
   state = {
     isLoading: false,
     reviews: [],
@@ -44,7 +46,7 @@ export default class PlacePanel extends React.Component<Props, State> {
     try {
       const reviews = await ReviewService.getPlaceReviews(place.id);
       const rating = RatingService.ratePlace(reviews);
-      console.log(rating);
+
       this.setState({ reviews, rating });
     } catch (error) {
       console.log(error);
@@ -58,6 +60,15 @@ export default class PlacePanel extends React.Component<Props, State> {
   }
 
   openReviewScreen = () => {
+    if (this.unsubscribeFocus) {
+      this.unsubscribeFocus();
+    }
+
+    this.unsubscribeFocus =
+      this.props.navigation.addListener('focus', async () => {
+        await this.retrieveReviews();
+      });
+
     const { place } = this.props;
     this.props.navigation.navigate('Review', { place });
   }
@@ -80,7 +91,7 @@ export default class PlacePanel extends React.Component<Props, State> {
         <RiskIndicator risk='low' />
 
         <View style={styles.container}>
-          <PlaceRatingsOverview place={place} rating={rating}/>
+          <PlaceRatingsOverview place={place} rating={rating} />
           <PlaceReviewsList reviews={reviews} />
           <Button
             size='small'

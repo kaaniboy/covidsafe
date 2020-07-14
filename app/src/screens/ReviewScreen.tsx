@@ -17,21 +17,21 @@ type Props = {
 
 type State = {
   isConfirmationVisible: boolean,
-  place: Place,
   review: Review
 };
 
 export default class ReviewScreen extends React.Component<Props, State> {
+  place: Place;
+
   constructor(props: Props) {
     super(props);
 
-    const place = this.props.route.params.place as Place;
+    this.place = this.props.route.params.place as Place;
     const userId = Constants.deviceId || 'DEVICE_ID_MISSING';
 
     this.state = {
-      place,
       isConfirmationVisible: false,
-      review: { userId, placeId: place.id } as Review
+      review: { userId, placeId: this.place.id } as Review
     };
   }
 
@@ -57,7 +57,7 @@ export default class ReviewScreen extends React.Component<Props, State> {
   }
 
   render() {
-    const { place, review, isConfirmationVisible } = this.state;
+    const { review, isConfirmationVisible } = this.state;
 
     return (
       <Layout style={styles.layout}>
@@ -68,12 +68,12 @@ export default class ReviewScreen extends React.Component<Props, State> {
           />
 
           <Text style={styles.description}>
-            Answer the following questions about <Text category="s1">{place.name}</Text>.
+            Answer the following questions about <Text category="s1">{this.place.name}</Text>.
             {' '}Feel free to leave questions unanswered.
           </Text>
           <Divider />
 
-          {place.category === 'Food' ?
+          {this.place.category === 'Food' ?
             (
               <FoodReviewForm
                 review={review}

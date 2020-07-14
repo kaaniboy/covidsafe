@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { StyleSheet, View, Animated } from 'react-native';
 import { Button, Modal, Card, Text } from '@ui-kitten/components';
 
