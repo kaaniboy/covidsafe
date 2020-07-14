@@ -22,10 +22,16 @@ const CATEGORY_ICONS = {
 
 async function retrievePlaces(lat: number, lng: number): Promise<Place[]> {
   const ll = `?ll=${lat},${lng}`;
-  const res = await fetch(PLACES_ENDPOINT + ll, {
-    method: 'GET'
-  });
-  return res.json();
+  const res = await fetch(PLACES_ENDPOINT + ll);
+
+  const places: Place[] = await res.json();
+  const sortedPlaces = places.sort(
+    (a, b) => b.location.lat - a.location.lat
+  );
+
+  return new Promise<Place[]>(
+    resolve => resolve(sortedPlaces)
+  );
 }
 
 function getCategoryIcon(place: Place): string {

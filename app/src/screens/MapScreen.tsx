@@ -4,8 +4,6 @@ import { Platform, StyleSheet } from 'react-native';
 import { Layout, Input } from '@ui-kitten/components';
 import MapView, { UrlTile, Marker, Callout } from 'react-native-maps';
 import PlaceService, { Place } from '../services/PlaceService';
-import { Review } from '../services/ReviewService';
-import { PlaceRating } from '../services/RatingService';
 import PlacePanel from '../components/place/PlacePanel';
 import SwipeablePanel from 'rn-swipeable-panel';
 import { NavigationProp } from '@react-navigation/core';
@@ -54,10 +52,7 @@ export default class MapScreen extends React.Component<Props, State> {
         location.coords.latitude,
         location.coords.longitude
       );
-      const sortedPlaces = places.sort(
-        (a, b) => b.location.lat - a.location.lat
-      );
-      this.setState({ places: sortedPlaces });
+      this.setState({ places });
     } catch (error) {
       console.log(error);
       this.setState({ places: [] });
