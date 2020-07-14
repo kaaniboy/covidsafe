@@ -3,6 +3,7 @@ import { StyleSheet, View, Animated } from 'react-native';
 import { Button, Modal, Card, Text } from '@ui-kitten/components';
 
 type Props = {
+  message: string,
   isVisible: boolean,
   onConfirm: () => void
 };
@@ -23,7 +24,7 @@ export default class ConfirmationModal extends React.Component<Props, {}> {
   }
 
   render() {
-    const { isVisible, onConfirm } = this.props;
+    const { message, isVisible, onConfirm } = this.props;
 
     return (
       <Modal
@@ -33,8 +34,11 @@ export default class ConfirmationModal extends React.Component<Props, {}> {
         <Animated.View style={{ opacity: this.opacity }}>
           <Card style={styles.card} disabled>
             <View style={styles.message}>
-              <Text category='s1'>Your review has been submitted.</Text>
-              <Text category='s1'>Thank you!</Text>
+              {message.split('\\n').map((line, i) => (
+                <Text category='s1' key={i}>
+                  {line.replace('\\n', '')}
+                </Text>
+              ))}
             </View>
             <Button
               style={styles.confirmButton}

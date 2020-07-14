@@ -3,6 +3,7 @@ import * as Location from 'expo-location';
 import { StyleSheet, TouchableWithoutFeedback } from 'react-native';
 import { Layout, Input, Spinner } from '@ui-kitten/components';
 import PlaceService, { Place } from '../services/PlaceService';
+import ConfirmationModal from '../components/review/ConfirmationModal';
 import PlacePanel from '../components/place/PlacePanel';
 import SwipeablePanel from 'rn-swipeable-panel';
 import { NavigationProp } from '@react-navigation/core';
@@ -18,7 +19,8 @@ type State = {
   places: Place[],
   selectedPlace: Place | null,
   isLoading: boolean,
-  isPlacePanelActive: boolean
+  isPlacePanelActive: boolean,
+  isConnectionModalVisible: boolean
 }
 
 export default class MapScreen extends React.Component<Props, State> {
@@ -30,7 +32,8 @@ export default class MapScreen extends React.Component<Props, State> {
     places: [],
     selectedPlace: null,
     isLoading: false,
-    isPlacePanelActive: false
+    isPlacePanelActive: false,
+    isConnectionModalVisible: false
   };
 
   async componentDidMount() {
@@ -49,7 +52,10 @@ export default class MapScreen extends React.Component<Props, State> {
       this.setState({ places });
     } catch (error) {
       console.log(error);
-      this.setState({ places: [] });
+      this.setState({
+        places: [],
+        isConnectionModalVisible: true
+      });
     }
     this.setState({ isLoading: false });
   }
@@ -95,10 +101,21 @@ export default class MapScreen extends React.Component<Props, State> {
 
   render() {
     const { navigation } = this.props;
-    const { places, selectedPlace, isPlacePanelActive } = this.state;
+    const {
+      places,
+      selectedPlace,
+      isPlacePanelActive,
+      isConnectionModalVisible
+    } = this.state;
 
     return (
       <Layout style={styles.fill}>
+        <ConfirmationModal
+          message='Something went wrong.\nCheck your connection and try again.'
+          isVisible={isConnectionModalVisible}
+          onConfirm={() => this.setState({ isConnectionModalVisible: false })}
+        />
+
         <PlaceMap
           places={places}
           onMarkerPress={this.showPlacePanel}

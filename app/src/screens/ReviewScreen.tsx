@@ -63,6 +63,7 @@ export default class ReviewScreen extends React.Component<Props, State> {
       <Layout style={styles.layout}>
         <ScrollView showsVerticalScrollIndicator={false}>
           <ConfirmationModal
+            message='Your review has been submitted.\nThank you!'
             isVisible={isConfirmationVisible}
             onConfirm={this.confirm}
           />
