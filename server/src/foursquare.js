@@ -41,9 +41,14 @@ function findCategoryHelper(placeCategoryId, category) {
 }
 
 async function handlePlacesRequest(req, res) {
-  const { ll } = req.query;
+  const { ll, query } = req.query;
+
+  const params = query
+    ? `&query=${query}&ll=${ll}`
+    : `&ll=${ll}`;
+
   try {
-    const json = await axios.get(FS_PLACES_ENDPOINT + `&ll=${ll}`);
+    const json = await axios.get(FS_PLACES_ENDPOINT + params);
     const places = json.data.response.venues;
 
     const categorizedPlaces = places.map(p => {
