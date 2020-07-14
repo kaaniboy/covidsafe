@@ -16,6 +16,7 @@ type Props = {
 };
 
 type State = {
+  search: string,
   places: Place[],
   selectedPlace: Place | null,
   isLoading: boolean,
@@ -29,6 +30,7 @@ export default class MapScreen extends React.Component<Props, State> {
   location: Location.LocationData | null = null;
 
   state = {
+    search: '',
     places: [],
     selectedPlace: null,
     isLoading: false,
@@ -81,14 +83,18 @@ export default class MapScreen extends React.Component<Props, State> {
   }
 
   renderSearchAccessory = () => {
-    const { isLoading } = this.state;
+    const { search, isLoading } = this.state;
     if (isLoading) {
       return <Spinner />;
     }
 
+    if (!search) {
+      return <></>;
+    }
+
     return (
       <TouchableWithoutFeedback
-        onPress={() => this.searchRef!.clear()}
+        onPress={() => this.setState({ search: '' })}
       >
         <MaterialCommunityIcons
           name='close'
@@ -102,6 +108,7 @@ export default class MapScreen extends React.Component<Props, State> {
   render() {
     const { navigation } = this.props;
     const {
+      search,
       places,
       selectedPlace,
       isPlacePanelActive,
@@ -137,9 +144,11 @@ export default class MapScreen extends React.Component<Props, State> {
         </SwipeablePanel>
 
         <Input style={[styles.search, styles.shadow]}
+          value={search}
           placeholder='Search nearby places...'
           returnKeyType='search'
           accessoryRight={this.renderSearchAccessory}
+          onChangeText={search => this.setState({ search })}
           onSubmitEditing={event => this.search(event.nativeEvent.text)}
           ref={ref => this.searchRef = ref}
         />
