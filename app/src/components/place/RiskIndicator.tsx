@@ -9,9 +9,12 @@ type Props = {
 };
 
 export default function RiskIndicator({ risk }: Props) {
+  if (risk === 'unknown') {
+    return null;
+  }
+
   const theme = useTheme();
   const backgroundColor = theme[`color-${RISK_COLORS[risk]}-default`];
-
   const riskText = risk.toUpperCase() + ' RISK';
 
   return (
@@ -25,7 +28,8 @@ export default function RiskIndicator({ risk }: Props) {
 
 const styles = StyleSheet.create({
   container: {
-    paddingVertical: 5
+    paddingVertical: 5,
+    marginTop: 5
   },
   text: {
     textAlign: 'center'

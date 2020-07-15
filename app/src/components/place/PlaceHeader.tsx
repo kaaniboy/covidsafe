@@ -27,8 +27,7 @@ export default function PlaceHeader({ place }: Props) {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    paddingHorizontal: 15,
-    paddingBottom: 10
+    paddingHorizontal: 15
   },
   details: {
     flex: 4
