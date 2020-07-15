@@ -27,6 +27,14 @@ type State = {
   loadingFailed: boolean,
 };
 
+/*
+  Used to persist place reviews between the small
+  and large forms of the panel.
+*/
+let PLACE: Place | null = null;
+let PLACE_RATING: PlaceRating | null = null;
+let PLACE_REVIEWS: Review[] | null = null;
+
 export default class PlacePanel extends React.Component<Props, State> {
   unsubscribeFocus: (() => void) | null = null;
 
@@ -43,19 +51,31 @@ export default class PlacePanel extends React.Component<Props, State> {
 
   async retrieveReviews() {
     const { place } = this.props;
+
+    if (PLACE && place.id == PLACE.id) {
+      this.setState({
+        reviews: PLACE_REVIEWS!,
+        rating: PLACE_RATING!
+      });
+      return;
+    }
+
     this.setState({ isLoading: true, loadingFailed: false });
 
     try {
-      const reviews = await ReviewService.getPlaceReviews(place.id);
-      const rating = RatingService.ratePlace(reviews);
+      PLACE = place;
+      PLACE_REVIEWS = await ReviewService.getPlaceReviews(place.id);
+      PLACE_RATING = RatingService.ratePlace(PLACE_REVIEWS);
 
       this.setState({
-        reviews,
-        rating,
+        reviews: PLACE_REVIEWS,
+        rating: PLACE_RATING,
         isLoading: false
       });
     } catch (error) {
       console.log(error);
+
+      PLACE = PLACE_REVIEWS = PLACE_RATING = null;
       this.setState({
         reviews: [],
         rating: { categories: {} },
