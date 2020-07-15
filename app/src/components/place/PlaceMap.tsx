@@ -1,13 +1,24 @@
 import React from 'react';
 import { Platform, StyleSheet } from 'react-native';
-import MapView, { UrlTile, Marker, Callout } from 'react-native-maps';
+import MapView, { Marker, Callout } from 'react-native-maps';
 import PlaceService, { Place } from '../../services/PlaceService';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-const TILESET_URL = 'http://c.tile.openstreetmap.org/{z}/{x}/{y}.png';
+const MAP_STYLE = [
+  {
+    'featureType': 'poi',
+    'elementType': 'labels.icon',
+    'stylers': [
+      {
+        'visibility': 'off'
+      }
+    ]
+  }
+];
 
 const MARKER = require('../../../assets/marker.png');
 
+const MARKER_ICON_SIZE = { ios: 20, android: 16 };
 const MARKER_OFFSET = { x: 0, y: -30 };
 const ANCHOR = { x: 0.5, y: 0.8 }
 
@@ -79,7 +90,7 @@ export default class PlaceMap extends React.Component<Props, {}> {
         <MaterialCommunityIcons
           style={styles.markerIcon}
           name={PlaceService.getCategoryIcon(p)}
-          size={Platform.select({ ios: 20, android: 16 })}
+          size={Platform.select(MARKER_ICON_SIZE)}
           color='white'
         />
         <Callout tooltip />
@@ -89,6 +100,7 @@ export default class PlaceMap extends React.Component<Props, {}> {
     return (
       <MapView
         style={styles.fill}
+        customMapStyle={MAP_STYLE}
         initialRegion={INITIAL_REGION}
         ref={ref => this.mapRef = ref}
         showsCompass={false}
@@ -97,7 +109,6 @@ export default class PlaceMap extends React.Component<Props, {}> {
         showsUserLocation
         onPress={onMapPress}
       >
-        <UrlTile urlTemplate={TILESET_URL} />
         {markers}
       </MapView>
     );
