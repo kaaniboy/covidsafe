@@ -11,11 +11,11 @@ type Props = {
 };
 
 const OPTIONS = [
-  { label: '1', value: 1, color: 'danger' },
-  { label: '2', value: 2, color: 'warning' },
-  { label: '3', value: 3, color: 'info' },
-  { label: '4', value: 4, color: 'primary' },
-  { label: '5', value: 5, color: 'success' },
+  { label: '1', value: 1, color: '#FB896D' },
+  { label: '2', value: 2, color: '#F8A81C' },
+  { label: '3', value: 3, color: '#FCAD6D' },
+  { label: '4', value: 4, color: '#B6DE98' },
+  { label: '5', value: 5, color: '#94C975' },
 ];
 
 export default function RatingQuestion({ question, leftLabel, rightLabel, value, onChange }: Props) {
@@ -32,12 +32,14 @@ export default function RatingQuestion({ question, leftLabel, rightLabel, value,
       <View style={styles.optionsContainer}>
         <Text style={styles.sideLabel}>{leftLabel}</Text>
 
-        {OPTIONS.map(option => (
+        {OPTIONS.map((option, i) => (
           <Button
             size='small'
-            style={styles.option}
-            status={option.color}
-            appearance={value === option.value ? 'filled' : 'outline'}
+            style={[
+              styles.option,
+              { backgroundColor: option.color },
+              value === option.value ? styles.selectedOption : {}
+            ]}
             key={option.value}
             onPress={() => onPress(option.value)}
           >
@@ -60,10 +62,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginTop: 10
   },
-  option: {
-    marginHorizontal: 2,
-    flex: 1
-  },
   sideLabel: {
     textAlign: 'center',
     alignSelf: 'center',
@@ -71,5 +69,14 @@ const styles = StyleSheet.create({
   },
   center: {
     textAlign: 'center'
+  },
+  option: {
+    marginHorizontal: 2,
+    flex: 1,
+    borderWidth: 0
+  },
+  selectedOption: {
+    borderColor: '#313136',
+    borderWidth: 2
   }
 });
