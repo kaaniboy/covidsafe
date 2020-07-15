@@ -93,6 +93,7 @@ export default class PlacePanel extends React.Component<Props, State> {
     // Re-retrieve reviews after the user submits a review
     this.unsubscribeFocus =
       this.props.navigation.addListener('focus', async () => {
+        PLACE = PLACE_RATING = PLACE_REVIEWS = null;
         await this.retrieveReviews();
       });
 

@@ -90,7 +90,7 @@ function getCategoryMessage(
     return rating.diningTypes ? undefined : NO_RATINGS_MESSAGE;
   }
 
-  if (!rating.categories[category]) {
+  if (rating.categories[category] === undefined) {
     return NO_RATINGS_MESSAGE;
   }
 
@@ -110,7 +110,7 @@ function getCategoryRisk(
   rating: PlaceRating,
   category: RatingCategory
 ): Risk {
-  if (category === 'diningTypes' || !rating.categories[category]) {
+  if (category === 'diningTypes' || rating.categories[category] === undefined) {
     return 'unknown';
   }
 
@@ -133,7 +133,7 @@ function formatCategoryRating(
   rating: PlaceRating,
   category: RatingCategory
 ): string | null {
-  if (!rating.categories[category]) {
+  if (rating.categories[category] === undefined) {
     return null;
   }
 
