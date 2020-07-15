@@ -40,10 +40,11 @@ export default class MapScreen extends React.Component<Props, State> {
 
   async componentDidMount() {
     this.location = await this.retrieveCurrentLocation();
-    if (this.location) {
-      const { coords } = this.location;
-      await this.retrievePlaces(coords.latitude, coords.longitude);
-    }
+    const coords = this.location
+      ? this.location.coords
+      : await this.mapRef!.getMapCenter();
+
+    await this.retrievePlaces(coords.latitude, coords.longitude);
   }
 
   retrievePlaces = async (lat: number, lng: number, query?: string) => {
@@ -72,7 +73,7 @@ export default class MapScreen extends React.Component<Props, State> {
 
   search = async (query: string) => {
     const mapCenter = await this.mapRef!.getMapCenter();
-    await this.retrievePlaces(mapCenter.lat, mapCenter.lng, query);
+    await this.retrievePlaces(mapCenter.latitude, mapCenter.longitude, query);
   }
 
   showPlacePanel = (selectedPlace: Place) => {

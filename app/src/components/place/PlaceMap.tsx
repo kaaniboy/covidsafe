@@ -33,10 +33,10 @@ export default class PlaceMap extends React.Component<Props, {}> {
 
   getMapCenter = async () => {
     const mapBounds = await this.mapRef!.getMapBoundaries();
-    const lat = (mapBounds.northEast.latitude + mapBounds.southWest.latitude) / 2;
-    const lng = (mapBounds.northEast.longitude + mapBounds.southWest.longitude) / 2;
+    const latitude = (mapBounds.northEast.latitude + mapBounds.southWest.latitude) / 2;
+    const longitude = (mapBounds.northEast.longitude + mapBounds.southWest.longitude) / 2;
 
-    return { lat, lng };
+    return { latitude, longitude };
   }
 
   animateToPlaces = (places: Place[]) => {
