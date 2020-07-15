@@ -6,9 +6,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const TILESET_URL = 'http://c.tile.openstreetmap.org/{z}/{x}/{y}.png';
 
-const MARKER_HIGH = require('../../../assets/markerHigh.png');
-const MARKER_MEDIUM = require('../../../assets/markerMedium.png');
-const MARKER_LOW = require('../../../assets/markerLow.png');
+const MARKER = require('../../../assets/marker.png');
 
 const MARKER_OFFSET = { x: 0, y: -30 };
 const ANCHOR = { x: 0.5, y: 0.8 }
@@ -73,7 +71,7 @@ export default class PlaceMap extends React.Component<Props, {}> {
         }}
         zIndex={i}
         title={p.name}
-        image={MARKER_HIGH || MARKER_LOW}
+        image={MARKER}
         centerOffset={MARKER_OFFSET}
         anchor={ANCHOR}
         onPress={() => onMarkerPress(p)}
@@ -81,7 +79,7 @@ export default class PlaceMap extends React.Component<Props, {}> {
         <MaterialCommunityIcons
           style={styles.markerIcon}
           name={PlaceService.getCategoryIcon(p)}
-          size={32}
+          size={20}
           color='white'
         />
         <Callout tooltip />
@@ -112,16 +110,16 @@ const styles = StyleSheet.create({
     flex: 1,
     ...Platform.select({
       ios: {
-        top: 8,
-        left: 8
+        top: 5,
+        left: 5
       },
       android: {
         top: 0,
         left: 0
       },
       default: {
-        top: 8,
-        left: 8
+        top: 5,
+        left: 5
       }
     })
   }
