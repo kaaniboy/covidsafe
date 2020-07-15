@@ -18,7 +18,7 @@ export type PlaceRating = {
 export const RISK_COLORS: { [key in Risk]: string } = {
   'unknown': 'primary',
   'low': 'success',
-  'medium': 'warning',
+  'medium': 'info',
   'high': 'danger'
 }
 
