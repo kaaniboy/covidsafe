@@ -9,7 +9,7 @@ import PlaceRatingsOverview from './PlaceRatingsOverview';
 import PlaceReviewsList from './PlaceReviewsList';
 import { NavigationProp } from '@react-navigation/core';
 import { StackParamList } from '../../../App';
-import RatingService, { PlaceRating } from '../../services/RatingService';
+import RatingService, { PlaceRating, Risk } from '../../services/RatingService';
 
 YellowBox.ignoreWarnings([
   'VirtualizedLists should never be nested'
@@ -27,6 +27,11 @@ type State = {
   loadingFailed: boolean,
 };
 
+const DEFAULT_RATING: PlaceRating = {
+  categories: {},
+  overallRisk: 'unknown'
+};
+
 /*
   Used to persist place reviews between the small
   and large forms of the panel.
@@ -40,7 +45,7 @@ export default class PlacePanel extends React.Component<Props, State> {
 
   state = {
     reviews: [],
-    rating: { categories: {} },
+    rating: DEFAULT_RATING,
     isLoading: false,
     loadingFailed: false
   };
@@ -78,7 +83,7 @@ export default class PlacePanel extends React.Component<Props, State> {
       PLACE = PLACE_REVIEWS = PLACE_RATING = null;
       this.setState({
         reviews: [],
-        rating: { categories: {} },
+        rating: DEFAULT_RATING,
         isLoading: false,
         loadingFailed: true
       });
@@ -129,7 +134,7 @@ export default class PlacePanel extends React.Component<Props, State> {
     return (
       <Layout>
         <PlaceHeader place={place} />
-        <RiskIndicator risk='unknown' />
+        <RiskIndicator risk={rating.overallRisk} />
 
         <View style={styles.container}>
           <PlaceRatingsOverview place={place} rating={rating} />

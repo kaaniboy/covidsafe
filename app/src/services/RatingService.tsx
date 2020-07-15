@@ -7,12 +7,18 @@ export type RatingCategory =
   'employeeMasks' | 'customerMasks' | 'distancing' | 'dividers' | 'diningTypes';
 
 export type PlaceRating = {
+  overallRisk: Risk,
   categories: {
     [key in RatingCategory]?: number
   },
   diningTypes?: {
     [key in DiningType]: number
   }
+};
+
+const RISK_THRESHOLDS = {
+  high: 2.5,
+  medium: 4
 };
 
 export const RISK_COLORS: { [key in Risk]: string } = {
@@ -46,6 +52,33 @@ function calculateCategoryRating(
   return ratings.reduce((a, b) => a + b) / ratings.length;
 }
 
+function calculateOverallRisk(
+  categories: { [key in RatingCategory]?: number }
+): Risk {
+  const categoryCount =
+    Object.values(categories).filter(v => v !== undefined).length;
+
+  if (categoryCount === 0) {
+    return 'unknown';
+  }
+
+  const ratingSum =
+    (categories['employeeMasks'] || 0)
+    + (categories['customerMasks'] || 0)
+    + (categories['distancing'] || 0)
+    // Convert dividers category to 1 - 5 scale
+    + (categories['dividers'] === undefined ? 0 : categories['dividers']! * 4 + 1);
+
+  const overallRating = ratingSum / categoryCount;
+
+  if (overallRating <= RISK_THRESHOLDS.high) {
+    return 'high';
+  } else if (overallRating <= RISK_THRESHOLDS.medium) {
+    return 'medium';
+  }
+  return 'low';
+}
+
 type DiningTypeFrequencies = { [key in DiningType]: number };
 
 function extractDiningTypeFrequencies(
@@ -71,14 +104,17 @@ function extractDiningTypeFrequencies(
 }
 
 function ratePlace(reviews: Review[]): PlaceRating {
+  const categories = {
+    'employeeMasks': calculateCategoryRating('employeeMasks', reviews),
+    'customerMasks': calculateCategoryRating('customerMasks', reviews),
+    'distancing': calculateCategoryRating('distancing', reviews),
+    'dividers': calculateCategoryRating('dividers', reviews),
+  };
+
   return {
-    categories: {
-      'employeeMasks': calculateCategoryRating('employeeMasks', reviews),
-      'customerMasks': calculateCategoryRating('customerMasks', reviews),
-      'distancing': calculateCategoryRating('distancing', reviews),
-      'dividers': calculateCategoryRating('dividers', reviews),
-    },
-    diningTypes: extractDiningTypeFrequencies(reviews)
+    overallRisk: calculateOverallRisk(categories),
+    diningTypes: extractDiningTypeFrequencies(reviews),
+    categories
   };
 }
 
@@ -97,9 +133,9 @@ function getCategoryMessage(
   const score = rating.categories[category]!;
 
   let modifier = 'almost always';
-  if (score <= 2.5) {
+  if (score <= RISK_THRESHOLDS.high) {
     modifier = 'rarely';
-  } else if (score <= 4) {
+  } else if (score <= RISK_THRESHOLDS.medium) {
     modifier = 'often';
   }
 
@@ -116,13 +152,13 @@ function getCategoryRisk(
 
   const score = rating.categories[category]!;
 
-  const adjustThreshold = (value:  number) =>
+  const adjustThreshold = (value: number) =>
     category === 'dividers' ? 0.25 * (value - 1) : value;
 
   let risk: Risk = 'low';
-  if (score <= adjustThreshold(2.5)) {
+  if (score <= adjustThreshold(RISK_THRESHOLDS.high)) {
     risk = 'high';
-  } else if (score <= adjustThreshold(4)) {
+  } else if (score <= adjustThreshold(RISK_THRESHOLDS.medium)) {
     risk = 'medium';
   }
 
