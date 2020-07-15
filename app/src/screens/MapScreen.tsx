@@ -165,7 +165,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     alignSelf: 'center',
     width: '95%',
-    top: 60,
+    top: 50,
     zIndex: 0
   },
   shadow: {

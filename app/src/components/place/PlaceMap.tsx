@@ -106,6 +106,7 @@ export default class PlaceMap extends React.Component<Props, {}> {
         showsCompass={false}
         rotateEnabled={false}
         showsPointsOfInterest={false}
+        toolbarEnabled={false}
         showsUserLocation
         onPress={onMapPress}
       >
