@@ -79,7 +79,7 @@ export default class PlaceMap extends React.Component<Props, {}> {
         <MaterialCommunityIcons
           style={styles.markerIcon}
           name={PlaceService.getCategoryIcon(p)}
-          size={20}
+          size={Platform.select({ ios: 20, android: 16 })}
           color='white'
         />
         <Callout tooltip />
@@ -114,8 +114,8 @@ const styles = StyleSheet.create({
         left: 5
       },
       android: {
-        top: 0,
-        left: 0
+        top: 1,
+        left: 2
       },
       default: {
         top: 5,
