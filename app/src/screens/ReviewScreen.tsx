@@ -16,8 +16,9 @@ type Props = {
 };
 
 type State = {
-  isConfirmationVisible: boolean,
-  review: Review
+  review: Review,
+  isConfirmationModalVisible: boolean,
+  isConnectionModalVisible: boolean
 };
 
 export default class ReviewScreen extends React.Component<Props, State> {
@@ -30,8 +31,9 @@ export default class ReviewScreen extends React.Component<Props, State> {
     const userId = Constants.deviceId || 'DEVICE_ID_MISSING';
 
     this.state = {
-      isConfirmationVisible: false,
-      review: { userId, placeId: this.place.id } as Review
+      review: { userId, placeId: this.place.id } as Review,
+      isConfirmationModalVisible: false,
+      isConnectionModalVisible: false
     };
   }
 
@@ -39,14 +41,15 @@ export default class ReviewScreen extends React.Component<Props, State> {
     const { review } = this.state;
     try {
       await ReviewService.createReview(review);
-      this.setState({ isConfirmationVisible: true });
+      this.setState({ isConfirmationModalVisible: true });
     } catch (error) {
       console.log(error);
+      this.setState({ isConnectionModalVisible: true });
     }
   }
 
   confirm = () => {
-    this.setState({ isConfirmationVisible: false });
+    this.setState({ isConfirmationModalVisible: false });
     this.props.navigation.goBack();
   }
 
@@ -57,15 +60,24 @@ export default class ReviewScreen extends React.Component<Props, State> {
   }
 
   render() {
-    const { review, isConfirmationVisible } = this.state;
+    const {
+      review,
+      isConfirmationModalVisible,
+      isConnectionModalVisible
+    } = this.state;
 
     return (
       <Layout style={styles.layout}>
         <ScrollView showsVerticalScrollIndicator={false}>
           <ConfirmationModal
             message='Your review has been submitted.\nThank you!'
-            isVisible={isConfirmationVisible}
+            isVisible={isConfirmationModalVisible}
             onConfirm={this.confirm}
+          />
+          <ConfirmationModal
+            message='Something went wrong.\nCheck your connection and try again.'
+            isVisible={isConnectionModalVisible}
+            onConfirm={() => this.setState({ isConnectionModalVisible: false })}
           />
 
           <Text style={styles.description}>

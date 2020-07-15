@@ -8,7 +8,7 @@ type Props = {
   onConfirm: () => void
 };
 
-const FADE_DURATION = 250;
+const FADE_DURATION = 200;
 
 export default class ConfirmationModal extends React.Component<Props, {}> {
   opacity = new Animated.Value(0.0);

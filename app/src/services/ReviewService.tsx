@@ -86,7 +86,7 @@ async function createReview(review: Review) {
   await client.mutate({
     mutation: CREATE_REVIEW_MUTATION,
     variables: review
-  })
+  });
 }
 
 export default {
