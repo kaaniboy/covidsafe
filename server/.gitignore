@@ -1,4 +1,5 @@
 pgweb-admin.sh
+pgweb-admin-prod.sh
 node_modules
 .env
 .DS_Store

@@ -73,7 +73,8 @@ const styles = StyleSheet.create({
   option: {
     marginHorizontal: 2,
     flex: 1,
-    borderWidth: 0
+    borderColor: 'white',
+    borderWidth: 2
   },
   selectedOption: {
     borderColor: '#313136',
