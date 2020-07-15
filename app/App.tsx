@@ -6,6 +6,7 @@ import * as eva from '@eva-design/eva';
 import MapScreen from './src/screens/MapScreen';
 import ReviewScreen from './src/screens/ReviewScreen';
 import { Place } from './src/services/PlaceService';
+import { default as theme } from './assets/covidTheme.json';
 
 export type StackParamList = {
   Map: undefined,
@@ -20,7 +21,7 @@ const ScreenOptions = ({ route }: { route: Route<string> }) => ({
 
 export default function App() {
   return (
-    <ApplicationProvider {...eva} theme={eva.light}>
+    <ApplicationProvider {...eva} theme={{ ...eva.light, ...theme }}>
       <NavigationContainer>
         <Stack.Navigator screenOptions={ScreenOptions}>
           <Stack.Screen
