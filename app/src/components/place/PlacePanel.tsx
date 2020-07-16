@@ -144,13 +144,13 @@ export default class PlacePanel extends React.Component<Props, State> {
       <Layout>
         <PlaceHeader place={place} />
         <RiskIndicator risk={rating.overallRisk} />
-        {swipeablePanelRef && swipeablePanelRef.state.status === PANEL_LARGE_STATUS &&
-          FACEBOOK_AD
-        }
-
         <View style={styles.container}>
           <PlaceRatingsOverview place={place} rating={rating} />
 
+          {swipeablePanelRef && swipeablePanelRef.state.status === PANEL_LARGE_STATUS &&
+            FACEBOOK_AD
+          }
+          
           <Text
             style={[styles.reviewHeader, styles.center]}
             category='h5'>
