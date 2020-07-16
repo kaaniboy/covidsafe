@@ -4,6 +4,8 @@ import { Text } from '@ui-kitten/components';
 import { Review } from '../../services/ReviewService';
 import moment from 'moment';
 
+const MAX_REVIEW_LINES = 10;
+
 type Props = {
   review: Review
 };
@@ -17,7 +19,7 @@ export default function PlaceReviewsList({ review }: Props) {
       <Text style={[styles.header, styles.center]} category='s2'>
         {elapsed}
       </Text>
-      <Text style={styles.center}>
+      <Text style={styles.center} numberOfLines={MAX_REVIEW_LINES}>
         "{review.content as string}"
       </Text>
     </View>
