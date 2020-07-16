@@ -11,11 +11,11 @@ type Props = {
 };
 
 const OPTIONS = [
-  { label: '1', value: 1, color: '#FB896D' },
-  { label: '2', value: 2, color: '#F8A81C' },
-  { label: '3', value: 3, color: '#FCAD6D' },
-  { label: '4', value: 4, color: '#B6DE98' },
-  { label: '5', value: 5, color: '#94C975' },
+  { label: '1', value: 1, primaryColor: '#FA533D', secondaryColor: '#FDBAB1' },
+  { label: '2', value: 2, primaryColor: '#FB873E', secondaryColor: '#FDCFB2' },
+  { label: '3', value: 3, primaryColor: '#FAB53F', secondaryColor: '#FDE2B2' },
+  { label: '4', value: 4, primaryColor: '#D6BB51', secondaryColor: '#E8E4BD' },
+  { label: '5', value: 5, primaryColor: '#94C975', secondaryColor: '#D5E9C8' },
 ];
 
 export default function RatingQuestion({ question, leftLabel, rightLabel, value, onChange }: Props) {
@@ -37,8 +37,10 @@ export default function RatingQuestion({ question, leftLabel, rightLabel, value,
             size='small'
             style={[
               styles.option,
-              { backgroundColor: option.color },
-              value === option.value ? styles.selectedOption : {}
+              { borderColor: option.primaryColor },
+              value === option.value
+                ? { backgroundColor: option.primaryColor }
+                : { backgroundColor: option.secondaryColor }
             ]}
             key={option.value}
             onPress={() => onPress(option.value)}
@@ -73,11 +75,6 @@ const styles = StyleSheet.create({
   option: {
     marginHorizontal: 2,
     flex: 1,
-    borderColor: 'white',
-    borderWidth: 2
-  },
-  selectedOption: {
-    borderColor: '#313136',
     borderWidth: 2
   }
 });
