@@ -9,15 +9,21 @@ import PlaceRatingsOverview from './PlaceRatingsOverview';
 import PlaceReviewsList from './PlaceReviewsList';
 import { NavigationProp } from '@react-navigation/core';
 import { StackParamList } from '../../../App';
-import RatingService, { PlaceRating, Risk } from '../../services/RatingService';
+import RatingService, { PlaceRating, } from '../../services/RatingService';
+import SwipeablePanel from 'rn-swipeable-panel';
+import * as FacebookAds from 'expo-ads-facebook';
+import FacebookAd from '../misc/FacebookAd';
+
+FacebookAds.AdSettings.addTestDevice(FacebookAds.AdSettings.currentDeviceHash);
 
 YellowBox.ignoreWarnings([
   'VirtualizedLists should never be nested'
 ]);
 
 type Props = {
+  place: Place,
   navigation: NavigationProp<StackParamList>,
-  place: Place
+  swipeablePanelRef: SwipeablePanel | null,
 };
 
 type State = {
@@ -31,6 +37,8 @@ const DEFAULT_RATING: PlaceRating = {
   categories: {},
   overallRisk: 'unknown'
 };
+
+const PANEL_LARGE_STATUS = 2;
 
 /*
   Used to persist place reviews between the small
@@ -107,7 +115,8 @@ export default class PlacePanel extends React.Component<Props, State> {
   }
 
   render() {
-    const { place } = this.props;
+
+    const { place, swipeablePanelRef } = this.props;
     const { reviews, rating, isLoading, loadingFailed } = this.state;
 
     if (loadingFailed) {
@@ -135,6 +144,9 @@ export default class PlacePanel extends React.Component<Props, State> {
       <Layout>
         <PlaceHeader place={place} />
         <RiskIndicator risk={rating.overallRisk} />
+        {swipeablePanelRef && swipeablePanelRef.state.status === PANEL_LARGE_STATUS &&
+          <FacebookAd />
+        }
 
         <View style={styles.container}>
           <PlaceRatingsOverview place={place} rating={rating} />

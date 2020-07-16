@@ -2678,6 +2678,14 @@ expand-brackets@^2.1.4:
     snapdragon "^0.8.1"
     to-regex "^3.0.1"
 
+expo-ads-facebook@~8.3.0:
+  version "8.3.0"
+  resolved "https://registry.yarnpkg.com/expo-ads-facebook/-/expo-ads-facebook-8.3.0.tgz#9e6a677e1f4ff8a016ac23559ef480b09b7b04ca"
+  integrity sha512-ESFJl0UrUCUjFwz1QHytKMTJgwruDw3Kybjf80wd320Gabop0uX/qYs3Y3dge5x7oO+kx/GxWai2kHhbZessYg==
+  dependencies:
+    fbemitter "^2.1.1"
+    nullthrows "^1.1.0"
+
 expo-asset@~8.1.7:
   version "8.1.7"
   resolved "https://registry.yarnpkg.com/expo-asset/-/expo-asset-8.1.7.tgz#32618e51f85df56f1d7dd54c71eb486ae7f7674e"

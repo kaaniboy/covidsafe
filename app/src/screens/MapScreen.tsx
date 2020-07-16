@@ -25,6 +25,7 @@ type State = {
 }
 
 export default class MapScreen extends React.Component<Props, State> {
+  swipeablePanelRef: SwipeablePanel | null = null;
   mapRef: PlaceMap | null = null;
   searchRef: Input | null = null;
   location: Location.LocationData | null = null;
@@ -134,12 +135,14 @@ export default class MapScreen extends React.Component<Props, State> {
         <SwipeablePanel
           isActive={isPlacePanelActive}
           onClose={() => this.setState({ isPlacePanelActive: false })}
+          ref={ref => this.swipeablePanelRef = ref}
           closeOnTouchOutside
         >
           {selectedPlace && (
             <PlacePanel
               place={selectedPlace}
               navigation={navigation}
+              swipeablePanelRef={this.swipeablePanelRef}
             />
           )}
         </SwipeablePanel>

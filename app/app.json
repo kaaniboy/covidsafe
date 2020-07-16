@@ -6,6 +6,8 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "primaryColor": "#ffffff",
+    "facebookAppId": "923367898132562",
+    "facebookDisplayName": "COVID Tracker",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
