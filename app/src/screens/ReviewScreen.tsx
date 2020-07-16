@@ -17,6 +17,7 @@ type Props = {
 
 type State = {
   review: Review,
+  isSubmitDisabled: boolean,
   isConfirmationModalVisible: boolean,
   isConnectionModalVisible: boolean
 };
@@ -32,6 +33,7 @@ export default class ReviewScreen extends React.Component<Props, State> {
 
     this.state = {
       review: { userId, placeId: this.place.id } as Review,
+      isSubmitDisabled: false,
       isConfirmationModalVisible: false,
       isConnectionModalVisible: false
     };
@@ -39,12 +41,17 @@ export default class ReviewScreen extends React.Component<Props, State> {
 
   submitReview = async () => {
     const { review } = this.state;
+    this.setState({ isSubmitDisabled: true });
+
     try {
       await ReviewService.createReview(review);
       this.setState({ isConfirmationModalVisible: true });
     } catch (error) {
       console.log(error);
-      this.setState({ isConnectionModalVisible: true });
+      this.setState({
+        isSubmitDisabled: false,
+        isConnectionModalVisible: true
+      });
     }
   }
 
@@ -62,6 +69,7 @@ export default class ReviewScreen extends React.Component<Props, State> {
   render() {
     const {
       review,
+      isSubmitDisabled,
       isConfirmationModalVisible,
       isConnectionModalVisible
     } = this.state;
@@ -104,7 +112,11 @@ export default class ReviewScreen extends React.Component<Props, State> {
               )
             }
 
-            <Button style={styles.submitButton} onPress={this.submitReview}>
+            <Button
+              style={styles.submitButton}
+              onPress={this.submitReview}
+              disabled={isSubmitDisabled}
+            >
               Submit Review
           </Button>
           </ScrollView>
