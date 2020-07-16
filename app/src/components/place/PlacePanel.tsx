@@ -15,6 +15,7 @@ import * as FacebookAds from 'expo-ads-facebook';
 import FacebookAd from '../misc/FacebookAd';
 
 FacebookAds.AdSettings.addTestDevice(FacebookAds.AdSettings.currentDeviceHash);
+const FACEBOOK_AD = <FacebookAd />;
 
 YellowBox.ignoreWarnings([
   'VirtualizedLists should never be nested'
@@ -39,7 +40,6 @@ const DEFAULT_RATING: PlaceRating = {
 };
 
 const PANEL_LARGE_STATUS = 2;
-
 /*
   Used to persist place reviews between the small
   and large forms of the panel.
@@ -145,7 +145,7 @@ export default class PlacePanel extends React.Component<Props, State> {
         <PlaceHeader place={place} />
         <RiskIndicator risk={rating.overallRisk} />
         {swipeablePanelRef && swipeablePanelRef.state.status === PANEL_LARGE_STATUS &&
-          <FacebookAd />
+          FACEBOOK_AD
         }
 
         <View style={styles.container}>
