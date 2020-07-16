@@ -3,7 +3,10 @@ import gql from 'graphql-tag';
 
 const GET_REVIEWS_QUERY = gql`
   query ($placeId: String!) {
-    allReviews(condition: { placeId: $placeId }) {
+    allReviews(
+      condition: { placeId: $placeId }
+      orderBy: CREATED_AT_DESC
+    ) {
       edges {
         node {
           id content userId
@@ -70,8 +73,8 @@ export type Review = {
   dividers?: number,
   diningType?: DiningType,
 
-  createdAt?: Date,
-  updatedAt?: Date
+  createdAt?: string,
+  updatedAt?: string
 };
 
 async function getPlaceReviews(placeId: string): Promise<Review[]> {
@@ -79,6 +82,7 @@ async function getPlaceReviews(placeId: string): Promise<Review[]> {
     query: GET_REVIEWS_QUERY,
     variables: { placeId }
   });
+
   return res.data.allReviews.edges.map((r: any) => r.node);
 }
 

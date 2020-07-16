@@ -9,7 +9,7 @@ type Props = {
 };
 
 export default function PlaceReviewsList({ review }: Props) {
-  const elapsed = moment.utc(review.createdAt as Date)
+  const elapsed = moment.utc(review.createdAt!)
     .fromNow().toUpperCase();
 
   return (
@@ -26,9 +26,9 @@ export default function PlaceReviewsList({ review }: Props) {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 5,
+    marginBottom: 8,
     paddingVertical: 5,
-    paddingHorizontal: 30,
+    paddingHorizontal: 20,
     minHeight: 30,
     borderWidth: 2,
     borderRadius: 10,

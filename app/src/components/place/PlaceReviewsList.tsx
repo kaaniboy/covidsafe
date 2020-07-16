@@ -15,8 +15,6 @@ export default function PlaceReviewsList({ reviews }: Props) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.center} category='h6'>Newest Reviews</Text>
-
       {contentReviews.length === 0 ? (
         <Text style={[styles.noReviews, styles.center]}>
           This location does not have any written reviews yet.
@@ -33,7 +31,8 @@ export default function PlaceReviewsList({ reviews }: Props) {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 10
+    marginTop: 5,
+    marginBottom: 40
   },
   list: {
     marginTop: 5
