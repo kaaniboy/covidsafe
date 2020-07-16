@@ -1,5 +1,10 @@
 create schema db_public;
 
+create user covidsafe with encrypted password '---';
+grant usage on schema db_public to covidsafe;
+grant select, insert on table db_public.review to covidsafe;
+
+
 create table db_public.review(
   id serial primary key,
   place_id text not null,
