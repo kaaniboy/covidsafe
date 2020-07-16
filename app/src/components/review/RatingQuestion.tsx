@@ -14,7 +14,7 @@ const OPTIONS = [
   { label: '1', value: 1, primaryColor: '#FA533D', secondaryColor: '#FDBAB1' },
   { label: '2', value: 2, primaryColor: '#FB873E', secondaryColor: '#FDCFB2' },
   { label: '3', value: 3, primaryColor: '#FAB53F', secondaryColor: '#FDE2B2' },
-  { label: '4', value: 4, primaryColor: '#D6BB51', secondaryColor: '#E8E4BD' },
+  { label: '4', value: 4, primaryColor: '#B6C64C', secondaryColor: '#E2E9B9' },
   { label: '5', value: 5, primaryColor: '#94C975', secondaryColor: '#D5E9C8' },
 ];
 
@@ -75,6 +75,6 @@ const styles = StyleSheet.create({
   option: {
     marginHorizontal: 2,
     flex: 1,
-    borderWidth: 2
+    borderWidth: 1.5
   }
 });
