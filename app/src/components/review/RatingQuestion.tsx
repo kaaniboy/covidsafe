@@ -50,7 +50,7 @@ export default function RatingQuestion({ question, leftLabel, rightLabel, value,
                 style={[
                   { fontWeight: '700' },
                   value === option.value
-                    ? { color: option.secondaryColor }
+                    ? { color: 'white' }
                     : { color: option.primaryColor }
                 ]}
               >
