@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, ScrollView, KeyboardAvoidingView } from 'react-native';
+import { StyleSheet, ScrollView, KeyboardAvoidingView, Platform } from 'react-native';
 import { Layout, Button, Text, Divider } from '@ui-kitten/components';
 import { RouteProp, NavigationProp } from '@react-navigation/core';
 import ConfirmationModal from '../components/review/ConfirmationModal';
@@ -68,7 +68,11 @@ export default class ReviewScreen extends React.Component<Props, State> {
 
     return (
       <Layout style={styles.layout}>
-        <KeyboardAvoidingView behavior='position' keyboardVerticalOffset={90}>
+        <KeyboardAvoidingView
+          enabled={Platform.OS === 'ios'}
+          behavior='position'
+          keyboardVerticalOffset={90}
+        >
           <ScrollView showsVerticalScrollIndicator={false}>
             <ConfirmationModal
               message='Your review has been submitted.\nThank you!'
