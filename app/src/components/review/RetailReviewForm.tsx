@@ -61,6 +61,8 @@ export default function RetailReviewForm({ review, onFieldChange }: Props) {
           value={review.content}
           onChange={event => onFieldChange('content', event.nativeEvent.text)}
           enablesReturnKeyAutomatically={false}
+          returnKeyType='done'
+          blurOnSubmit
           multiline
         />
       </View>

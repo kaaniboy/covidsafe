@@ -71,7 +71,6 @@ export default class ReviewScreen extends React.Component<Props, State> {
         <KeyboardAvoidingView
           enabled={Platform.OS === 'ios'}
           behavior='position'
-          keyboardVerticalOffset={90}
         >
           <ScrollView showsVerticalScrollIndicator={false}>
             <ConfirmationModal

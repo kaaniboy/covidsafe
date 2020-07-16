@@ -62,6 +62,8 @@ export default function FoodReviewForm({ review, onFieldChange }: Props) {
           value={review.content}
           onChange={event => onFieldChange('content', event.nativeEvent.text)}
           enablesReturnKeyAutomatically={false}
+          returnKeyType='done'
+          blurOnSubmit
           multiline
         />
       </View>
