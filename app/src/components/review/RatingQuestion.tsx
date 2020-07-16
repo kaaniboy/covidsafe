@@ -1,7 +1,6 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Text, Button, TextProps } from '@ui-kitten/components';
-import { LoneAnonymousOperationRule } from 'graphql';
+import { Text, Button } from '@ui-kitten/components';
 
 type Props = {
   question: string,
