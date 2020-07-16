@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Text } from '@ui-kitten/components';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import RatingService, { PlaceRating, RatingCategory } from '../../services/RatingService';
+import RatingService, { PlaceRating, RatingCategory, RISK_COLORS } from '../../services/RatingService';
 import { DiningType } from '../../services/ReviewService';
 
 type Props = {
@@ -53,9 +53,10 @@ function renderDiningTypes(rating: PlaceRating) {
 export default function PlaceCategoryRatingPanel({ rating, category }: Props) {
   const formattedRating = RatingService.formatCategoryRating(rating, category);
   const categoryMessage = RatingService.getCategoryMessage(rating, category);
+  const categoryRisk = RatingService.getCategoryRisk(rating, category);
 
   const formattedRatingText = formattedRating && (
-    <Text style={styles.center} category='h2'>
+    <Text style={styles.center} status={RISK_COLORS[categoryRisk]} category='h2'>
       {formattedRating}
     </Text>
   );
