@@ -47,11 +47,12 @@ export default function RatingQuestion({ question, leftLabel, rightLabel, value,
           >
             {textProps => (
               <Text category='s2'
-                style={
+                style={[
+                  { fontWeight: '700' },
                   value === option.value
                     ? { color: option.secondaryColor }
                     : { color: option.primaryColor }
-                }
+                ]}
               >
                 {option.label}
               </Text>
