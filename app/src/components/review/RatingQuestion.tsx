@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Text, Button } from '@ui-kitten/components';
+import { Text, Button, TextProps } from '@ui-kitten/components';
+import { LoneAnonymousOperationRule } from 'graphql';
 
 type Props = {
   question: string,
@@ -45,7 +46,17 @@ export default function RatingQuestion({ question, leftLabel, rightLabel, value,
             key={option.value}
             onPress={() => onPress(option.value)}
           >
-            {option.label}
+            {textProps => (
+              <Text category='s2'
+                style={
+                  value === option.value
+                    ? { color: option.secondaryColor }
+                    : { color: option.primaryColor }
+                }
+              >
+                {option.label}
+              </Text>
+            )}
           </Button>
         ))}
 
