@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, ScrollView } from 'react-native';
+import { StyleSheet, ScrollView, KeyboardAvoidingView } from 'react-native';
 import { Layout, Button, Text, Divider } from '@ui-kitten/components';
 import { RouteProp, NavigationProp } from '@react-navigation/core';
 import ConfirmationModal from '../components/review/ConfirmationModal';
@@ -68,42 +68,44 @@ export default class ReviewScreen extends React.Component<Props, State> {
 
     return (
       <Layout style={styles.layout}>
-        <ScrollView showsVerticalScrollIndicator={false}>
-          <ConfirmationModal
-            message='Your review has been submitted.\nThank you!'
-            isVisible={isConfirmationModalVisible}
-            onConfirm={this.confirm}
-          />
-          <ConfirmationModal
-            message='Something went wrong.\nCheck your connection and try again.'
-            isVisible={isConnectionModalVisible}
-            onConfirm={() => this.setState({ isConnectionModalVisible: false })}
-          />
+        <KeyboardAvoidingView behavior='position' keyboardVerticalOffset={90}>
+          <ScrollView showsVerticalScrollIndicator={false}>
+            <ConfirmationModal
+              message='Your review has been submitted.\nThank you!'
+              isVisible={isConfirmationModalVisible}
+              onConfirm={this.confirm}
+            />
+            <ConfirmationModal
+              message='Something went wrong.\nCheck your connection and try again.'
+              isVisible={isConnectionModalVisible}
+              onConfirm={() => this.setState({ isConnectionModalVisible: false })}
+            />
 
-          <Text style={styles.description}>
-            Answer the following questions about <Text category="s1">{this.place.name}</Text>.
+            <Text style={styles.description}>
+              Answer the following questions about <Text category="s1">{this.place.name}</Text>.
             {' '}You may leave questions unanswered.
           </Text>
-          <Divider />
+            <Divider />
 
-          {this.place.category === 'Food' ?
-            (
-              <FoodReviewForm
-                review={review}
-                onFieldChange={this.updateReview}
-              />
-            ) : (
-              <RetailReviewForm
-                review={review}
-                onFieldChange={this.updateReview}
-              />
-            )
-          }
+            {this.place.category === 'Food' ?
+              (
+                <FoodReviewForm
+                  review={review}
+                  onFieldChange={this.updateReview}
+                />
+              ) : (
+                <RetailReviewForm
+                  review={review}
+                  onFieldChange={this.updateReview}
+                />
+              )
+            }
 
-          <Button style={styles.submitButton} onPress={this.submitReview}>
-            Submit Review
+            <Button style={styles.submitButton} onPress={this.submitReview}>
+              Submit Review
           </Button>
-        </ScrollView>
+          </ScrollView>
+        </KeyboardAvoidingView>
       </Layout>
     );
   }
