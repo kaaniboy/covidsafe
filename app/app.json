@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "covidsafe",
-    "slug": "covidsafe",
+    "name": "COVID Tracker",
+    "slug": "covid-tracker",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -17,7 +17,17 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.covidtracker.covidtracker",
+      "buildNumber": "1.0.0",
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "This app uses your location to show you nearby places."
+      }
+    },
+    "android": {
+      "package": "com.covidtracker.covidtracker",
+      "versionCode": 1,
+      "permissions": ["LOCATION"]
     }
   }
 }
