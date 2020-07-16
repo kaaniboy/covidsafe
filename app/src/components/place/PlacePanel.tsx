@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, YellowBox } from 'react-native';
+import { Platform, StyleSheet, View, YellowBox } from 'react-native';
 import { Layout, Button, Spinner, Text } from '@ui-kitten/components';
 import { Place } from '../../services/PlaceService';
 import ReviewService, { Review } from '../../services/ReviewService';
@@ -15,7 +15,6 @@ import * as FacebookAds from 'expo-ads-facebook';
 import FacebookAd from '../misc/FacebookAd';
 
 FacebookAds.AdSettings.addTestDevice(FacebookAds.AdSettings.currentDeviceHash);
-const FACEBOOK_AD = <FacebookAd />;
 
 YellowBox.ignoreWarnings([
   'VirtualizedLists should never be nested'
@@ -115,7 +114,6 @@ export default class PlacePanel extends React.Component<Props, State> {
   }
 
   render() {
-
     const { place, swipeablePanelRef } = this.props;
     const { reviews, rating, isLoading, loadingFailed } = this.state;
 
@@ -146,11 +144,15 @@ export default class PlacePanel extends React.Component<Props, State> {
         <RiskIndicator risk={rating.overallRisk} />
         <View style={styles.container}>
           <PlaceRatingsOverview place={place} rating={rating} />
+        </View>
 
-          {swipeablePanelRef && swipeablePanelRef.state.status === PANEL_LARGE_STATUS &&
-            FACEBOOK_AD
-          }
-          
+        {Platform.OS === 'ios'
+          && swipeablePanelRef
+          && swipeablePanelRef.state.status === PANEL_LARGE_STATUS &&
+          <FacebookAd />
+        }
+
+        <View style={styles.container}>
           <Text
             style={[styles.reviewHeader, styles.center]}
             category='h5'>
@@ -173,7 +175,8 @@ export default class PlacePanel extends React.Component<Props, State> {
 
 const styles = StyleSheet.create({
   container: {
-    margin: 10
+    marginHorizontal: 10,
+    marginVertical: 5
   },
   reviewHeader: {
     marginTop: 20
