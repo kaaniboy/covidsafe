@@ -16,6 +16,9 @@ const MAP_STYLE = [
   }
 ];
 
+const MARKER_HIGH = require('../../../assets/markerHigh.png');
+const MARKER_MEDIUM = require('../../../assets/markerMedium.png');
+const MARKER_LOW = require('../../../assets/markerLow.png');
 const MARKER = require('../../../assets/marker.png');
 
 const MARKER_ICON_SIZE = { ios: 20, android: 16 };
@@ -82,7 +85,7 @@ export default class PlaceMap extends React.Component<Props, {}> {
         }}
         zIndex={i}
         title={p.name}
-        image={MARKER}
+        image={[MARKER_HIGH, MARKER_MEDIUM, MARKER_LOW][Math.floor(Math.random() * 3)]}
         centerOffset={MARKER_OFFSET}
         anchor={ANCHOR}
         onPress={() => onMarkerPress(p)}

@@ -146,11 +146,7 @@ export default class PlacePanel extends React.Component<Props, State> {
           <PlaceRatingsOverview place={place} rating={rating} />
         </View>
 
-        {Platform.OS === 'ios'
-          && swipeablePanelRef
-          && swipeablePanelRef.state.status === PANEL_LARGE_STATUS &&
-          <FacebookAd />
-        }
+        
 
         <View style={styles.container}>
           <Text

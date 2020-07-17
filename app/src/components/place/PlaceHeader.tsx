@@ -13,9 +13,9 @@ export default function PlaceHeader({ place }: Props) {
     <View style={styles.container}>
       <View style={styles.details}>
         <Text category='h5'>
-          {place.name}
+          Dino's Bar & Grill 
         </Text>
-        <Text>{place.location.address}</Text>
+        <Text>P. Sherman 42 Wallaby Way</Text>
       </View>
       <View style={styles.icon}>
         <MaterialCommunityIcons name={PlaceService.getCategoryIcon(place)} size={48} />
