@@ -164,7 +164,7 @@ export default class PlacePanel extends React.Component<Props, State> {
             style={styles.reviewButton}
             onPress={this.openReviewScreen}
           >
-            Write a review
+            Write a Review
           </Button>
           <PlaceReviewsList reviews={reviews} />
         </View>
