@@ -14,8 +14,6 @@ import SwipeablePanel from 'rn-swipeable-panel';
 import * as FacebookAds from 'expo-ads-facebook';
 import FacebookAd from '../misc/FacebookAd';
 
-FacebookAds.AdSettings.addTestDevice(FacebookAds.AdSettings.currentDeviceHash);
-
 YellowBox.ignoreWarnings([
   'VirtualizedLists should never be nested'
 ]);
