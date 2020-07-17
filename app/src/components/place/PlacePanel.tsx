@@ -176,7 +176,7 @@ export default class PlacePanel extends React.Component<Props, State> {
 const styles = StyleSheet.create({
   container: {
     marginHorizontal: 10,
-    marginVertical: 5
+    marginTop: 5
   },
   reviewHeader: {
     marginTop: 20
