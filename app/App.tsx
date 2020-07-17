@@ -1,4 +1,5 @@
 import React from 'react';
+import { StatusBar, Platform } from 'react-native';
 import { ApplicationProvider } from '@ui-kitten/components';
 import { NavigationContainer, Route } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -22,6 +23,7 @@ const ScreenOptions = ({ route }: { route: Route<string> }) => ({
 export default function App() {
   return (
     <ApplicationProvider {...eva} theme={{ ...eva.light, ...theme }}>
+      <StatusBar barStyle={Platform.OS === 'ios' ? 'dark-content' : 'light-content'} />
       <NavigationContainer>
         <Stack.Navigator screenOptions={ScreenOptions}>
           <Stack.Screen
