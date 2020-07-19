@@ -13,7 +13,7 @@ const TILE_LAYER_ATTRIBUTION = '&amp;copy <a href="http://osm.org/copyright">Ope
 const MARKER_ICON = L.icon({
   iconUrl: 'marker.png',
   iconSize: [30, 65]
-})
+});
 
 type State = {
   position: { lat: number, lng: number },
@@ -70,6 +70,11 @@ export default class MapPage extends React.Component<{}, State> {
     this.setState({ isLoading: false });
   }
 
+  search = async (query: string) => {
+    const mapCenter = this.mapRef!.viewport.center!;
+    await this.retrievePlaces(mapCenter[0], mapCenter[1], query);
+  }
+
   selectPlace = (place: Place) => {
     this.setState({
       selectedPlace: place,
@@ -103,14 +108,12 @@ export default class MapPage extends React.Component<{}, State> {
             url={TILE_LAYER_URL}
           />
           {places.map(p => (
-            <div className='kaan'>
-              <Marker
-                position={[p.location.lat, p.location.lng]}
-                icon={MARKER_ICON}
-                key={p.id}
-                onClick={() => this.selectPlace(p)}
-              />
-            </div>
+            <Marker
+              position={[p.location.lat, p.location.lng]}
+              icon={MARKER_ICON}
+              key={p.id}
+              onClick={() => this.selectPlace(p)}
+            />
           ))}
         </Map>
         {selectedPlace &&
@@ -123,6 +126,7 @@ export default class MapPage extends React.Component<{}, State> {
           value={search}
           isLoading={isLoading}
           onChange={(search) => this.setState({ search })}
+          onEnter={query => this.search(query)}
           onClear={() => this.setState({ search: '' })}
         />
       </>

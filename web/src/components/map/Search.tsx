@@ -6,19 +6,26 @@ type Props = {
   value: string,
   isLoading: boolean,
   onChange: (search: string) => void,
+  onEnter: (search: string) => void,
   onClear: () => void
 }
 
-export default function Search({ value, isLoading, onChange, onClear }: Props) {
+export default function Search({ value, isLoading, onChange, onEnter, onClear }: Props) {
   return (
     <div className='search'>
       <InputGroup>
         <Form.Control
+
           className='search-input'
           value={value}
           size='lg'
           placeholder='Search nearby places...'
           onChange={event => onChange(event.target.value)}
+          onKeyPress={(event: any) => {
+            if (event.key === 'Enter') {
+              onEnter(value);
+            }
+          }}
         />
       </InputGroup>
       {isLoading &&

@@ -83,7 +83,7 @@ export default class MapPage extends React.Component<Props, State> {
     const { rating, reviews, isExpanded } = this.state;
     const height = isActive
       ? (isExpanded ? EXPANDED_HEIGHT : RETRACTED_HEIGHT)
-      : '0px';
+      : '0%';
 
     return (
       <Swipeable onSwiped={this.toggleExpanded} trackMouse>
