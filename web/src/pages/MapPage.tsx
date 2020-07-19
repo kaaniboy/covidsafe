@@ -1,8 +1,9 @@
 import React from 'react';
-import { Map, TileLayer, Marker, Popup } from 'react-leaflet';
+import { Map, TileLayer, Marker } from 'react-leaflet';
 import L from 'leaflet';
 import PlaceService, { Place } from '../services/PlaceService';
-import PlacePanel from '../components/PlacePanel';
+import PlacePanel from '../components/place/PlacePanel';
+import Search from '../components/map/Search';
 import 'leaflet/dist/leaflet.css';
 import '../styles/MapPage.scss';
 
@@ -80,6 +81,7 @@ export default class MapPage extends React.Component<{}, State> {
     const {
       position,
       zoom,
+      search,
       places,
       selectedPlace,
       isPlacePanelActive
@@ -100,12 +102,14 @@ export default class MapPage extends React.Component<{}, State> {
             url={TILE_LAYER_URL}
           />
           {places.map(p => (
-            <Marker
-              position={[p.location.lat, p.location.lng]}
-              icon={MARKER_ICON}
-              key={p.id}
-              onClick={() => this.selectPlace(p)}
-            />
+            <div className='kaan'>
+              <Marker
+                position={[p.location.lat, p.location.lng]}
+                icon={MARKER_ICON}
+                key={p.id}
+                onClick={() => this.selectPlace(p)}
+              />
+            </div>
           ))}
         </Map>
         {selectedPlace &&
@@ -114,6 +118,11 @@ export default class MapPage extends React.Component<{}, State> {
             isActive={isPlacePanelActive}
           />
         }
+        <Search
+          value={search}
+          onChange={(search) => this.setState({ search })}
+          onClear={() => this.setState({ search: '' })}
+        />
       </>
     )
   }
