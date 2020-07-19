@@ -61,18 +61,35 @@ export default class MapPage extends React.Component<{}, State> {
 
   retrievePlaces = async (lat: number, lng: number, query?: string) => {
     this.setState({ isLoading: true });
+
     try {
       const places = await PlaceService.retrievePlaces(lat, lng, query);
-      this.setState({ places });
+      this.setState({ places, isLoading: false });
+      return places;
     } catch (error) {
       console.log(error);
+      this.setState({ isLoading: false });
+      return [];
     }
-    this.setState({ isLoading: false });
   }
 
   search = async (query: string) => {
     const mapCenter = this.mapRef!.viewport.center!;
-    await this.retrievePlaces(mapCenter[0], mapCenter[1], query);
+    const places = await this.retrievePlaces(mapCenter[0], mapCenter[1], query);
+
+    if (places.length === 0) {
+      return;
+    }
+
+    const placeLats = places.map(p => p.location.lat);
+    const placeLngs = places.map(p => p.location.lng);
+    const southWest = { lat: Math.min(...placeLats), lng: Math.min(...placeLngs) };
+    const northEast = { lat: Math.max(...placeLats), lng: Math.max(...placeLngs) };
+
+    this.mapRef!.leafletElement.fitBounds(new L.LatLngBounds(
+      southWest,
+      northEast
+    ));
   }
 
   selectPlace = (place: Place) => {
