@@ -84,7 +84,8 @@ export default class MapPage extends React.Component<{}, State> {
       search,
       places,
       selectedPlace,
-      isPlacePanelActive
+      isPlacePanelActive,
+      isLoading
     } = this.state;
 
     return (
@@ -120,6 +121,7 @@ export default class MapPage extends React.Component<{}, State> {
         }
         <Search
           value={search}
+          isLoading={isLoading}
           onChange={(search) => this.setState({ search })}
           onClear={() => this.setState({ search: '' })}
         />

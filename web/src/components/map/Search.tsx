@@ -1,34 +1,45 @@
 import React from 'react';
-import { Form, InputGroup } from 'react-bootstrap';
+import { Spinner, Form, InputGroup } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 type Props = {
   value: string,
+  isLoading: boolean,
   onChange: (search: string) => void,
   onClear: () => void
 }
 
-export default function Search({ value, onChange, onClear }: Props) {
+export default function Search({ value, isLoading, onChange, onClear }: Props) {
   return (
-    <InputGroup className='search'>
-      <Form.Control
-        className='search-input'
-        value={value}
-        size='lg'
-        placeholder='Search nearby places...'
-        onChange={event => onChange(event.target.value)}
-      />
-      {value !== '' &&
-        <InputGroup.Append>
-          <InputGroup.Text>
-            <FontAwesomeIcon
-              icon='times'
-              color='black'
-              onClick={onClear}
-            />
-          </InputGroup.Text>
-        </InputGroup.Append>
+    <div className='search'>
+      <InputGroup>
+        <Form.Control
+          className='search-input'
+          value={value}
+          size='lg'
+          placeholder='Search nearby places...'
+          onChange={event => onChange(event.target.value)}
+        />
+      </InputGroup>
+      {isLoading &&
+        <Spinner
+          className='loading'
+          animation='grow'
+          variant='primary'
+        >
+          <span className="sr-only">Loading...</span>
+        </Spinner>
       }
-    </InputGroup>
+      {!isLoading && value !== '' &&
+        <div className='search-icon'>
+          <FontAwesomeIcon
+            icon='times'
+            color='black'
+            size='lg'
+            onClick={onClear}
+          />
+        </div>
+      }
+    </div>
   );
 }
