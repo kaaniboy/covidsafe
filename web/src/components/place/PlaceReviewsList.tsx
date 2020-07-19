@@ -1,5 +1,6 @@
 import React from 'react';
 import { Review } from '../../services/ReviewService';
+import PlaceReview from './PlaceReview';
 
 type Props = {
   reviews: Review[]
@@ -17,7 +18,7 @@ export default function PlaceReviewsList({ reviews }: Props) {
           This location does not have any reviews yet.
         </p>
       ) : (
-          <p>NELK</p>
+          contentReviews.map(r => <PlaceReview review={r} key={r.id} />)
         )
       }
     </div>
