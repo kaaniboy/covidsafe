@@ -13,7 +13,7 @@ export default function PlaceHeader({ place }: Props) {
     <Row className='place-header'>
       <Col xs={8}>
         <h5 className='place-name'>{place.name}</h5>
-        <p>{place.location.address}</p>
+        <p className='place-address'>{place.location.address}</p>
       </Col>
       <Col xs={4}>
         <FontAwesomeIcon
