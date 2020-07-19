@@ -1,11 +1,13 @@
 import React from 'react';
 import { Swipeable } from 'react-swipeable';
+import { Button } from 'react-bootstrap';
 import AnimateHeight from 'react-animate-height';
 import { Place } from '../services/PlaceService';
 import ReviewService, { Review } from '../services/ReviewService';
 import RatingService, { PlaceRating } from '../services/RatingService';
 import PlaceHeader from '../components/place/PlaceHeader';
 import RiskIndicator from './place/RiskIndicator';
+import PlaceReviewsList from './place/PlaceReviewsList';
 import '../styles/PlacePanel.scss';
 
 const ANIMATION_DURATION = 200;
@@ -74,11 +76,13 @@ export default class MapPage extends React.Component<Props, State> {
     }))
   };
 
+  openReview = () => { }
+
   render() {
     const { place, isActive } = this.props;
-    const { rating, isExpanded } = this.state;
+    const { rating, reviews, isExpanded } = this.state;
     const height = isActive
-      ? (isExpanded ? EXPANDED_HEIGHT: RETRACTED_HEIGHT)
+      ? (isExpanded ? EXPANDED_HEIGHT : RETRACTED_HEIGHT)
       : '0px';
 
     return (
@@ -88,8 +92,21 @@ export default class MapPage extends React.Component<Props, State> {
           height={height}
           className='place-panel'
         >
-        <PlaceHeader place={place} />
-        <RiskIndicator risk={rating.overallRisk} />
+          <PlaceHeader place={place} />
+          <RiskIndicator risk={rating.overallRisk} />
+
+          <h5 className='text-center'>Newest Reviews</h5>
+          <div className='text-center'>
+            <Button
+              className='text-center'
+              variant='outline-primary'
+              size='sm'
+              onClick={this.openReview}
+            >
+              Write a Review
+          </Button>
+          </div>
+          <PlaceReviewsList reviews={reviews} />
         </AnimateHeight>
       </Swipeable>
     );
