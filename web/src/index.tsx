@@ -1,15 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-
-export default function App() {
-  return (
-    <div>Here we go again...</div>
-  );
-}
+import MapPage from './pages/MapPage';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <MapPage />
   </React.StrictMode>,
   document.getElementById('root')
 );
