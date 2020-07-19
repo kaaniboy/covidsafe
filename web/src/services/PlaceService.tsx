@@ -1,3 +1,5 @@
+import { IconName } from '@fortawesome/fontawesome-svg-core';
+
 const PLACES_ENDPOINT = `https://covidsafe.herokuapp.com/places`;
 
 export type PlaceCategory = 'Food' | 'Nightlife Spot' | 'Shop & Service';
@@ -15,10 +17,10 @@ export type Place = {
 
 const DEFAULT_CATEGORY_ICON = 'store';
 const CATEGORY_ICONS = {
-  'Food': 'food',
-  'Nightlife Spot': 'food',
+  'Food': 'utensils',
+  'Nightlife Spot': 'utensils',
   'Shop & Service': 'store'
-} as { [key in PlaceCategory]: string };
+} as { [key in PlaceCategory]: IconName };
 
 async function retrievePlaces(
   lat: number,
@@ -41,7 +43,7 @@ async function retrievePlaces(
   );
 }
 
-function getCategoryIcon(place: Place): string {
+function getCategoryIcon(place: Place): IconName {
   return CATEGORY_ICONS[place.category] || DEFAULT_CATEGORY_ICON
 }
 

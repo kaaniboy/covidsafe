@@ -2,6 +2,7 @@ import React from 'react';
 import { Swipeable } from 'react-swipeable';
 import AnimateHeight from 'react-animate-height';
 import { Place } from '../services/PlaceService';
+import PlaceHeader from '../components/place/PlaceHeader';
 import '../styles/PlacePanel.scss';
 
 const ANIMATION_DURATION = 200;
@@ -29,9 +30,9 @@ export default class MapPage extends React.Component<Props, State> {
   };
 
   render() {
-    const { isActive } = this.props;
+    const { place, isActive } = this.props;
     const { isExpanded} = this.state;
-    const height = isActive 
+    const height = isActive
       ? (isExpanded ? EXPANDED_HEIGHT: RETRACTED_HEIGHT)
       : '0px';
 
@@ -42,6 +43,7 @@ export default class MapPage extends React.Component<Props, State> {
           height={height}
           className='place-panel'
         >
+        <PlaceHeader place={place} />
         </AnimateHeight>
       </Swipeable>
     );

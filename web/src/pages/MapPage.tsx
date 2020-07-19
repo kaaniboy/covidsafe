@@ -105,15 +105,15 @@ export default class MapPage extends React.Component<{}, State> {
               icon={MARKER_ICON}
               key={p.id}
               onClick={() => this.selectPlace(p)}
-            >
-              <Popup>{p.name}</Popup>
-            </Marker>
+            />
           ))}
         </Map>
-        <PlacePanel
-          place={selectedPlace!}
-          isActive={isPlacePanelActive}
-        />
+        {selectedPlace &&
+          <PlacePanel
+            place={selectedPlace!}
+            isActive={isPlacePanelActive}
+          />
+        }
       </>
     )
   }
