@@ -104,6 +104,10 @@ export default class PlacePanel extends React.Component<Props, State> {
           <AnimateHeight
             duration={ANIMATION_DURATION}
             height={height}
+            style={isExpanded
+              ? { overflowY: 'scroll' }
+              : {  overflowY: 'hidden' }
+            }
             className='place-panel'
           >
             <PlaceHeader place={place} />
