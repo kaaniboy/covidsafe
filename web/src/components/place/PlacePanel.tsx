@@ -81,14 +81,18 @@ export default class PlacePanel extends React.Component<Props, State> {
 
   render() {
     const { place, isActive } = this.props;
-    const { rating, reviews, isExpanded } = this.state;
+    const { rating, reviews, isExpanded, isReviewModalVisible } = this.state;
     const height = isActive
       ? (isExpanded ? EXPANDED_HEIGHT : RETRACTED_HEIGHT)
       : '0%';
 
     return (
       <>
-        <ReviewModal place={place} isVisible />
+        <ReviewModal
+          place={place}
+          isVisible={isReviewModalVisible}
+          onClose={() => this.setState({ isReviewModalVisible: false })}
+        />
         <Swipeable onSwiped={this.toggleExpanded} trackMouse>
           <AnimateHeight
             duration={ANIMATION_DURATION}

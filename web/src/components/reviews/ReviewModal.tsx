@@ -2,10 +2,13 @@ import React from 'react';
 import { Button, Modal } from 'react-bootstrap';
 import ReviewService, { Review } from '../../services/ReviewService';
 import { Place } from '../../services/PlaceService';
+import '../../styles/ReviewModal.scss';
+import FoodReviewForm from './FoodReviewForm';
 
 type Props = {
   place: Place,
-  isVisible: boolean
+  isVisible: boolean,
+  onClose: () => void
 };
 
 type State = {
@@ -43,13 +46,17 @@ export default class ReviewModal extends React.Component<Props, State> {
   }
 
   render() {
-    const { place, isVisible } = this.props;
+    const { place, isVisible, onClose } = this.props;
     const { review, isSubmitDisabled } = this.state;
 
+    if (!isVisible) {
+      return null;
+    }
+
     return (
-      <Modal>
-        <Modal.Header closeButton>
-          <Modal.Title>Modal title</Modal.Title>
+      <Modal.Dialog className='review-modal'>
+        <Modal.Header closeButton onHide={onClose}>
+          <Modal.Title>Write a Review</Modal.Title>
         </Modal.Header>
 
         <Modal.Body>
@@ -60,7 +67,10 @@ export default class ReviewModal extends React.Component<Props, State> {
 
           {place.category === 'Food' ?
             (
-              <p>FOOD</p>
+              <FoodReviewForm
+                review={review}
+                onFieldChange={this.updateReview}
+              />
             ) : (
               <p>RETAIL</p>
             )
@@ -75,7 +85,7 @@ export default class ReviewModal extends React.Component<Props, State> {
             Submit Review
           </Button>
         </Modal.Footer>
-      </Modal>
+      </Modal.Dialog>
     );
   }
 }
