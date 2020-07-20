@@ -52,13 +52,13 @@ export default function PlaceCategoryRatingPanel({ rating, category }: Props) {
   const categoryRisk = RatingService.getCategoryRisk(rating, category);
 
   const formattedRatingText = formattedRating && (
-    <p className={`text-center text-${RISK_COLORS[categoryRisk]}`}>
+    <h4 className={`category-rating text-center text-${RISK_COLORS[categoryRisk]}`}>
       {formattedRating}
-    </p>
+    </h4>
   );
 
   const categoryMessageText = categoryMessage && (
-    <p className='text-center'>
+    <p className='text-center rating-message'>
       {RatingService.getCategoryMessage(rating, category)}
     </p>
   );

@@ -57,7 +57,7 @@ export default function PlaceRatingsOverview({ place, rating }: Props) {
         >
           {buttons}
         </Col>
-        <Col xs={5}>
+        <Col xs={6}>
           <PlaceCategoryRatingPanel
             rating={rating}
             category={selectedCategory}

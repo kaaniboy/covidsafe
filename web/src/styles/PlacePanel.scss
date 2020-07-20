@@ -47,6 +47,7 @@
     font-weight: 600;
     color: white;
     text-align: center;
+    padding: 3px;
   }
 }
 
@@ -63,8 +64,7 @@
     margin: 10px 20px;
     padding: 5px;
 
-    border: 1px solid #DCDCDC;
-    border-radius: 5px;
+    border-radius: 10px;
     box-shadow: 0px 0px 3px 1px #dcdcdc;
 
     .review-time {
@@ -80,20 +80,37 @@
 }
 
 .place-ratings-overview {
+  padding-bottom: 20px;
+
   .category-button {
     font-size: 12px;
     margin: 2px 0;
     height: 20px;
-    padding: 0.1rem 0.1rem;
+    padding: 0.1rem 0.1rem 1.2rem 0.1rem;
   }
 
   .category-buttons {
-    border-width: 2px;
-    border-color: #E8E8E8;
-    border-style: solid;
     border-radius: 10px;
-    
+    box-shadow: 0px 0px 3px 1px #dcdcdc;
+
     padding-top: 8px;
     padding-bottom: 8px;
+  }
+
+  .category-rating-panel {
+    height: 100%;
+    width: 90%;
+    padding: 10px;
+
+    border-radius: 10px;
+    box-shadow: 0px 0px 3px 1px #dcdcdc;
+
+    .category-rating {
+      font-weight: 800;
+    }
+
+    .rating-message {
+      font-size: 14px;
+    }
   }
 }
