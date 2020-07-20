@@ -10,9 +10,14 @@ import '../styles/MapPage.scss';
 const TILE_LAYER_URL = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
 const TILE_LAYER_ATTRIBUTION = '&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors';
 
-const MARKER_ICON = L.icon({
-  iconUrl: 'marker.png',
-  iconSize: [30, 65]
+const FOOD_MARKER_ICON = L.icon({
+  iconUrl: 'markers/foodMarker.png',
+  iconSize: [30, 65],
+});
+
+const RETAIL_MARKER_ICON = L.icon({
+  iconUrl: 'markers/retailMarker.png',
+  iconSize: [30, 65],
 });
 
 type State = {
@@ -37,7 +42,7 @@ export default class MapPage extends React.Component<{}, State> {
       search: '',
       places: [],
       selectedPlace: null,
-      isLoading: false,
+      isLoading: true,
       isPlacePanelActive: false
     };
   }
@@ -127,7 +132,7 @@ export default class MapPage extends React.Component<{}, State> {
           {places.map(p => (
             <Marker
               position={[p.location.lat, p.location.lng]}
-              icon={MARKER_ICON}
+              icon={p.category === 'Food' ? FOOD_MARKER_ICON : RETAIL_MARKER_ICON}
               key={p.id}
               onClick={() => this.selectPlace(p)}
             />
