@@ -78,3 +78,22 @@
     }
   }
 }
+
+.place-ratings-overview {
+  .category-button {
+    font-size: 12px;
+    margin: 2px 0;
+    height: 20px;
+    padding: 0.1rem 0.1rem;
+  }
+
+  .category-buttons {
+    border-width: 2px;
+    border-color: #E8E8E8;
+    border-style: solid;
+    border-radius: 10px;
+    
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+}

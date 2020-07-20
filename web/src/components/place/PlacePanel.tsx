@@ -10,6 +10,7 @@ import RiskIndicator from './RiskIndicator';
 import PlaceReviewsList from './PlaceReviewsList';
 import ReviewModal from '../reviews/ReviewModal';
 import '../../styles/PlacePanel.scss';
+import PlaceRatingsOverview from './PlaceRatingsOverview';
 
 const ANIMATION_DURATION = 200;
 const EXPANDED_HEIGHT = '50%';
@@ -107,6 +108,7 @@ export default class PlacePanel extends React.Component<Props, State> {
           >
             <PlaceHeader place={place} />
             <RiskIndicator risk={rating.overallRisk} />
+            <PlaceRatingsOverview place={place} rating={rating} />
 
             <h5 className='text-center'>Newest Reviews</h5>
             <div className='text-center'>
