@@ -110,43 +110,40 @@ export default class PlacePanel extends React.Component<Props, State> {
           onClose={() => this.setState({ isReviewModalVisible: false })}
           onSubmit={this.onReviewSubmitted}
         />
-        <Swipeable onSwiped={this.toggleExpanded} trackMouse>
-          <AnimateHeight
-            duration={ANIMATION_DURATION}
-            height={height}
-            style={isExpanded
-              ? { overflowY: 'scroll' }
-              : { overflowY: 'hidden' }
-            }
-            className='place-panel'
-          >
-            <PlaceHeader place={place} />
-            {isLoading &&
-              <div className='text-center'>
-                <Spinner animation="border" variant="primary" />
-              </div>
-            }
-            {!isLoading &&
-              <>
-                <RiskIndicator risk={rating.overallRisk} />
-                <PlaceRatingsOverview place={place} rating={rating} />
 
-                <h5 className='text-center'>Newest Reviews</h5>
-                <div className='text-center'>
-                  <Button
-                    className='text-center'
-                    variant='outline-primary'
-                    size='sm'
-                    onClick={() => this.setState({ isReviewModalVisible: true })}
-                  >
-                    Write a Review
+        <AnimateHeight
+          duration={ANIMATION_DURATION}
+          height={height}
+          className='place-panel'
+        >
+          <Swipeable onSwiped={this.toggleExpanded} trackMouse>
+            <PlaceHeader place={place} />
+          </Swipeable>
+          {isLoading &&
+            <div className='text-center'>
+              <Spinner animation="border" variant="primary" />
+            </div>
+          }
+          {!isLoading &&
+            <div className='scrolling-panel'>
+              <RiskIndicator risk={rating.overallRisk} />
+              <PlaceRatingsOverview place={place} rating={rating} />
+
+              <h5 className='text-center'>Newest Reviews</h5>
+              <div className='text-center'>
+                <Button
+                  className='text-center'
+                  variant='outline-primary'
+                  size='sm'
+                  onClick={() => this.setState({ isReviewModalVisible: true })}
+                >
+                  Write a Review
               </Button>Î
               </div>
-                <PlaceReviewsList reviews={reviews} />
-              </>
-            }
-          </AnimateHeight>
-        </Swipeable>
+              <PlaceReviewsList reviews={reviews} />
+            </div>
+          }
+        </AnimateHeight>
       </>
     );
   }

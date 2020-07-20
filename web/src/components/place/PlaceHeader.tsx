@@ -11,11 +11,11 @@ type Props = {
 export default function PlaceHeader({ place }: Props) {
   return (
     <Row className='place-header'>
-      <Col xs={8}>
-        <h5 className='place-name'>{place.name}</h5>
-        <p className='place-address'>{place.location.address}</p>
+      <Col xs={10}>
+        <h5 className='place-name wrap-text'>{place.name}</h5>
+        <p className='place-address wrap-text'>{place.location.address}</p>
       </Col>
-      <Col xs={4}>
+      <Col xs={2}>
         <FontAwesomeIcon
           className='place-icon'
           icon={PlaceService.getCategoryIcon(place)}
