@@ -1,6 +1,6 @@
 import React from 'react';
 import { Swipeable } from 'react-swipeable';
-import { Button } from 'react-bootstrap';
+import { Button, Spinner } from 'react-bootstrap';
 import AnimateHeight from 'react-animate-height';
 import { Place } from '../../services/PlaceService';
 import ReviewService, { Review } from '../../services/ReviewService';
@@ -54,6 +54,9 @@ export default class PlacePanel extends React.Component<Props, State> {
   async componentDidUpdate(prevProps: Props) {
     if (!prevProps.isActive && this.props.isActive) {
       this.setState({ isExpanded: false });
+    }
+
+    if (prevProps.place.id !== this.props.place.id) {
       await this.retrieveReviews();
     }
   }
@@ -94,7 +97,7 @@ export default class PlacePanel extends React.Component<Props, State> {
 
   render() {
     const { place, isActive } = this.props;
-    const { rating, reviews, isExpanded, isReviewModalVisible } = this.state;
+    const { rating, reviews, isLoading, isExpanded, isReviewModalVisible } = this.state;
     const height = isActive
       ? (isExpanded ? EXPANDED_HEIGHT : RETRACTED_HEIGHT)
       : '0%';
@@ -113,26 +116,35 @@ export default class PlacePanel extends React.Component<Props, State> {
             height={height}
             style={isExpanded
               ? { overflowY: 'scroll' }
-              : {  overflowY: 'hidden' }
+              : { overflowY: 'hidden' }
             }
             className='place-panel'
           >
             <PlaceHeader place={place} />
-            <RiskIndicator risk={rating.overallRisk} />
-            <PlaceRatingsOverview place={place} rating={rating} />
+            {isLoading &&
+              <div className='text-center'>
+                <Spinner animation="border" variant="primary" />
+              </div>
+            }
+            {!isLoading &&
+              <>
+                <RiskIndicator risk={rating.overallRisk} />
+                <PlaceRatingsOverview place={place} rating={rating} />
 
-            <h5 className='text-center'>Newest Reviews</h5>
-            <div className='text-center'>
-              <Button
-                className='text-center'
-                variant='outline-primary'
-                size='sm'
-                onClick={() => this.setState({ isReviewModalVisible: true })}
-              >
-                Write a Review
-          </Button>
-            </div>
-            <PlaceReviewsList reviews={reviews} />
+                <h5 className='text-center'>Newest Reviews</h5>
+                <div className='text-center'>
+                  <Button
+                    className='text-center'
+                    variant='outline-primary'
+                    size='sm'
+                    onClick={() => this.setState({ isReviewModalVisible: true })}
+                  >
+                    Write a Review
+              </Button>Î
+              </div>
+                <PlaceReviewsList reviews={reviews} />
+              </>
+            }
           </AnimateHeight>
         </Swipeable>
       </>
