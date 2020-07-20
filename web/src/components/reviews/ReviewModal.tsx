@@ -9,7 +9,8 @@ import RetailReviewForm from './RetailReviewForm';
 type Props = {
   place: Place,
   isVisible: boolean,
-  onClose: () => void
+  onClose: () => void,
+  onSubmit: () => void
 };
 
 type State = {
@@ -22,23 +23,26 @@ export default class ReviewModal extends React.Component<Props, State> {
     super(props);
 
     const { place } = this.props;
+    const userId = this.getUserId();
 
     this.state = {
-      review: { placeId: place.id } as Review,
+      review: { userId, placeId: place.id } as Review,
       isSubmitDisabled: false,
     };
   }
 
   componentDidUpdate(prevProps: Props) {
     if (!prevProps.isVisible && this.props.isVisible) {
+      const userId = this.getUserId();
       this.setState({
-        review: { placeId: this.props.place.id } as Review,
+        review: { userId, placeId: this.props.place.id } as Review,
         isSubmitDisabled: false
       });
     }
   }
 
   submitReview = async () => {
+    const { onSubmit } = this.props;
     const { review } = this.state;
     this.setState({ isSubmitDisabled: true });
 
@@ -47,6 +51,19 @@ export default class ReviewModal extends React.Component<Props, State> {
     } catch (error) {
       console.log(error);
     }
+
+    onSubmit();
+  }
+
+  getUserId = () => {
+    if (!localStorage.getItem('userId')) {
+      localStorage.setItem(
+        'userId',
+        Math.random().toString(36).substring(2, 15)
+        + Math.random().toString(36).substring(2, 15)
+      );
+    }
+    return localStorage.getItem('userId');
   }
 
   updateReview = (field: string, value: any) => {
@@ -75,7 +92,8 @@ export default class ReviewModal extends React.Component<Props, State> {
             <p className='text-center'>
               Answer the following questions about <b>{place.name}</b>
               . You may leave questions unanswered.
-          </p>
+            </p>
+            <hr />
 
             {place.category === 'Food' ?
               (

@@ -44,6 +44,7 @@ export default function RatingQuestion({ question, leftLabel, rightLabel, value,
                   borderColor: option.primaryColor
                 }}
                 variant={value === option.value ? 'primary' : 'outline-primary'}
+                key={option.label}
                 onClick={() => onClick(option.value)}
               >
                 {option.label}

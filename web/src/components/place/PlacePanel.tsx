@@ -13,7 +13,7 @@ import '../../styles/PlacePanel.scss';
 import PlaceRatingsOverview from './PlaceRatingsOverview';
 
 const ANIMATION_DURATION = 200;
-const EXPANDED_HEIGHT = '50%';
+const EXPANDED_HEIGHT = '70%';
 const RETRACTED_HEIGHT = '20%';
 
 const DEFAULT_RATING: PlaceRating = {
@@ -80,6 +80,11 @@ export default class PlacePanel extends React.Component<Props, State> {
     }
   }
 
+  onReviewSubmitted = async () => {
+    this.setState({ isReviewModalVisible: false });
+    await this.retrieveReviews();
+  }
+
   toggleExpanded = () => {
     this.setState(prev => ({
       isExpanded: !prev.isExpanded
@@ -99,6 +104,7 @@ export default class PlacePanel extends React.Component<Props, State> {
           place={place}
           isVisible={isReviewModalVisible}
           onClose={() => this.setState({ isReviewModalVisible: false })}
+          onSubmit={this.onReviewSubmitted}
         />
         <Swipeable onSwiped={this.toggleExpanded} trackMouse>
           <AnimateHeight
