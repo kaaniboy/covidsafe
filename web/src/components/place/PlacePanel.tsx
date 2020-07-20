@@ -138,7 +138,7 @@ export default class PlacePanel extends React.Component<Props, State> {
                   onClick={() => this.setState({ isReviewModalVisible: true })}
                 >
                   Write a Review
-              </Button>Î
+              </Button>
               </div>
               <PlaceReviewsList reviews={reviews} />
             </div>

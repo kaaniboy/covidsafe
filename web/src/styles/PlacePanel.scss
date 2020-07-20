@@ -24,7 +24,7 @@
 
   .scrolling-panel {
     position: absolute;
-    top: 70px;
+    top: 65px;
     left: 0px;
     right: 0px;
     bottom: 0px;
@@ -97,6 +97,7 @@
 }
 
 .place-ratings-overview {
+  padding-top: 5px;
   padding-bottom: 20px;
 
   .category-button {
