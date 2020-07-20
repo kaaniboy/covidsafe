@@ -28,6 +28,15 @@ export default class ReviewModal extends React.Component<Props, State> {
     };
   }
 
+  componentDidUpdate(prevProps: Props) {
+    if (!prevProps.isVisible && this.props.isVisible) {
+      this.setState({
+        review: { placeId: this.props.place.id } as Review,
+        isSubmitDisabled: false
+      });
+    }
+  }
+
   submitReview = async () => {
     const { review } = this.state;
     this.setState({ isSubmitDisabled: true });
@@ -56,13 +65,13 @@ export default class ReviewModal extends React.Component<Props, State> {
     return (
       <>
         <div className='backdrop'></div>
-        <Modal.Dialog className='review-modal'>
+        <Modal.Dialog className='review-modal' scrollable>
           <Modal.Header closeButton onHide={onClose}>
             <Modal.Title>Write a Review</Modal.Title>
           </Modal.Header>
 
           <Modal.Body>
-            <p>
+            <p className='text-center'>
               Answer the following questions about <b>{place.name}</b>
               . You may leave questions unanswered.
           </p>

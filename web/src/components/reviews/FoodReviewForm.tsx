@@ -1,4 +1,5 @@
 import React from 'react';
+import { Form } from 'react-bootstrap';
 import { Review } from '../../services/ReviewService';
 import RadioQuestion from './RadioQuestion';
 import RatingQuestion from './RatingQuestion';
@@ -47,6 +48,13 @@ export default function FoodReviewForm({ review, onFieldChange }: Props) {
         rightLabel='Very carefully'
         value={review.distancing}
         onChange={value => onFieldChange('distancing', value)}
+      />
+
+      <h6 className='text-center'>Any additional comments?</h6>
+      <Form.Control
+        as="textarea"
+        rows={3}
+        placeholder='Include any other details related to your visit.'
       />
     </div>
   );
