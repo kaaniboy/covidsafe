@@ -8,6 +8,7 @@ import RatingService, { PlaceRating } from '../../services/RatingService';
 import PlaceHeader from './PlaceHeader';
 import RiskIndicator from './RiskIndicator';
 import PlaceReviewsList from './PlaceReviewsList';
+import ReviewModal from '../reviews/ReviewModal';
 import '../../styles/PlacePanel.scss';
 
 const ANIMATION_DURATION = 200;
@@ -29,9 +30,10 @@ type State = {
   rating: PlaceRating,
   isExpanded: boolean,
   isLoading: boolean,
+  isReviewModalVisible: boolean
 };
 
-export default class MapPage extends React.Component<Props, State> {
+export default class PlacePanel extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
 
@@ -39,7 +41,8 @@ export default class MapPage extends React.Component<Props, State> {
       reviews: [],
       rating: DEFAULT_RATING,
       isLoading: false,
-      isExpanded: false
+      isExpanded: false,
+      isReviewModalVisible: false
     };
   }
 
@@ -76,8 +79,6 @@ export default class MapPage extends React.Component<Props, State> {
     }))
   };
 
-  openReview = () => { }
-
   render() {
     const { place, isActive } = this.props;
     const { rating, reviews, isExpanded } = this.state;
@@ -86,29 +87,32 @@ export default class MapPage extends React.Component<Props, State> {
       : '0%';
 
     return (
-      <Swipeable onSwiped={this.toggleExpanded} trackMouse>
-        <AnimateHeight
-          duration={ANIMATION_DURATION}
-          height={height}
-          className='place-panel'
-        >
-          <PlaceHeader place={place} />
-          <RiskIndicator risk={rating.overallRisk} />
+      <>
+        <ReviewModal place={place} isVisible />
+        <Swipeable onSwiped={this.toggleExpanded} trackMouse>
+          <AnimateHeight
+            duration={ANIMATION_DURATION}
+            height={height}
+            className='place-panel'
+          >
+            <PlaceHeader place={place} />
+            <RiskIndicator risk={rating.overallRisk} />
 
-          <h5 className='text-center'>Newest Reviews</h5>
-          <div className='text-center'>
-            <Button
-              className='text-center'
-              variant='outline-primary'
-              size='sm'
-              onClick={this.openReview}
-            >
-              Write a Review
+            <h5 className='text-center'>Newest Reviews</h5>
+            <div className='text-center'>
+              <Button
+                className='text-center'
+                variant='outline-primary'
+                size='sm'
+                onClick={() => this.setState({ isReviewModalVisible: true })}
+              >
+                Write a Review
           </Button>
-          </div>
-          <PlaceReviewsList reviews={reviews} />
-        </AnimateHeight>
-      </Swipeable>
+            </div>
+            <PlaceReviewsList reviews={reviews} />
+          </AnimateHeight>
+        </Swipeable>
+      </>
     );
   }
 }
