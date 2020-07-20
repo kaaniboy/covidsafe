@@ -57,7 +57,7 @@ export default class MapPage extends React.Component<{}, State> {
           lng: longitude
         }
       });
-      await this.retrievePlaces(latitude, longitude);
+      await this.search();
     }, async error => {
       const { lat, lng } = this.state.position;
       await this.retrievePlaces(lat, lng);
@@ -78,7 +78,7 @@ export default class MapPage extends React.Component<{}, State> {
     }
   }
 
-  search = async (query: string) => {
+  search = async (query?: string) => {
     const mapCenter = this.mapRef!.viewport.center!;
     const places = await this.retrievePlaces(mapCenter[0], mapCenter[1], query);
 
