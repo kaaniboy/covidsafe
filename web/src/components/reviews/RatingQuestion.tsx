@@ -33,6 +33,16 @@ export default function RatingQuestion({ question, leftLabel, rightLabel, value,
           <ButtonGroup>
             {OPTIONS.map(option => (
               <Button
+                className='rating-button'
+                style={{
+                  color: value === option.value
+                    ? 'white'
+                    : option.primaryColor,
+                  backgroundColor: value === option.value
+                    ? option.primaryColor
+                    : option.secondaryColor,
+                  borderColor: option.primaryColor
+                }}
                 variant={value === option.value ? 'primary' : 'outline-primary'}
                 onClick={() => onClick(option.value)}
               >

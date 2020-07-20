@@ -25,6 +25,15 @@
     display: inline-block;
   }
 
+  .rating-button {
+    font-weight: 600;
+  }
+
+  .rating-button:focus, .rating-button:active {
+    outline: none !important;
+    box-shadow: none;
+ }
+
   .question-label {
     text-align: center;
     margin-bottom: 10px;
