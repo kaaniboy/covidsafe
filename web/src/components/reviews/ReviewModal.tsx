@@ -4,6 +4,7 @@ import ReviewService, { Review } from '../../services/ReviewService';
 import { Place } from '../../services/PlaceService';
 import '../../styles/ReviewModal.scss';
 import FoodReviewForm from './FoodReviewForm';
+import RetailReviewForm from './RetailReviewForm';
 
 type Props = {
   place: Place,
@@ -83,7 +84,10 @@ export default class ReviewModal extends React.Component<Props, State> {
                   onFieldChange={this.updateReview}
                 />
               ) : (
-                <p>RETAIL</p>
+                <RetailReviewForm
+                  review={review}
+                  onFieldChange={this.updateReview}
+                />
               )
             }
 
