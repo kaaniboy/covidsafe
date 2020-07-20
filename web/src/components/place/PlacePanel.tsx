@@ -51,9 +51,10 @@ export default class PlacePanel extends React.Component<Props, State> {
     await this.retrieveReviews();
   }
 
-  componentDidUpdate(prevProps: Props) {
+  async componentDidUpdate(prevProps: Props) {
     if (!prevProps.isActive && this.props.isActive) {
       this.setState({ isExpanded: false });
+      await this.retrieveReviews();
     }
   }
 

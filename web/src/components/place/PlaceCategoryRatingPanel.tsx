@@ -17,6 +17,7 @@ const DINING_TYPE_LABELS = {
 function renderCheckMark() {
   return (
     <FontAwesomeIcon
+      className='check-icon'
       icon='check'
       color='#00E096'
       size='lg'
@@ -30,13 +31,13 @@ function renderDiningTypes(rating: PlaceRating) {
   }
 
   return (
-    <div className='category-rating-panel'>
-      <h6 className='text-center'>
+    <div>
+      <p className='text-center rating-message'>
         This location offers these dining styles:
-      </h6>
+      </p>
       {Object.keys(DINING_TYPE_LABELS).map(type => (
         rating.diningTypes![type as DiningType] > 0 && (
-          <p>
+          <p className='dining-type text-center'>
             {renderCheckMark()}
             {DINING_TYPE_LABELS[type as DiningType]}
           </p>
