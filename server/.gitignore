@@ -1,6 +1,0 @@
-pgweb-dev.sh
-pgweb-prod-admin.sh
-pgweb-prod-user.sh
-node_modules
-.env
-.DS_Store
