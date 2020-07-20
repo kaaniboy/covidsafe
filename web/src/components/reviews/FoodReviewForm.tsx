@@ -1,6 +1,7 @@
 import React from 'react';
 import { Review } from '../../services/ReviewService';
 import RadioQuestion from './RadioQuestion';
+import RatingQuestion from './RatingQuestion';
 
 const DINING_OPTIONS = [
   { label: 'Dine-In', value: 'dine_in' },
@@ -22,6 +23,30 @@ export default function FoodReviewForm({ review, onFieldChange }: Props) {
         options={DINING_OPTIONS}
         value={review.diningType}
         onChange={value => onFieldChange('diningType', value)}
+      />
+
+      <RatingQuestion
+        question='Do employees wear masks?'
+        leftLabel='None'
+        rightLabel='All'
+        value={review.employeeMasks}
+        onChange={value => onFieldChange('employeeMasks', value)}
+      />
+
+      <RatingQuestion
+        question='Do customers wear masks?'
+        leftLabel='None'
+        rightLabel='All'
+        value={review.customerMasks}
+        onChange={value => onFieldChange('customerMasks', value)}
+      />
+
+      <RatingQuestion
+        question='How carefully is social distancing enforced?'
+        leftLabel='Not at all'
+        rightLabel='Very carefully'
+        value={review.distancing}
+        onChange={value => onFieldChange('distancing', value)}
       />
     </div>
   );

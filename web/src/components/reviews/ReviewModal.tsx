@@ -54,38 +54,41 @@ export default class ReviewModal extends React.Component<Props, State> {
     }
 
     return (
-      <Modal.Dialog className='review-modal'>
-        <Modal.Header closeButton onHide={onClose}>
-          <Modal.Title>Write a Review</Modal.Title>
-        </Modal.Header>
+      <>
+        <div className='backdrop'></div>
+        <Modal.Dialog className='review-modal'>
+          <Modal.Header closeButton onHide={onClose}>
+            <Modal.Title>Write a Review</Modal.Title>
+          </Modal.Header>
 
-        <Modal.Body>
-          <p>
-            Answer the following questions about <b>{place.name}</b>
-            . You may leave questions unanswered.
+          <Modal.Body>
+            <p>
+              Answer the following questions about <b>{place.name}</b>
+              . You may leave questions unanswered.
           </p>
 
-          {place.category === 'Food' ?
-            (
-              <FoodReviewForm
-                review={review}
-                onFieldChange={this.updateReview}
-              />
-            ) : (
-              <p>RETAIL</p>
-            )
-          }
+            {place.category === 'Food' ?
+              (
+                <FoodReviewForm
+                  review={review}
+                  onFieldChange={this.updateReview}
+                />
+              ) : (
+                <p>RETAIL</p>
+              )
+            }
 
-        </Modal.Body>
-        <Modal.Footer>
-          <Button
-            onClick={this.submitReview}
-            disabled={isSubmitDisabled}
-          >
-            Submit Review
+          </Modal.Body>
+          <Modal.Footer>
+            <Button
+              onClick={this.submitReview}
+              disabled={isSubmitDisabled}
+            >
+              Submit Review
           </Button>
-        </Modal.Footer>
-      </Modal.Dialog>
+          </Modal.Footer>
+        </Modal.Dialog>
+      </>
     );
   }
 }
