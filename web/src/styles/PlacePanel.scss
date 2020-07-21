@@ -28,8 +28,9 @@
     left: 0px;
     right: 0px;
     bottom: 0px;
+
     overflow-y: scroll;
-    overscroll-behavior: none;
+    overflow-x: hidden;
   }
 }
 
