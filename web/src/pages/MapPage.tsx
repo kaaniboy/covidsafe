@@ -10,8 +10,11 @@ import '../styles/MapPage.scss';
 
 const SHOW_WELCOME_MODAL_ITEM = 'showWelcomeModal';
 
+// http://leaflet-extras.github.io/leaflet-providers/preview/
 const TILE_LAYER_URL = 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png';
-const TILE_LAYER_ATTRIBUTION = '&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors';
+const TILE_LAYER_ATTRIBUTION =
+  '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors '
+  + ' &copy; <a href="https://carto.com/attributions">CARTO</a>';
 
 const FOOD_MARKER_ICON = L.icon({
   iconUrl: 'markers/foodMarker.png',
