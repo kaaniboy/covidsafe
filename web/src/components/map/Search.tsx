@@ -15,10 +15,8 @@ export default function Search({ value, isLoading, onChange, onEnter, onClear }:
     <div className='search'>
       <InputGroup>
         <Form.Control
-
           className='search-input'
           value={value}
-          size='lg'
           placeholder='Search nearby places...'
           onChange={event => onChange(event.target.value)}
           onKeyPress={(event: any) => {
