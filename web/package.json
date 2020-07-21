@@ -27,6 +27,7 @@
     "typescript": "~3.8"
   },
   "scripts": {
+    "deploy-web": "GENERATE_SOURCEMAP=false yarn build && gh-pages --dist build --repo https://github.com/kaaniboy/covidsafe --branch gh-pages",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
