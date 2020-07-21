@@ -1,5 +1,5 @@
 import React from 'react';
-import { Risk, RISK_COLORS } from '../../services/RatingService';
+import { Risk, RISK_COLORS, RISK_LABELS } from '../../services/RatingService';
 
 type Props = {
   risk: Risk
@@ -10,7 +10,7 @@ export default function RiskIndicator({ risk }: Props) {
     return null;
   }
 
-  const riskText = risk.toUpperCase() + ' RISK';
+  const riskText = RISK_LABELS[risk].toUpperCase() + ' RISK';
 
   return (
     <div className={`risk-indicator bg-${RISK_COLORS[risk]}`}>

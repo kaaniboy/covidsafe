@@ -28,6 +28,13 @@ export const RISK_COLORS: { [key in Risk]: string } = {
   'high': 'danger'
 }
 
+export const RISK_LABELS: { [key in Risk]: string } = {
+  'unknown': '',
+  'low': 'normal',
+  'medium': 'increased',
+  'high': 'high'
+};
+
 const NO_RATINGS_MESSAGE = 'This category does not have any ratings yet.';
 const RATING_CATEGORY_MESSAGES: { [key in RatingCategory]: string } = {
   'employeeMasks': 'Employees %s wear masks.',
