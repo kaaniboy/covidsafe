@@ -13,11 +13,13 @@ const TILE_LAYER_ATTRIBUTION = '&amp;copy <a href="http://osm.org/copyright">Ope
 const FOOD_MARKER_ICON = L.icon({
   iconUrl: 'markers/foodMarker.png',
   iconSize: [30, 65],
+  iconAnchor: [15, 65]
 });
 
 const RETAIL_MARKER_ICON = L.icon({
   iconUrl: 'markers/retailMarker.png',
   iconSize: [30, 65],
+  iconAnchor: [15, 65]
 });
 
 type State = {
