@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Risk, RISK_COLORS } from '../../services/RatingService';
+import { Risk, RISK_COLORS, RISK_LABELS } from '../../services/RatingService';
 
 import { Text, useTheme } from '@ui-kitten/components';
 
@@ -15,7 +15,7 @@ export default function RiskIndicator({ risk }: Props) {
 
   const theme = useTheme();
   const backgroundColor = theme[`color-${RISK_COLORS[risk]}-default`];
-  const riskText = risk.toUpperCase() + ' RISK';
+  const riskText = RISK_LABELS[risk].toUpperCase() + ' RISK';
 
   return (
     <View style={[styles.container, { backgroundColor }]}>
