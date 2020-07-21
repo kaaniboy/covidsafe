@@ -2,9 +2,9 @@ import React from 'react';
 import { Button, Modal } from 'react-bootstrap';
 import ReviewService, { Review } from '../../services/ReviewService';
 import { Place } from '../../services/PlaceService';
-import '../../styles/ReviewModal.scss';
-import FoodReviewForm from './FoodReviewForm';
-import RetailReviewForm from './RetailReviewForm';
+import '../../styles/Modal.scss';
+import FoodReviewForm from '../reviews/FoodReviewForm';
+import RetailReviewForm from '../reviews/RetailReviewForm';
 
 type Props = {
   place: Place,

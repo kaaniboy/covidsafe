@@ -4,8 +4,11 @@ import L from 'leaflet';
 import PlaceService, { Place } from '../services/PlaceService';
 import PlacePanel from '../components/place/PlacePanel';
 import Search from '../components/map/Search';
+import WelcomeModal from '../components/modal/WelcomeModal';
 import 'leaflet/dist/leaflet.css';
 import '../styles/MapPage.scss';
+
+const SHOW_WELCOME_MODAL_ITEM = 'showWelcomeModal';
 
 const TILE_LAYER_URL = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
 const TILE_LAYER_ATTRIBUTION = '&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors';
@@ -30,6 +33,7 @@ type State = {
   selectedPlace: Place | null,
   isLoading: boolean,
   isPlacePanelActive: boolean,
+  isWelcomeModalVisible: boolean
 };
 
 export default class MapPage extends React.Component<{}, State> {
@@ -45,11 +49,13 @@ export default class MapPage extends React.Component<{}, State> {
       places: [],
       selectedPlace: null,
       isLoading: true,
-      isPlacePanelActive: false
+      isPlacePanelActive: false,
+      isWelcomeModalVisible: false
     };
   }
 
   async componentDidMount() {
+    this.showWelcomeModal();
     navigator.geolocation.getCurrentPosition(async pos => {
       const { latitude, longitude } = pos.coords;
 
@@ -64,6 +70,19 @@ export default class MapPage extends React.Component<{}, State> {
       const { lat, lng } = this.state.position;
       await this.retrievePlaces(lat, lng);
     });
+  }
+
+  showWelcomeModal = () => {
+    if (localStorage.getItem(SHOW_WELCOME_MODAL_ITEM) !== 'false') {
+      this.setState({ isWelcomeModalVisible: true });
+    };
+  }
+
+  onWelcomeModalClose = (dontShowAgain: boolean) => {
+    this.setState({ isWelcomeModalVisible: false });
+    if (dontShowAgain) {
+      localStorage.setItem(SHOW_WELCOME_MODAL_ITEM, 'false');
+    }
   }
 
   retrievePlaces = async (lat: number, lng: number, query?: string) => {
@@ -114,11 +133,16 @@ export default class MapPage extends React.Component<{}, State> {
       places,
       selectedPlace,
       isPlacePanelActive,
-      isLoading
+      isLoading,
+      isWelcomeModalVisible
     } = this.state;
 
     return (
       <>
+        <WelcomeModal
+          isVisible={isWelcomeModalVisible}
+          onClose={this.onWelcomeModalClose}
+        />
         <Map
           center={position}
           zoom={zoom}

@@ -8,7 +8,7 @@ import RatingService, { PlaceRating } from '../../services/RatingService';
 import PlaceHeader from './PlaceHeader';
 import RiskIndicator from './RiskIndicator';
 import PlaceReviewsList from './PlaceReviewsList';
-import ReviewModal from '../reviews/ReviewModal';
+import ReviewModal from '../modal/ReviewModal';
 import '../../styles/PlacePanel.scss';
 import PlaceRatingsOverview from './PlaceRatingsOverview';
 

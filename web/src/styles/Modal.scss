@@ -1,5 +1,9 @@
-.review-modal {
+.review-modal, .welcome-modal {
   z-index: 10002;
+}
+
+.modal-content {
+  max-height: 80vh !important;
 }
 
 .backdrop {
