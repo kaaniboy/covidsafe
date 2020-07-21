@@ -10,7 +10,7 @@ import '../styles/MapPage.scss';
 
 const SHOW_WELCOME_MODAL_ITEM = 'showWelcomeModal';
 
-const TILE_LAYER_URL = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+const TILE_LAYER_URL = 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png';
 const TILE_LAYER_ATTRIBUTION = '&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors';
 
 const FOOD_MARKER_ICON = L.icon({
