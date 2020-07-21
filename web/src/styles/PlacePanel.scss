@@ -29,6 +29,7 @@
     right: 0px;
     bottom: 0px;
     overflow-y: scroll;
+    overscroll-behavior: none;
   }
 }
 
@@ -102,7 +103,7 @@
 
   .category-button {
     font-size: 12px;
-    margin: 2px 0;
+    margin: 10px 0;
     height: 20px;
     padding: 0.1rem 0.1rem 1.2rem 0.1rem;
   }
