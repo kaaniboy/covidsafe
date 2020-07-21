@@ -116,8 +116,12 @@ export default class PlacePanel extends React.Component<Props, State> {
           height={height}
           className='place-panel'
         >
-          <Swipeable onSwiped={this.toggleExpanded} trackMouse>
-            <PlaceHeader place={place} />
+          <Swipeable onSwiped={this.toggleExpanded}>
+            <PlaceHeader
+              place={place}
+              isPanelExpanded={isExpanded}
+              onToggleExpanded={this.toggleExpanded}
+            />
           </Swipeable>
           {isLoading &&
             <div className='text-center'>

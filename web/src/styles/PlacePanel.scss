@@ -24,7 +24,7 @@
 
   .scrolling-panel {
     position: absolute;
-    top: 65px;
+    top: 85px;
     left: 0px;
     right: 0px;
     bottom: 0px;
@@ -35,7 +35,7 @@
 }
 
 .place-header {
-  padding: 10px;
+  padding: 0 10px 10px 10px;
 
   .wrap-text {
     text-overflow: ellipsis;
@@ -56,6 +56,10 @@
     margin-top: 5px;
     margin-right: 10px;
     float: right
+  }
+
+  .chevron-icon {
+    cursor: pointer;
   }
 }
 
