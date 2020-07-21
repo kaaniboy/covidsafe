@@ -1,13 +1,13 @@
 {
   "expo": {
-    "name": "COVID Tracker",
-    "slug": "covid-tracker",
+    "name": "Mask Traffic",
+    "slug": "mask-traffic",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "primaryColor": "#ffffff",
     "facebookAppId": "923367898132562",
-    "facebookDisplayName": "COVID Tracker",
+    "facebookDisplayName": "Mask Traffic",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -21,14 +21,14 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.covidtracker.covidtracker",
+      "bundleIdentifier": "com.masktraffic.masktraffic",
       "buildNumber": "1.0.0",
       "infoPlist": {
         "NSLocationWhenInUseUsageDescription": "This app uses your location to show you nearby places."
       }
     },
     "android": {
-      "package": "com.covidtracker.covidtracker",
+      "package": "com.masktraffic.masktraffic",
       "versionCode": 1,
       "permissions": ["LOCATION"]
     }
