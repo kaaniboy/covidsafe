@@ -26,7 +26,8 @@ const RECOMMENDED_CATEGORIES = {
   'food': ['food', 'restaurant', 'restaurants'],
   'breakfast': ['breakfast'],
   'lunch': ['lunch'],
-  'dinner': ['dinner', 'dining']
+  'dinner': ['dinner', 'dining'],
+  'drinks': ['drinks', 'bar', 'bars', 'pub', 'pubs', 'club', 'clubs', 'brewery', 'breweries']
 };
 
 function loadCategories() {
