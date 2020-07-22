@@ -14,7 +14,7 @@ import PlaceRatingsOverview from './PlaceRatingsOverview';
 
 const ANIMATION_DURATION = 200;
 const EXPANDED_HEIGHT = '70%';
-const RETRACTED_HEIGHT = '20%';
+const RETRACTED_HEIGHT = '30%';
 
 const DEFAULT_RATING: PlaceRating = {
   categories: {},

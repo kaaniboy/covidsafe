@@ -44,7 +44,7 @@ export default function RetailReviewForm({ review, onFieldChange }: Props) {
       <RatingQuestion
         question='How carefully is social distancing enforced?'
         leftLabel='Not at all'
-        rightLabel='Very carefully'
+        rightLabel='Very'
         value={review.distancing}
         onChange={value => onFieldChange('distancing', value)}
       />
