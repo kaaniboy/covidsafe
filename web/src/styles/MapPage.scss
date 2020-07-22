@@ -65,4 +65,12 @@ html, body {
     right: 10px;
     top: 3px;
   }
+
+  .show-nearby {
+    z-index: 10000;
+    position: absolute;
+    right: 4px;
+    top: 4px;
+    border-radius: 25px;
+  }
 }

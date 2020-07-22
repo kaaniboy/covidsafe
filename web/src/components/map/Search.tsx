@@ -1,5 +1,5 @@
 import React from 'react';
-import { Spinner, Form, InputGroup } from 'react-bootstrap';
+import { Spinner, Form, InputGroup, Button } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 type Props = {
@@ -17,7 +17,7 @@ export default function Search({ value, isLoading, onChange, onEnter, onClear }:
         <Form.Control
           className='search-input'
           value={value}
-          placeholder='Search nearby places...'
+          placeholder='Search places...'
           onChange={event => onChange(event.target.value)}
           onKeyPress={(event: any) => {
             if (event.key === 'Enter') {
@@ -44,6 +44,15 @@ export default function Search({ value, isLoading, onChange, onEnter, onClear }:
             onClick={onClear}
           />
         </div>
+      }
+      {!isLoading && value === '' &&
+        <Button
+          className='show-nearby'
+          size='sm'
+          onClick={() => onEnter(value)}
+        >
+          Show nearby
+        </Button>
       }
     </div>
   );
