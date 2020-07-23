@@ -25,8 +25,10 @@ const BATCH_PLACE_RATINGS_QUERY = `
 
 function createPlaceRatingsMap(placeRatings) {
   let placeRatingsMap = {};
+
   placeRatings.forEach(placeRating => {
     const transformedRating = {
+      overallRating: placeRating.overallRating,
       categories: {
         employeeMasks: placeRating.employeeMasks,
         customerMasks: placeRating.customerMasks,
