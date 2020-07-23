@@ -8,6 +8,7 @@ import Search from '../components/map/Search';
 import WelcomeModal from '../components/modal/WelcomeModal';
 import 'leaflet/dist/leaflet.css';
 import '../styles/MapPage.scss';
+import MarkerService from '../services/MarkerService';
 
 const SHOW_WELCOME_MODAL_ITEM = 'showWelcomeModal';
 
@@ -16,18 +17,6 @@ const TILE_LAYER_URL = 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z
 const TILE_LAYER_ATTRIBUTION =
   '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors '
   + ' &copy; <a href="https://carto.com/attributions">CARTO</a>';
-
-const FOOD_MARKER_ICON = L.icon({
-  iconUrl: 'markers/foodMarker.png',
-  iconSize: [30, 65],
-  iconAnchor: [15, 65]
-});
-
-const RETAIL_MARKER_ICON = L.icon({
-  iconUrl: 'markers/retailMarker.png',
-  iconSize: [30, 65],
-  iconAnchor: [15, 65]
-});
 
 type State = {
   position: { lat: number, lng: number },
@@ -168,7 +157,7 @@ export default class MapPage extends React.Component<{}, State> {
           {places.map(p => (
             <Marker
               position={[p.location.lat, p.location.lng]}
-              icon={p.category === 'Food' ? FOOD_MARKER_ICON : RETAIL_MARKER_ICON}
+              icon={MarkerService.getMarkerIcon(p)}
               key={p.id}
               onClick={() => this.selectPlace(p)}
             />
