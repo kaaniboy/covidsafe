@@ -2,6 +2,7 @@ import React from 'react';
 import { Map, TileLayer, Marker } from 'react-leaflet';
 import L from 'leaflet';
 import PlaceService, { Place } from '../services/PlaceService';
+import { PlaceRating } from '../services/RatingService';
 import PlacePanel from '../components/place/PlacePanel';
 import Search from '../components/map/Search';
 import WelcomeModal from '../components/modal/WelcomeModal';
@@ -128,6 +129,12 @@ export default class MapPage extends React.Component<{}, State> {
     });
   };
 
+  onReviewSubmitted = (placeRating: PlaceRating) => {
+    const { selectedPlace } = this.state;
+    selectedPlace!.rating = placeRating;
+    this.setState({ selectedPlace });
+  };
+
   render() {
     const {
       position,
@@ -171,6 +178,7 @@ export default class MapPage extends React.Component<{}, State> {
           <PlacePanel
             place={selectedPlace!}
             isActive={isPlacePanelActive}
+            onReviewSubmitted={this.onReviewSubmitted}
           />
         }
         <Search

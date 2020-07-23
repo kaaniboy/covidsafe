@@ -126,7 +126,7 @@ function formatCategoryRating(
 }
 
 async function retrievePlaceRating(place: Place): Promise<PlaceRating> {
-  const res = await fetch(RATING_ENDPOINT + `?${place.id}`);
+  const res = await fetch(RATING_ENDPOINT + `?placeId=${place.id}`);
   return (await res.json()) as PlaceRating;
 }
 

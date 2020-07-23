@@ -4,7 +4,7 @@ import { Button, Spinner } from 'react-bootstrap';
 import AnimateHeight from 'react-animate-height';
 import { Place } from '../../services/PlaceService';
 import ReviewService, { Review } from '../../services/ReviewService';
-import RatingService from '../../services/RatingService';
+import RatingService, { PlaceRating } from '../../services/RatingService';
 import PlaceHeader from './PlaceHeader';
 import RiskIndicator from './RiskIndicator';
 import PlaceReviewsList from './PlaceReviewsList';
@@ -18,7 +18,8 @@ const RETRACTED_HEIGHT = '30%';
 
 type Props = {
   isActive: boolean,
-  place: Place
+  place: Place,
+  onReviewSubmitted: (placeRating: PlaceRating) => void
 };
 
 type State = {
@@ -75,11 +76,16 @@ export default class PlacePanel extends React.Component<Props, State> {
   }
 
   onReviewSubmitted = async () => {
-    const { place } = this.props;
     this.setState({ isReviewModalVisible: false });
     await this.retrieveReviews();
-    const rating = await RatingService.retrievePlaceRating(place);
-    console.log(rating);
+
+    const { place } = this.props;
+    try {
+      const placeRating = await RatingService.retrievePlaceRating(place);
+      this.props.onReviewSubmitted(placeRating);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   toggleExpanded = () => {
