@@ -1,4 +1,5 @@
 import { IconName } from '@fortawesome/fontawesome-svg-core';
+import { PlaceRating } from './RatingService';
 
 const PLACES_ENDPOINT = `https://covidsafe.herokuapp.com/places`;
 
@@ -12,7 +13,8 @@ export type Place = {
     address: string,
     lat: number,
     lng: number
-  }
+  },
+  rating: PlaceRating
 };
 
 const DEFAULT_CATEGORY_ICON = 'store';

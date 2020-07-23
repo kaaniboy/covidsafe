@@ -1,4 +1,5 @@
-import { Review, DiningType } from './ReviewService';
+import { DiningType } from './ReviewService';
+import { Place } from './PlaceService';
 
 export type Risk =
   'unknown' | 'low' | 'medium' | 'high';
@@ -7,7 +8,7 @@ export type RatingCategory =
   'employeeMasks' | 'customerMasks' | 'distancing' | 'dividers' | 'diningTypes';
 
 export type PlaceRating = {
-  overallRisk: Risk,
+  overallRating?: number,
   categories: {
     [key in RatingCategory]?: number
   },
@@ -44,85 +45,22 @@ const RATING_CATEGORY_MESSAGES: { [key in RatingCategory]: string } = {
   'diningTypes': ''
 };
 
-function calculateCategoryRating(
-  category: RatingCategory,
-  reviews: Review[]
-): number | undefined {
-  const ratings = reviews
-    .map(r => (r as any)[category])
-    .filter(v => v !== null) as number[];
-
-  if (ratings.length === 0) {
-    return undefined;
-  }
-
-  return ratings.reduce((a, b) => a + b) / ratings.length;
-}
-
-function calculateOverallRisk(
-  categories: { [key in RatingCategory]?: number }
+function getOverallRisk(
+  place: Place
 ): Risk {
-  const categoryCount =
-    Object.values(categories).filter(v => v !== undefined).length;
+  const { overallRating } = place.rating;
 
-  if (categoryCount === 0) {
+  if (overallRating === undefined) {
     return 'unknown';
   }
-
-  const ratingSum =
-    (categories['employeeMasks'] || 0)
-    + (categories['customerMasks'] || 0)
-    + (categories['distancing'] || 0)
-    // Convert dividers category to 1 - 5 scale
-    + (categories['dividers'] === undefined ? 0 : categories['dividers']! * 4 + 1);
-
-  const overallRating = ratingSum / categoryCount;
 
   if (overallRating <= RISK_THRESHOLDS.high) {
     return 'high';
   } else if (overallRating <= RISK_THRESHOLDS.medium) {
     return 'medium';
   }
+
   return 'low';
-}
-
-type DiningTypeFrequencies = { [key in DiningType]: number };
-
-function extractDiningTypeFrequencies(
-  reviews: Review[]
-): DiningTypeFrequencies | undefined {
-  let total = 0;
-  const frequencies = reviews.reduce(
-    (freqs, r) => {
-      if (!r.diningType) {
-        return freqs;
-      }
-      total++;
-      return {
-        ...freqs,
-        [r.diningType]: (freqs[r.diningType] || 0) + 1
-      };
-    }, {} as DiningTypeFrequencies);
-
-  if (total === 0) {
-    return undefined;
-  }
-  return frequencies;
-}
-
-function ratePlace(reviews: Review[]): PlaceRating {
-  const categories = {
-    'employeeMasks': calculateCategoryRating('employeeMasks', reviews),
-    'customerMasks': calculateCategoryRating('customerMasks', reviews),
-    'distancing': calculateCategoryRating('distancing', reviews),
-    'dividers': calculateCategoryRating('dividers', reviews),
-  };
-
-  return {
-    overallRisk: calculateOverallRisk(categories),
-    diningTypes: extractDiningTypeFrequencies(reviews),
-    categories
-  };
 }
 
 function getCategoryMessage(
@@ -186,8 +124,8 @@ function formatCategoryRating(
 }
 
 export default {
-  ratePlace,
   getCategoryMessage,
   getCategoryRisk,
-  formatCategoryRating
+  formatCategoryRating,
+  getOverallRisk
 };

@@ -4,7 +4,7 @@ import { Button, Spinner } from 'react-bootstrap';
 import AnimateHeight from 'react-animate-height';
 import { Place } from '../../services/PlaceService';
 import ReviewService, { Review } from '../../services/ReviewService';
-import RatingService, { PlaceRating } from '../../services/RatingService';
+import RatingService from '../../services/RatingService';
 import PlaceHeader from './PlaceHeader';
 import RiskIndicator from './RiskIndicator';
 import PlaceReviewsList from './PlaceReviewsList';
@@ -16,11 +16,6 @@ const ANIMATION_DURATION = 200;
 const EXPANDED_HEIGHT = '70%';
 const RETRACTED_HEIGHT = '30%';
 
-const DEFAULT_RATING: PlaceRating = {
-  categories: {},
-  overallRisk: 'unknown'
-};
-
 type Props = {
   isActive: boolean,
   place: Place
@@ -28,7 +23,6 @@ type Props = {
 
 type State = {
   reviews: Review[],
-  rating: PlaceRating,
   isExpanded: boolean,
   isLoading: boolean,
   isReviewModalVisible: boolean
@@ -40,7 +34,6 @@ export default class PlacePanel extends React.Component<Props, State> {
 
     this.state = {
       reviews: [],
-      rating: DEFAULT_RATING,
       isLoading: false,
       isExpanded: false,
       isReviewModalVisible: false
@@ -67,18 +60,15 @@ export default class PlacePanel extends React.Component<Props, State> {
 
     try {
       const reviews = await ReviewService.getPlaceReviews(place.id);
-      const rating = RatingService.ratePlace(reviews);
 
       this.setState({
         reviews,
-        rating,
         isLoading: false
       });
     } catch (error) {
       console.log(error);
       this.setState({
         reviews: [],
-        rating: DEFAULT_RATING,
         isLoading: false
       });
     }
@@ -97,7 +87,7 @@ export default class PlacePanel extends React.Component<Props, State> {
 
   render() {
     const { place, isActive } = this.props;
-    const { rating, reviews, isLoading, isExpanded, isReviewModalVisible } = this.state;
+    const { reviews, isLoading, isExpanded, isReviewModalVisible } = this.state;
     const height = isActive
       ? (isExpanded ? EXPANDED_HEIGHT : RETRACTED_HEIGHT)
       : '0%';
@@ -130,8 +120,8 @@ export default class PlacePanel extends React.Component<Props, State> {
           }
           {!isLoading &&
             <div className='scrolling-panel'>
-              <RiskIndicator risk={rating.overallRisk} />
-              <PlaceRatingsOverview place={place} rating={rating} />
+              <RiskIndicator risk={RatingService.getOverallRisk(place)} />
+              <PlaceRatingsOverview place={place} />
 
               <h5 className='text-center'>Newest Reviews</h5>
               <div className='text-center'>

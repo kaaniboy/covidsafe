@@ -5,8 +5,7 @@ import RatingService, { PlaceRating, RatingCategory, RISK_COLORS } from '../../s
 import PlaceCategoryRatingPanel from './PlaceCategoryRatingPanel';
 
 type Props = {
-  place: Place,
-  rating: PlaceRating
+  place: Place
 };
 
 const FOOD_CATEGORIES = [
@@ -23,7 +22,7 @@ const RETAIL_CATEGORIES = [
   { name: 'dividers', label: 'Plexiglass Dividers' }
 ] as { name: RatingCategory, label: string }[];
 
-export default function PlaceRatingsOverview({ place, rating }: Props) {
+export default function PlaceRatingsOverview({ place }: Props) {
   const [selectedCategory, setSelectedCategory] = useState<RatingCategory>('employeeMasks');
 
   const categories = place.category === 'Food'
@@ -38,7 +37,7 @@ export default function PlaceRatingsOverview({ place, rating }: Props) {
         (selectedCategory === category.name
           ? ''
           : 'outline-'
-        ) + RISK_COLORS[RatingService.getCategoryRisk(rating, category.name)]
+        ) + RISK_COLORS[RatingService.getCategoryRisk(place.rating, category.name)]
       }
       block
       key={category.name}
@@ -59,7 +58,7 @@ export default function PlaceRatingsOverview({ place, rating }: Props) {
         </Col>
         <Col xs={6}>
           <PlaceCategoryRatingPanel
-            rating={rating}
+            rating={place.rating}
             category={selectedCategory}
           />
         </Col>
