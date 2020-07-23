@@ -29,10 +29,10 @@ create table db_public.place(
   id text primary key,
 
   overall_rating float,
-  employee_masks_avg float,
-  customer_masks_avg float,
-  distancing_avg float,
-  dividers_avg float,
+  employee_masks float,
+  customer_masks float,
+  distancing float,
+  dividers float,
 
   dine_in integer,
   pick_up integer,

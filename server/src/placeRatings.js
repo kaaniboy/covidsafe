@@ -10,10 +10,13 @@ const BATCH_PLACE_RATINGS_QUERY = `
         node {
           id
           overallRating
-          customerMasksAvg
-          distancingAvg
-          dividersAvg
-          employeeMasksAvg
+          customerMasks
+          distancing
+          dividers
+          employeeMasks
+          pickUp
+          driveThru
+          dineIn
         }
       }
     }
