@@ -14,9 +14,9 @@ const BATCH_PLACE_RATINGS_QUERY = `
           distancing
           dividers
           employeeMasks
+          dineIn
           pickUp
           driveThru
-          dineIn
         }
       }
     }
@@ -26,7 +26,21 @@ const BATCH_PLACE_RATINGS_QUERY = `
 function createPlaceRatingsMap(placeRatings) {
   let placeRatingsMap = {};
   placeRatings.forEach(placeRating => {
-    placeRatingsMap[placeRating.id] = placeRating;
+    const transformedRating = {
+      categories: {
+        employeeMasks: placeRating.employeeMasks,
+        customerMasks: placeRating.customerMasks,
+        distancing: placeRating.distancing,
+        dividers: placeRating.dividers
+      },
+      diningTypes: {
+        dine_in: placeRating.dineIn,
+        pick_up: placeRating.pickUp,
+        drive_thru: placeRating.driveThru
+      }
+    };
+
+    placeRatingsMap[placeRating.id] = transformedRating;
   });
   return placeRatingsMap;
 }
@@ -42,17 +56,17 @@ async function fillPlaceRatings(places) {
   } catch (error) {
     console.log(error);
     places.forEach(place => {
-      place.rating = {};
+      place.rating = { categories: {} };
     });
     return places;
   }
 
   const placeRatings = query.batchPlaceRatings.edges
     .map(edge => edge.node);
-
   const placeRatingsMap = createPlaceRatingsMap(placeRatings);
+
   places.forEach(place => {
-    place.rating = placeRatingsMap[place.id] || {};
+    place.rating = placeRatingsMap[place.id] || { categories: {} };
   });
   return places;
 }
