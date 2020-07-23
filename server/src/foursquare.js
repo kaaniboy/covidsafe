@@ -1,6 +1,7 @@
 require('dotenv').config();
 const axios = require('axios');
 const fs = require('fs');
+const { fillPlaceRatings } = require('./placeRatings');
 
 const FS_CLIENT_ID = process.env.FOURSQUARE_CLIENT_ID;
 const FS_CLIENT_SECRET = process.env.FOURSQUARE_CLIENT_SECRET;
@@ -94,7 +95,9 @@ async function handlePlacesRequest(req, res) {
       ? await retrieveRecommendations(ll, category)
       : await retrievePlaces(ll, query);
 
-    const categorizedPlaces = places.map(p => {
+    const ratedPlaces = await fillPlaceRatings(places);
+
+    const categorizedPlaces = ratedPlaces.map(p => {
       p.category = findCategory(p);
       delete p.categories;
       return p;
@@ -102,6 +105,7 @@ async function handlePlacesRequest(req, res) {
 
     res.json(categorizedPlaces);
   } catch (error) {
+    console.log(error);
     res.send(error);
   }
 }
