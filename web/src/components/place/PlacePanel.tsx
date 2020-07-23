@@ -75,8 +75,11 @@ export default class PlacePanel extends React.Component<Props, State> {
   }
 
   onReviewSubmitted = async () => {
+    const { place } = this.props;
     this.setState({ isReviewModalVisible: false });
     await this.retrieveReviews();
+    const rating = await RatingService.retrievePlaceRating(place);
+    console.log(rating);
   }
 
   toggleExpanded = () => {

@@ -17,6 +17,8 @@ export type PlaceRating = {
   }
 };
 
+const RATING_ENDPOINT = `https://covidsafe.herokuapp.com/rating`;
+
 const RISK_THRESHOLDS = {
   high: 2.5,
   medium: 4
@@ -123,9 +125,15 @@ function formatCategoryRating(
     : `${rating.categories[category]!.toFixed(1)} / 5`;
 }
 
+async function retrievePlaceRating(place: Place): Promise<PlaceRating> {
+  const res = await fetch(RATING_ENDPOINT + `?${place.id}`);
+  return (await res.json()) as PlaceRating;
+}
+
 export default {
   getCategoryMessage,
   getCategoryRisk,
   formatCategoryRating,
-  getOverallRisk
+  getOverallRisk,
+  retrievePlaceRating
 };

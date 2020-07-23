@@ -23,6 +23,22 @@ const BATCH_PLACE_RATINGS_QUERY = `
   }
 `;
 
+const PLACE_RATING_QUERY = `
+  query ($placeId: String!) {
+    placeById(id: $placeId) {
+      id
+      overallRating
+      employeeMasks
+      customerMasks
+      distancing
+      dividers
+      dineIn
+      pickUp
+      driveThru
+    }
+  }
+`;
+
 function nullToUndefined(value) {
   if (value === null) {
     return undefined;
@@ -88,6 +104,32 @@ async function fillPlaceRatings(places) {
   return places;
 }
 
+async function handlePlaceRatingRequest(req, res) {
+  const { placeId } = req.query;
+
+  try {
+    const query = await request(
+      GRAPHQL_URL,
+      PLACE_RATING_QUERY,
+      { placeId }
+    );
+
+    if (query.placeById === null) {
+      return res.json({ categories: {} });
+    }
+
+    res.json(structurePlaceRating(query.placeById));
+  } catch (error) {
+    console.log(error);
+    res.json({ categories: {} });
+  }
+}
+
+function setupPlaceRatings(app) {
+  app.get('/rating', handlePlaceRatingRequest);
+}
+
 module.exports = {
-  fillPlaceRatings
+  fillPlaceRatings,
+  setupPlaceRatings
 };
