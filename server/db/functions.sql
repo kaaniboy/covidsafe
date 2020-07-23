@@ -1,4 +1,4 @@
-  create or replace function db_public.update_place_rating() returns trigger as $$
+create or replace function db_public.update_place_rating() returns trigger as $$
   declare
     _overall_rating float;
     _employee_masks_avg float;
@@ -47,3 +47,9 @@
     return null;
   end;
   $$ language plpgsql strict security definer;
+
+create or replace function db_public.batch_place_ratings(place_ids text[]) returns setof db_public.place as $$
+  begin
+    return query select * from db_public.place where id = any(place_ids);
+  end;
+  $$ language plpgsql stable strict security definer;
