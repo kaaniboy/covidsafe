@@ -23,26 +23,41 @@ const BATCH_PLACE_RATINGS_QUERY = `
   }
 `;
 
+function nullToUndefined(value) {
+  if (value === null) {
+    return undefined;
+  }
+  return value;
+}
+
+function structurePlaceRating(placeRating) {
+  let diningTypes = undefined;
+
+  if (placeRating.dineIn + placeRating.pickUp + placeRating.driveThru > 0) {
+    diningTypes = {
+      dine_in: placeRating.dineIn,
+      pick_up: placeRating.pickUp,
+      drive_thru: placeRating.driveThru
+    };
+  }
+
+  return {
+    overallRating: nullToUndefined(placeRating.overallRating),
+    categories: {
+      employeeMasks: nullToUndefined(placeRating.employeeMasks),
+      customerMasks: nullToUndefined(placeRating.customerMasks),
+      distancing: nullToUndefined(placeRating.distancing),
+      dividers: nullToUndefined(placeRating.dividers)
+    },
+    diningTypes
+  };
+}
+
 function createPlaceRatingsMap(placeRatings) {
   let placeRatingsMap = {};
 
   placeRatings.forEach(placeRating => {
-    const transformedRating = {
-      overallRating: placeRating.overallRating,
-      categories: {
-        employeeMasks: placeRating.employeeMasks,
-        customerMasks: placeRating.customerMasks,
-        distancing: placeRating.distancing,
-        dividers: placeRating.dividers
-      },
-      diningTypes: {
-        dine_in: placeRating.dineIn,
-        pick_up: placeRating.pickUp,
-        drive_thru: placeRating.driveThru
-      }
-    };
-
-    placeRatingsMap[placeRating.id] = transformedRating;
+    placeRatingsMap[placeRating.id] = structurePlaceRating(placeRating);
   });
   return placeRatingsMap;
 }
