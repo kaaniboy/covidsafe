@@ -27,11 +27,16 @@ create trigger update_place_rating_trigger
 
 create table db_public.place(
   id text primary key,
+
   overall_rating float,
   employee_masks_avg float,
   customer_masks_avg float,
   distancing_avg float,
-  dividers_avg float
+  dividers_avg float,
+
+  dine_in integer,
+  pick_up integer,
+  drive_thru integer
 );
 
 create table db_public.vote(
