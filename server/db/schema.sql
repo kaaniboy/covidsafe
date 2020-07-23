@@ -21,6 +21,19 @@ create table db_public.review(
   updated_at timestamp
 );
 
+create trigger update_place_rating_trigger
+    after insert on db_public.review for each row
+    execute procedure db_public.update_place_rating();
+
+create table db_public.place(
+  id text primary key,
+  overall_rating float,
+  employee_masks_avg float,
+  customer_masks_avg float,
+  distancing_avg float,
+  dividers_avg float
+);
+
 create table db_public.vote(
   id serial primary key,
   review_id integer references db_public.review(id)
