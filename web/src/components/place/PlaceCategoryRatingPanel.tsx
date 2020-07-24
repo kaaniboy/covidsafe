@@ -2,6 +2,7 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import RatingService, { PlaceRating, RatingCategory, RISK_COLORS } from '../../services/RatingService';
 import { DiningType } from '../../services/ReviewService';
+import { Textfit } from 'react-textfit';
 
 type Props = {
   rating: PlaceRating,
@@ -53,9 +54,13 @@ export default function PlaceCategoryRatingPanel({ rating, category }: Props) {
   const categoryRisk = RatingService.getCategoryRisk(rating, category);
 
   const formattedRatingText = formattedRating && (
-    <h4 className={`category-rating text-center text-${RISK_COLORS[categoryRisk]}`}>
+    <Textfit
+      mode='single'
+      max={30}
+      className={`category-rating text-center text-${RISK_COLORS[categoryRisk]}`}
+    >
       {formattedRating}
-    </h4>
+    </Textfit>
   );
 
   const categoryMessageText = categoryMessage && (
