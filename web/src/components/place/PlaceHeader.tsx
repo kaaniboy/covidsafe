@@ -8,12 +8,13 @@ import { IconProp } from '@fortawesome/fontawesome-svg-core';
 type Props = {
   place: Place,
   isPanelExpanded: boolean,
+  divRef: (ref: HTMLDivElement | null) => void,
   onToggleExpanded: () => void
 };
 
-export default function PlaceHeader({ place, isPanelExpanded, onToggleExpanded }: Props) {
+export default function PlaceHeader({ place, isPanelExpanded, divRef, onToggleExpanded }: Props) {
   return (
-    <div className='place-header'>
+    <div className='place-header' ref={div => divRef(div)}>
       <div className='text-center'>
         <FontAwesomeIcon
           className='chevron-icon'

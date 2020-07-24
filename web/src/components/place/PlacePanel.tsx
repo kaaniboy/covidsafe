@@ -26,7 +26,8 @@ type State = {
   reviews: Review[],
   isExpanded: boolean,
   isLoading: boolean,
-  isReviewModalVisible: boolean
+  isReviewModalVisible: boolean,
+  placeHeaderHeight: string | null
 };
 
 export default class PlacePanel extends React.Component<Props, State> {
@@ -37,7 +38,8 @@ export default class PlacePanel extends React.Component<Props, State> {
       reviews: [],
       isLoading: false,
       isExpanded: false,
-      isReviewModalVisible: false
+      isReviewModalVisible: false,
+      placeHeaderHeight: null
     };
   }
 
@@ -94,9 +96,23 @@ export default class PlacePanel extends React.Component<Props, State> {
     }))
   };
 
+  updatePlaceHeaderHeight = (headerRef: HTMLDivElement) => {
+    const { placeHeaderHeight } = this.state;
+    if (!placeHeaderHeight) {
+      this.setState({ placeHeaderHeight: `${headerRef.clientHeight}px`});
+    }
+  }
+
   render() {
     const { place, isActive } = this.props;
-    const { reviews, isLoading, isExpanded, isReviewModalVisible } = this.state;
+    const {
+      reviews,
+      isLoading,
+      isExpanded,
+      isReviewModalVisible,
+      placeHeaderHeight
+    } = this.state;
+
     const height = isActive
       ? (isExpanded ? EXPANDED_HEIGHT : RETRACTED_HEIGHT)
       : '0%';
@@ -119,6 +135,7 @@ export default class PlacePanel extends React.Component<Props, State> {
             <PlaceHeader
               place={place}
               isPanelExpanded={isExpanded}
+              divRef={ref => ref && this.updatePlaceHeaderHeight(ref)}
               onToggleExpanded={this.toggleExpanded}
             />
           </Swipeable>
@@ -128,7 +145,10 @@ export default class PlacePanel extends React.Component<Props, State> {
             </div>
           }
           {!isLoading &&
-            <div className='scrolling-panel'>
+            <div
+              className='scrolling-panel'
+              style={placeHeaderHeight ? { top: placeHeaderHeight } : {}}
+            >
               <RiskIndicator risk={RatingService.getOverallRisk(place)} />
               <PlaceRatingsOverview place={place} />
 
