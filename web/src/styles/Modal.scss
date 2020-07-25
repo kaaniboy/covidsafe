@@ -6,6 +6,12 @@
   max-height: 80vh !important;
 }
 
+.welcome-modal {
+  .disclaimer {
+    font-size: 14px;
+  }
+}
+
 .backdrop {
   position: absolute;
   top: 0;

@@ -38,12 +38,19 @@ export default class ReviewModal extends React.Component<Props, State> {
           <Modal.Body>
             <p>
               <b>Mask Traffic</b> helps you stay safe by locating restaurants, coffee shops,
-              and grocery stores that take proper safety precautions.
+              and grocery stores that take proper COVID-19 safety precautions.
             </p>
             <p>
-              You can use the platform to view reviews of restaurants and stores based on various categories,
+              You can use the platform to view COVID-19 related reviews of businesses,
               such as whether or not employees wear masks. You can also submit your own reviews
               to help keep your local community safe.
+            </p>
+            <hr />
+            <p className='disclaimer'>
+              <b>Disclaimer: </b>
+              MaskTraffic cannot guarantee the validity of information found on this platform.
+              Any reliance you place on information from this platform is therefore strictly at your own risk,
+              and such information should not be interpreted as professional medical advice.
             </p>
           </Modal.Body>
           <Modal.Footer>
