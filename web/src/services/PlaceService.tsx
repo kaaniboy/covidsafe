@@ -40,6 +40,9 @@ async function retrievePlaces(
     (a, b) => b.location.lat - a.location.lat
   );
 
+  console.log(sortedPlaces.map(p => p.id).join('\n'));
+  console.log(sortedPlaces.map(p => p.name).join('\n'));
+
   return new Promise<Place[]>(
     resolve => resolve(sortedPlaces)
   );
