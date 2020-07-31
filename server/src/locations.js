@@ -8,7 +8,16 @@ function loadLocations() {
   try {
     const locations = parse(
       fs.readFileSync(LOCATIONS_FILE),
-      { columns: true, skip_empty_lines: true }
+      {
+        columns: true,
+        skip_empty_lines: true,
+        cast: (value, context) => {
+          if (context.column === 'lat' || context.column === 'lng') {
+            return Number(value);
+          }
+          return value;
+        }
+      }
     );
 
     locations.forEach(l => {
