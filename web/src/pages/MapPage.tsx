@@ -18,10 +18,12 @@ const TILE_LAYER_ATTRIBUTION =
   '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors '
   + ' &copy; <a href="https://carto.com/attributions">CARTO</a>';
 
+const DEFAULT_MAP_ZOOM = 15;
+const DEFAULT_MAP_COORDS = { lat: 33.4255, lng: -111.9400 };
+
 type State = {
   position: { lat: number, lng: number },
   zoom: number,
-  search: string,
   places: Place[],
   selectedPlace: Place | null,
   isLoading: boolean,
@@ -36,9 +38,8 @@ export default class MapPage extends React.Component<{}, State> {
     super(props);
 
     this.state = {
-      position: { lat: 33.4255, lng: -111.9400 },
-      zoom: 15,
-      search: '',
+      position: DEFAULT_MAP_COORDS,
+      zoom: DEFAULT_MAP_ZOOM,
       places: [],
       selectedPlace: null,
       isLoading: true,
@@ -49,20 +50,8 @@ export default class MapPage extends React.Component<{}, State> {
 
   async componentDidMount() {
     this.showWelcomeModal();
-    navigator.geolocation.getCurrentPosition(async pos => {
-      const { latitude, longitude } = pos.coords;
-
-      this.setState({
-        position: {
-          lat: latitude,
-          lng: longitude
-        }
-      });
-      await this.search();
-    }, async error => {
-      const { lat, lng } = this.state.position;
-      await this.retrievePlaces(lat, lng);
-    });
+    const { lat, lng } = this.state.position;
+    await this.search({ lat, lng });
   }
 
   showWelcomeModal = () => {
@@ -78,26 +67,22 @@ export default class MapPage extends React.Component<{}, State> {
     }
   }
 
-  retrievePlaces = async (lat: number, lng: number, query?: string) => {
+  search = async ({ lat, lng, query}: { lat?: number, lng?: number, query?: string }) => {
     this.setState({ isLoading: true });
 
+    lat = lat || this.mapRef!.viewport.center![0];
+    lng = lng || this.mapRef!.viewport.center![1];
+    let places = [];
+
     try {
-      const places = await PlaceService.retrievePlaces(lat, lng, query);
-      this.setState({ places, isLoading: false });
-      return places;
+      places = await PlaceService.retrievePlaces(lat, lng, query);
     } catch (error) {
       console.log(error);
-      this.setState({ isLoading: false });
-      return [];
+      return this.setState({ isLoading: false });
     }
-  }
-
-  search = async (query?: string) => {
-    const mapCenter = this.mapRef!.viewport.center!;
-    const places = await this.retrievePlaces(mapCenter[0], mapCenter[1], query);
 
     if (places.length === 0) {
-      return;
+      return this.setState({ isLoading: false });
     }
 
     const placeLats = places.map(p => p.location.lat);
@@ -109,6 +94,7 @@ export default class MapPage extends React.Component<{}, State> {
       southWest,
       northEast
     ));
+    this.setState({ places, isLoading: false });
   }
 
   selectPlace = (place: Place) => {
@@ -128,7 +114,6 @@ export default class MapPage extends React.Component<{}, State> {
     const {
       position,
       zoom,
-      search,
       places,
       selectedPlace,
       isPlacePanelActive,
@@ -171,11 +156,11 @@ export default class MapPage extends React.Component<{}, State> {
           />
         }
         <Search
-          value={search}
           isLoading={isLoading}
-          onChange={(search) => this.setState({ search })}
-          onEnter={query => this.search(query)}
-          onClear={() => this.setState({ search: '' })}
+          onEnter={query => this.search({ query })}
+          onCitySelected={city => {
+            this.search({ lat: city.lat, lng: city.lng });
+          }}
         />
       </>
     )

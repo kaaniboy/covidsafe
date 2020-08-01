@@ -46,8 +46,14 @@ html, body {
     margin-left: -20%;
   }
 
-  .search-input {
+  .rbt-input-main {
     border-radius: 25px;
+    box-shadow: 0px 0px 15px 0px rgba(0,0,0,0.4);
+  }
+
+  .rbt-menu {
+    margin-top: 5px;
+    border-radius: 10px;
     box-shadow: 0px 0px 15px 0px rgba(0,0,0,0.4);
   }
 
